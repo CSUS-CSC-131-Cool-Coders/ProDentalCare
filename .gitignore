@@ -17,5 +17,12 @@ buildNumber.properties
 .classpath
 
 # IntelliJ files
-pro-dental-care-*/.iml
-pro-dental-care-*/.idea/
+*.iml
+.idea/
+pro-dental-care-api/*.iml
+pro-dental-care-api/*.idea/
+pro-dental-care-ui/*.iml
+pro-dental-care-ui/.idea/
+
+# Angular cache
+pro-dental-care-ui/node_modules/
