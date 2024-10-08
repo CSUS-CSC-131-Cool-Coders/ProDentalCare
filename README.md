@@ -13,5 +13,6 @@ Maven 3.6.1
 #### pro-dental-care-ui
 
 ```
-Angular 11?
+Node 20.16.x
+Angular CLI 18.2.7
 ```
