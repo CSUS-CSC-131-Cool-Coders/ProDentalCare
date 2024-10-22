@@ -93,9 +93,10 @@ create table appointments
 create table staff_appointments
 (
     staff_id_fk char(9) not null,
-    appt_id     int     not null,
-    primary key (staff_id_fk, appt_id),
-    foreign key (staff_id_fk) references staff_member (staff_id)
+    appt_id_fk  int     not null,
+    primary key (staff_id_fk, appt_id_fk),
+    foreign key (staff_id_fk) references staff_member (staff_id),
+    foreign key (appt_id_fk) references appointments (appt_id)
 );
 
 create table reviews
