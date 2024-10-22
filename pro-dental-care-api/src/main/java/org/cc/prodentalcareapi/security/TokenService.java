@@ -1,5 +1,6 @@
 package org.cc.prodentalcareapi.security;
 
+import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.BadPaddingException;
@@ -46,5 +47,36 @@ public class TokenService {
 
 	public KeySpec getKeySpec() {
 		return keySpec;
+	}
+
+	public boolean isValidToken(String encryptedToken) {
+		try {
+			decryptToken(encryptedToken);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+		return true;
+	}
+
+	public Token getToken(String encryptedToken) {
+		String decryptedToken;
+		try {
+			decryptedToken = decryptToken(encryptedToken);
+		} catch (Exception e) {
+			System.err.printf("Error decrypting token to get role: %s\n", e.getMessage());
+			throw new RuntimeException(e);
+		}
+
+		return (new Gson()).fromJson(decryptedToken, Token.class);
+	}
+
+	public boolean hasRole(String encryptedToken, String role) {
+		Token token = getToken(encryptedToken);
+		return hasRole(token, role);
+	}
+
+	public boolean hasRole(Token token, String role) {
+		return token.getRoles().contains(role);
 	}
 }

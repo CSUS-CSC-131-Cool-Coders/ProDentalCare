@@ -3,6 +3,7 @@ package org.cc.prodentalcareapi.impl;
 import java.util.List;
 
 import com.google.gson.Gson;
+import org.cc.prodentalcareapi.security.Token;
 import org.cc.prodentalcareapi.security.TokenService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +18,6 @@ public class ExampleImpl {
 		this.tokenService = tokenService;
 	}
 
-	public class Token {
-		public String username;
-		public List<String> roles;
-	}
-
 	public static class LoginBody {
 		public String username;
 		public String password;
@@ -29,7 +25,6 @@ public class ExampleImpl {
 
 	public static class LoginResponse {
 		public String token;
-		public int ttl;
 	}
 
 	@GetMapping("/example/login")
@@ -40,10 +35,10 @@ public class ExampleImpl {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); //401
 		}
 
-
-		Token token = new Token();
-		token.username = loginDetail.username;
-		token.roles = loginDetail.username.equals("admin") ? List.of("admin", "dentist") : List.of("dentist");
+		Token token = new Token(
+				loginDetail.username,
+				loginDetail.username.equals("admin") ? List.of("admin", "dentist") : List.of("dentist")
+		);
 
 		String tokenJsonUnencrypted = (new Gson()).toJson(token);
 		String encryptedToken;
@@ -57,25 +52,16 @@ public class ExampleImpl {
 
 		LoginResponse response = new LoginResponse();
 		response.token = encryptedToken;
-		response.ttl = 1800;
 
 		return new ResponseEntity<>(response, HttpStatus.OK); //200
 	}
 
 	@GetMapping("/example/roles")
 	public ResponseEntity<String> exampleAuthorizedRequest(@RequestHeader String token) {
-		String decryptedToken;
-
-		try {
-			decryptedToken = tokenService.decryptToken(token);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); //500
-		}
-
-		Token tokenObj = (new Gson()).fromJson(decryptedToken, Token.class);
+		Token t = tokenService.getToken(token);
 
 		StringBuilder sb = new StringBuilder();
-		tokenObj.roles.forEach(s -> {
+		t.getRoles().forEach(s -> {
 			sb.append(s);
 			sb.append(",");
 		});
