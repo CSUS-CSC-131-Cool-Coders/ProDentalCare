@@ -4,18 +4,16 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 
-@Entity()
+@Entity
+@Table(name = "patient")
 public class Patient {
 
 	@Id
 	@Column(name = "patient_id", length = 9, columnDefinition = "char(9)")
 	private String patientId;
 
-	@Column(name = "email", length = 100)
+	@Column(name = "email_fk", length = 128)
 	private String email;
-
-	@Column(name = "pass_hash", length = 128)
-	private String passHash;
 
 	@Column(name = "fname", length = 40)
 	private String firstName;
@@ -56,14 +54,6 @@ public class Patient {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getPassHash() {
-		return passHash;
-	}
-
-	public void setPassHash(String passHash) {
-		this.passHash = passHash;
 	}
 
 	public String getFirstName() {
