@@ -25,6 +25,10 @@ button {
     padding: 10px 40px;
 }
 
+button:hover {
+    cursor: pointer;
+}
+
 .content-wrapper {
     display: flex;
     height: 100%;
