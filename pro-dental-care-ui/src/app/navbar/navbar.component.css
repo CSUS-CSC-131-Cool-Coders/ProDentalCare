@@ -1,0 +1,12 @@
+.content-wrapper {
+    flex-direction: row;
+    padding-right: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+    border-bottom: 1px solid gray;
+}
+
+.login-button {
+    margin-left: auto;
+    border-radius: 10px;
+}

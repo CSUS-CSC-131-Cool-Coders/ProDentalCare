@@ -1,0 +1,16 @@
+# This is the production information, override everything necessary for testing with the LOCAL profile.
+spring:
+    application:
+      name: pro-dental-care-api
+    datasource:
+        driver-class-name: org.mariadb.jdbc.Driver
+        url: jdbc:mariadb://76.158.149.144:8306/pdc
+        username: pdc-api
+        password: -P]90=AZpMd6
+    # These are the root pws to configure stuff
+    #    username: admin
+    #    password: xRxrVTxnXEGb5pW
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: update

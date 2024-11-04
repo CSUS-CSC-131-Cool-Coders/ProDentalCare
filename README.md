@@ -16,3 +16,6 @@ Maven 3.6.1
 Node 20.16.x
 Angular CLI 18.2.7
 ```
+
+
+Authors: Anh Ha, Brent Crosby, Caleb Brock, David Smagly, Nicolas Gomes, Olei Amelie Mae Ngan, Sean Tillman, and Timothy Pyryev
