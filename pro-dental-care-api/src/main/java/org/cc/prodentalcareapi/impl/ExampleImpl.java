@@ -27,7 +27,7 @@ public class ExampleImpl {
 		public String token;
 	}
 
-	@GetMapping("/example/login")
+	@PostMapping("/example/login")
 	public ResponseEntity<LoginResponse> exampleLogin(@RequestBody LoginBody loginDetail) {
 
 		// check login
