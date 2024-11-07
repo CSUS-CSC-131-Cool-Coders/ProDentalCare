@@ -7,7 +7,9 @@ import {Observable} from 'rxjs';
 })
 export class ApiService {
 
-  private server: string = "http://localhost:8080/api"
+  private server: string = "http://localhost:8080"
+
+  public isLoggedIn: boolean = false;
 
   constructor(private httpClient: HttpClient) { }
 
@@ -19,9 +21,7 @@ export class ApiService {
     if (headers === undefined) {
       headers = new HttpHeaders();
     }
-    return headers.append("Access-Control-Allow-Origin", "*")
-      .append("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, OPTIONS")
-      .append("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    return headers;
   }
 
   public get<T>(endpoint: string, headers?: HttpHeaders): Observable<HttpResponse<T>> {
@@ -34,6 +34,18 @@ export class ApiService {
 
   public put<T>(endpoint: string, body: any|null, headers?: HttpHeaders): Observable<HttpResponse<T>> {
     return this.httpClient.put<T>(this.buildEndpoint(endpoint), body, {headers: this.populateDefaultHeaders(headers), observe: "response"});
+  }
+
+  public static isOk(statusCode: number): boolean {
+    return statusCode > 199 && statusCode < 300;
+  }
+
+  public static isError(statusCode: number): boolean {
+    return statusCode > 399 && statusCode < 500;
+  }
+
+  public static isBackendError(statusCode: number): boolean {
+    return statusCode > 499;
   }
 
 }
