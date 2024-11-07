@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ValidationService} from "../../validation.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-signup-page',
@@ -44,7 +45,8 @@ export class SignupPageComponent {
   @Input()
   public confirmedPassword: string = "";
 
-  public constructor(private validationService: ValidationService) {
+  public constructor(private validationService: ValidationService,
+                     private router: Router) {
   }
 
   validateEmail() {
@@ -61,6 +63,27 @@ export class SignupPageComponent {
   }
 
   submitSignUp() {
+    if (!this.emailValid || !this.passwordValid || !this.phoneValid || this.password != this.confirmedPassword || this.email != this.confirmedEmail) {
+      alert("Please continue filling out the form!");
+      return;
+    }
 
+    if (this.email == "" || this.password == "" || this.firstName == "" || this.lastName == "" || this.phone == "") {
+      alert("Please continue filling out the signup form!");
+      return;
+    }
+
+
+    let signupForm1Details = {
+      email: this.email,
+      password: this.password,
+      phone: this.phone,
+      firstName: this.firstName,
+      lastName: this.lastName
+    };
+
+    sessionStorage.setItem("pdc-signup-form1-details", JSON.stringify(signupForm1Details));
+
+    this.router.navigateByUrl("/signup/page-2");
   }
 }

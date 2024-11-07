@@ -8,6 +8,7 @@ export class ValidationService {
   private emailPattern = new RegExp("^[\\w\\-\\.]+@([\\w-]+\\.)+[\\w-]{2,}$");
   private passwordPattern = new RegExp("^((?=\\S*?[A-Z])(?=\\S*?[a-z])(?=\\S*?[0-9]).{6,})\\S$");
   private phonePattern = new RegExp("^(1\\s?)?(\\d{3}|\\(\\d{3}\\))[\\s\\-]?\\d{3}[\\s\\-]?\\d{4}$");
+  private ssnPattern = new RegExp("^\\d{9}$");
 
   constructor() { }
 

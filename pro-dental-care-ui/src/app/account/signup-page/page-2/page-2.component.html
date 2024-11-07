@@ -1,0 +1,23 @@
+<div class="content-wrapper">
+    <div class="login-wrapper">
+        <h1>Sign Up</h1>
+        <p>Please provide us with some additional details to continue creating your account.</p>
+<!--        <p class="error" [hidden]="confirmedPassword == '' || password == confirmedPassword">Please make sure your password matches</p>-->
+
+        <input type="text" [(ngModel)]="ssn" placeholder="SSN or TIN"/>
+        <input type="text" [(ngModel)]="dob" placeholder="Date of Birth"/>
+        <span style="display: flex; flex-direction: row; align-items: stretch; margin: 0 -15px;">
+            <input type="text" [(ngModel)]="sex" placeholder="Sex"/>
+            <select [(ngModel)]="selectedLang" style="margin-left: auto">
+                <option value="" disabled selected>Select a Language</option>
+                <option *ngFor="let lang of langCodes" [ngValue]="lang.code">{{lang.lang}}</option>
+            </select>
+        </span>
+        <span style="display: flex; flex-direction: row; align-items: stretch; margin: 0 -15px;">
+            <input type="text" [(ngModel)]="height" placeholder="Height"/>
+            <input type="text" [(ngModel)]="weight" placeholder="Weight"/>
+        </span>
+        <button (click)="submitSignUp()" style="margin-top: 40px">Sign Up</button>
+        <p>Have an account? Login <a href="/login" style="text-decoration: underline">here</a></p>
+    </div>
+</div>
