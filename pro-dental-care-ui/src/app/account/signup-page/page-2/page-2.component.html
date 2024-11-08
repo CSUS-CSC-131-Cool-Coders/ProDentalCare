@@ -1,23 +1,28 @@
 <div class="content-wrapper">
-    <div class="login-wrapper">
+    <form [formGroup]="form" (ngSubmit)="submitSignUp()" class="login-wrapper">
         <h1>Sign Up</h1>
         <p>Please provide us with some additional details to continue creating your account.</p>
-<!--        <p class="error" [hidden]="confirmedPassword == '' || password == confirmedPassword">Please make sure your password matches</p>-->
+        <small class="error" *ngIf="!ssn.untouched && !ssn.valid">Please enter a valid SSN or TIN!</small>
+        <small class="error" *ngIf="!dob.untouched && !dob.valid">Please enter a valid date of birth!</small>
+        <small class="error" *ngIf="!sex.untouched && !sex.valid">Please enter your sex!</small>
+        <small class="error" *ngIf="!selectedLang.untouched && !selectedLang.valid">Please select a language!</small>
+        <small class="error" *ngIf="!height.untouched && !height.valid">Please enter your height!</small>
+        <small class="error" *ngIf="!weight.untouched && !weight.valid">Please enter your weight!</small>
 
-        <input type="text" [(ngModel)]="ssn" placeholder="SSN or TIN"/>
-        <input type="text" [(ngModel)]="dob" placeholder="Date of Birth"/>
+        <input type="text" [formControl]="ssn" placeholder="SSN or TIN"/>
+        <input type="date" [formControl]="dob" placeholder="Date of Birth"/>
         <span style="display: flex; flex-direction: row; align-items: stretch; margin: 0 -15px;">
-            <input type="text" [(ngModel)]="sex" placeholder="Sex"/>
-            <select [(ngModel)]="selectedLang" style="margin-left: auto">
+            <input type="text" [formControl]="sex" placeholder="Sex"/>
+            <select [formControl]="selectedLang" style="margin-left: auto">
                 <option value="" disabled selected>Select a Language</option>
-                <option *ngFor="let lang of langCodes" [ngValue]="lang.code">{{lang.lang}}</option>
+                <option *ngFor="let lang of langCodes" [ngValue]="lang.code">{{ lang.lang }}</option>
             </select>
         </span>
         <span style="display: flex; flex-direction: row; align-items: stretch; margin: 0 -15px;">
-            <input type="text" [(ngModel)]="height" placeholder="Height"/>
-            <input type="text" [(ngModel)]="weight" placeholder="Weight"/>
+            <input type="text" [formControl]="height" placeholder="Height"/>
+            <input type="text" [formControl]="weight" placeholder="Weight"/>
         </span>
-        <button (click)="submitSignUp()" style="margin-top: 40px">Sign Up</button>
+        <button type="submit" [disabled]="!form.valid" style="margin-top: 40px">Sign Up</button>
         <p>Have an account? Login <a href="/login" style="text-decoration: underline">here</a></p>
-    </div>
+    </form>
 </div>

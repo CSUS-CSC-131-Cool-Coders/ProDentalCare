@@ -3,5 +3,6 @@
         <img ngSrc="/assets/pdc-icon.png" width="34" height="34" style="padding-right: 20px"/>
     </a>
     <h3>Pro-Dental Care</h3>
-    <button class="login-button" routerLink="/login" [hidden]="isLogin">Login</button>
+    <button class="login-button" routerLink="/login" [hidden]="this.apiService.isLoggedIn || isLogin">Login</button>
+    <button class="login-button" (click)="logout()" [hidden]="isLogin || !this.apiService.isLoggedIn">Log Out</button>
 </div>

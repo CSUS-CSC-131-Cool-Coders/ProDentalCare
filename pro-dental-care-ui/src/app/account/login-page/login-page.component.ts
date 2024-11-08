@@ -1,60 +1,70 @@
 import {Component, Input} from '@angular/core';
-import {FormsModule} from "@angular/forms";
-import {ValidationService} from "../../validation.service";
+import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ApiService} from '../../api.service';
 import {HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
+import {DentalConstants} from "../../dental-constants";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-login-page',
   standalone: true,
-    imports: [
-        FormsModule
-    ],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    NgIf
+  ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.css'
 })
 export class LoginPageComponent {
 
-  @Input()
-  public email: string;
+  protected form: FormGroup;
 
   @Input()
-  public password: string;
+  public email = new FormControl("", [
+      Validators.required,
+      Validators.email
+  ]);
 
   @Input()
-  public emailValid: boolean = true;
+  public password = new FormControl("", [
+      Validators.required,
+      Validators.minLength(6)
+  ]);
 
-  public constructor(private validationService: ValidationService,
-                     private apiService: ApiService,
-                     private router: Router) {
-  }
+  public invalidCredentials: boolean = false;
 
-  public submitLogin(): void {
-    //todo: implement api call
-    let body = {
-      "username": this.email,
-      "password": this.password
-    };
-    this.apiService.post<any|null>("/example/login", body, (new HttpHeaders()).append("Content-Type", "application/json")).subscribe((res) => {
-      if (!ApiService.isOk(res.status)) {
-        console.log("could not login!");
-        return;
-      }
-
-      let token = res.body.token;
-      localStorage.setItem("pdc-token", token);
-
-      this.apiService.isLoggedIn = true;
-
-      this.router.navigateByUrl("/").then(r => {});
-
+  public constructor(private apiService: ApiService,
+                     private router: Router,
+                     private fb: FormBuilder) {
+    this.form = this.fb.group({
+      username: this.email,
+      password: this.password
     });
-    console.log("Will implement later");
   }
 
-  validateEmail() {
-    this.emailValid = this.validationService.validateEmail(this.email);
+  public onSubmit(): void {
+    this.invalidCredentials = false;
 
+    //todo: implement api call
+    let body = this.form.value;
+
+    this.apiService.post<any|null>("/example/login", body).subscribe({
+      next: res => {
+        let token = res.body.token;
+
+        localStorage.setItem(DentalConstants.TOKEN_LOCAL_STORAGE_ID, token);
+
+        this.apiService.isLoggedIn = true;
+
+        this.router.navigateByUrl("/").then(r => {
+        });
+      },
+      error: err => {
+        this.invalidCredentials = true;
+        console.log("bad credentials");
+      }
+    });
   }
 }

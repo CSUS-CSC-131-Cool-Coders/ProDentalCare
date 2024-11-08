@@ -25,6 +25,10 @@ button {
     padding: 10px 40px;
 }
 
+button:disabled {
+    background: #D717465C;
+}
+
 button:hover {
     cursor: pointer;
 }
