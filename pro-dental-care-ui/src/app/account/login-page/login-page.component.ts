@@ -1,7 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ApiService} from '../../api.service';
-import {HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {DentalConstants} from "../../dental-constants";
 import {NgIf} from "@angular/common";
