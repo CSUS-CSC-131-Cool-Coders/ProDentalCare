@@ -1,13 +1,17 @@
-package org.cc.model;
+package org.cc.prodentalcareapi.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import java.util.Date;
+
 
 @Entity
 @Table(name = "patient_billing")
-public class PatientBilling {
+public class PatientPaymentOption {
 
     @Id
     @Column(name = "patient_id_fk", length = 9, columnDefinition = "char(9)")
