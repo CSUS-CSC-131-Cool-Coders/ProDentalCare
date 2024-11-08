@@ -31,7 +31,7 @@ public class ExampleImpl {
 	public ResponseEntity<LoginResponse> exampleLogin(@RequestBody LoginBody loginDetail) {
 
 		// check login
-		if (!"admin".equalsIgnoreCase(loginDetail.password)) {
+		if (!"adminuser".equalsIgnoreCase(loginDetail.password)) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); //401
 		}
 

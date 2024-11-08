@@ -50,7 +50,7 @@ export class LoginPageComponent {
     //todo: implement api call
     let body = this.form.value;
 
-    this.apiService.post<any|null>("/example/login", body).subscribe({
+    this.apiService.post<any|null>("/login", body).subscribe({
       next: res => {
         let token = res.body.token;
 
