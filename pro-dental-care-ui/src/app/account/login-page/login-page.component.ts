@@ -47,7 +47,6 @@ export class LoginPageComponent {
   public onSubmit(): void {
     this.invalidCredentials = false;
 
-    //todo: implement api call
     let body = this.form.value;
 
     this.apiService.post<any|null>("/login", body).subscribe({
