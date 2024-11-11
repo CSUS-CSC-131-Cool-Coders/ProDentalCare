@@ -5,6 +5,7 @@ import { SignupPageComponent } from "./account/signup-page/signup-page.component
 import { ResetPasswordComponent } from "./account/reset-password/reset-password.component";
 import { PatientOverviewComponent } from './patient/overview/patient-overview.component';
 import { PatientHealthRecords } from './patient/records/health-records.component';
+import { PatientTreatmentPlan } from './patient/records/treatment-plan.component';
 
 
 export const routes: Routes = [
@@ -14,5 +15,6 @@ export const routes: Routes = [
     { path: "reset-password", component: LoginPageComponent },
     { path: "reset-password/:resetToken", component: ResetPasswordComponent },
     { path: "overview", component: PatientOverviewComponent }, // Add the route for OverviewComponent
-    { path: "records", component: PatientHealthRecords }
+    { path: "records", component: PatientHealthRecords },
+    { path: "treatment", component: PatientTreatmentPlan }
 ];
