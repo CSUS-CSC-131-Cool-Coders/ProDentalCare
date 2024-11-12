@@ -2,9 +2,9 @@ import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
 @Component({
-  selector: "patient-summary",
-  templateUrl: "./patient-summary.component.html",
-  styleUrls: ["./patient-summary.component.css"],
+  selector: "health-records",
+  templateUrl: "./health-records.component.html",
+  styleUrls: ["./health-records.component.css"],
   standalone: true,
   imports: [CommonModule],
 })
