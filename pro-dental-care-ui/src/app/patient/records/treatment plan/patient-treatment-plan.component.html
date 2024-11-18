@@ -5,7 +5,7 @@
     <header class="accordion-header" (click)="toDoExpanded = !toDoExpanded">
       <h2 class="accordion-title">To Do</h2>
       <img
-        [src]="toDoExpanded ? 'assets/up.png' : 'assets/down.png'"
+        [ngSrc]="toDoExpanded ? '/assets/up.png' : '/assets/down.png'"
         alt=""
         class="accordion-icon"
       />
@@ -43,7 +43,7 @@
     <header class="accordion-header" (click)="treatmentPlanExpanded = !treatmentPlanExpanded">
       <h2 class="accordion-title">Treatment Plan</h2>
       <img
-        [src]="treatmentPlanExpanded ? 'assets/up.png' : 'assets/down.png'"
+        [ngSrc]="treatmentPlanExpanded ? '/assets/up.png' : '/assets/down.png'"
         alt=""
         class="accordion-icon"
       />

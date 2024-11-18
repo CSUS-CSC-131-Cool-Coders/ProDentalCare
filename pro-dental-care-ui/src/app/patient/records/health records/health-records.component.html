@@ -9,7 +9,7 @@
         <header class="accordion-header" (click)="visitsExpanded = !visitsExpanded">
           <h2 class="accordion-title">VISITS</h2>
           <img
-            [src]="visitsExpanded ? 'assets/up.png' : 'assets/down.png'"
+            [ngSrc]="visitsExpanded ? '/assets/up.png' : '/assets/down.png'"
             alt=""
             class="accordion-icon"
           />
@@ -44,7 +44,7 @@
         <header class="accordion-header" (click)="allergiesExpanded = !allergiesExpanded">
           <h2 class="accordion-title">ALLERGIES</h2>
           <img
-            [src]="allergiesExpanded ? 'assets/up.png' : 'assets/down.png'"
+            [ngSrc]="allergiesExpanded ? '/assets/up.png' : '/assets/down.png'"
             alt=""
             class="accordion-icon"
           />
@@ -76,7 +76,7 @@
         <header class="accordion-header" (click)="medsExpanded = !medsExpanded">
           <h2 class="accordion-title">MEDICATIONS</h2>
           <img
-            [src]="medsExpanded ? 'assets/up.png' : 'assets/down.png'"
+            [ngSrc]="medsExpanded ? '/assets/up.png' : '/assets/down.png'"
             alt=""
             class="accordion-icon"
           />
@@ -111,7 +111,7 @@
         <header class="accordion-header" (click)="labsExpanded = !labsExpanded">
           <h2 class="accordion-title">LABS & PROCEDURES</h2>
           <img
-            [src]="labsExpanded ? 'assets/up.png' : 'assets/down.png'"
+            [ngSrc]="labsExpanded ? '/assets/up.png' : '/assets/down.png'"
             alt=""
             class="accordion-icon"
           />
@@ -146,7 +146,7 @@
         <header class="accordion-header" (click)="immunizationsExpanded = !immunizationsExpanded">
           <h2 class="accordion-title">IMMUNIZATIONS</h2>
           <img
-            [src]="immunizationsExpanded ? 'assets/up.png' : 'assets/down.png'"
+            [ngSrc]="immunizationsExpanded ? '/assets/up.png' : '/assets/down.png'"
             alt=""
             class="accordion-icon"
           />
