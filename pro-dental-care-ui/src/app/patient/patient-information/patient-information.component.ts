@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-patient-information',
@@ -8,7 +8,8 @@ import { CommonModule } from '@angular/common';
   imports: [
     ReactiveFormsModule,
     FormsModule,
-    CommonModule
+    CommonModule,
+    NgOptimizedImage
   ],
   templateUrl: './patient-information.component.html',
   styleUrls: ['./patient-information.component.css']
