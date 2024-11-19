@@ -1,0 +1,48 @@
+/* staff-information.component.css */
+.staff-information-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+mat-expansion-panel {
+  margin-bottom: 15px;
+}
+
+mat-card {
+  padding: 15px;
+  background-color: #f9f9f9;
+}
+
+.staff-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Space between columns */
+}
+
+.column {
+  flex: 1; /* Each column takes up equal space */
+  min-width: 200px; /* Ensures columns don't get too narrow on small screens */
+}
+
+.column p {
+  margin: 5px 0;
+}
+
+.profile-icon {
+  vertical-align: middle;
+  margin-right: 10px;
+  color: #3f51b5; /* Optional: Change icon color */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+  .staff-details {
+    flex-direction: column;
+  }
+}

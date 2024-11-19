@@ -1,1 +1,29 @@
-<p>staff-information works!</p>
+<div class="staff-information-container">
+
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let staff of staffs">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon svgIcon="person" class="profile-icon"></mat-icon>
+          {{ staff.name }} - {{ staff.position }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-card>
+        <div class="staff-details">
+          <div class="column">
+            <p><strong>Name:</strong> {{ staff.name }}</p>
+            <p><strong>Position:</strong> {{ staff.position }}</p>
+            <p><strong>Pay:</strong> {{ staff.pay }}</p>
+            <p><strong>Years Worked:</strong> {{ staff.yearsWorked }}</p>
+          </div>
+          <div class="column">
+            <p><strong>Email:</strong> {{ staff.email }}</p>
+            <p><strong>Contact Number:</strong> {{ staff.contactNumber }}</p>
+            <p><strong>Qualifications:</strong> {{ staff.qualifications }}</p>
+          </div>
+        </div>
+      </mat-card>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
