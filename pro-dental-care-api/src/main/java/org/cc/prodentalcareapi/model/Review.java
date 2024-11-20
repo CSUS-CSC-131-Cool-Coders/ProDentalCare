@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 
-//apointment and patient id needed, makes a review id, then makes a review
 
 @Entity
 @Table(name = "reviews")
