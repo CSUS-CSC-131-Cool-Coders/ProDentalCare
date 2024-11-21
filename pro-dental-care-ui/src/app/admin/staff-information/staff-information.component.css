@@ -12,6 +12,7 @@ h2 {
 
 mat-expansion-panel {
   margin-bottom: 15px;
+  padding: 20px;
 }
 
 mat-card {
