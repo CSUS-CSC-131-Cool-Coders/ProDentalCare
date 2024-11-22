@@ -4,10 +4,11 @@
   <section class="accordion-item" [class.expanded]="toDoExpanded" [class.closed]="!toDoExpanded">
     <header class="accordion-header" (click)="toDoExpanded = !toDoExpanded">
       <h2 class="accordion-title">To Do</h2>
-      <img
-        [ngSrc]="toDoExpanded ? '/assets/up.png' : '/assets/down.png'"
+      <img [ngSrc]="toDoExpanded ? '/assets/up.png' : '/assets/down.png'"
         alt=""
         class="accordion-icon"
+        width="20" 
+        height="20"
       />
     </header>
     <div class="accordion-content" [ngClass]="{ 'show-content': toDoExpanded }">
@@ -42,10 +43,11 @@
   <section class="accordion-item" [class.expanded]="treatmentPlanExpanded" [class.closed]="!treatmentPlanExpanded">
     <header class="accordion-header" (click)="treatmentPlanExpanded = !treatmentPlanExpanded">
       <h2 class="accordion-title">Treatment Plan</h2>
-      <img
-        [ngSrc]="treatmentPlanExpanded ? '/assets/up.png' : '/assets/down.png'"
+      <img [ngSrc]="treatmentPlanExpanded ? '/assets/up.png' : '/assets/down.png'"
         alt=""
         class="accordion-icon"
+        width="20" 
+        height="20"
       />
     </header>
     <div class="accordion-content" [ngClass]="{ 'show-content': treatmentPlanExpanded }">

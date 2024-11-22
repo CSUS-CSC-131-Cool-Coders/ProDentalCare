@@ -8,10 +8,11 @@
       <section class="accordion-item" [class.expanded]="visitsExpanded" [class.closed]="!visitsExpanded">
         <header class="accordion-header" (click)="visitsExpanded = !visitsExpanded">
           <h2 class="accordion-title">VISITS</h2>
-          <img
-            [ngSrc]="visitsExpanded ? '/assets/up.png' : '/assets/down.png'"
+          <img [ngSrc]="visitsExpanded ? '/assets/up.png' : '/assets/down.png'"
             alt=""
             class="accordion-icon"
+            width="20" 
+            height="20"
           />
         </header>
         <div class="accordion-content" *ngIf="visitsExpanded">
@@ -43,10 +44,11 @@
       <section class="accordion-item" [class.expanded]="allergiesExpanded" [class.closed]="!allergiesExpanded">
         <header class="accordion-header" (click)="allergiesExpanded = !allergiesExpanded">
           <h2 class="accordion-title">ALLERGIES</h2>
-          <img
-            [ngSrc]="allergiesExpanded ? '/assets/up.png' : '/assets/down.png'"
+          <img [ngSrc]="allergiesExpanded ? '/assets/up.png' : '/assets/down.png'"
             alt=""
             class="accordion-icon"
+            width="20" 
+            height="20"
           />
         </header>
         <div class="accordion-content" *ngIf="allergiesExpanded">
@@ -75,10 +77,11 @@
       <section class="accordion-item" [class.expanded]="medsExpanded" [class.closed]="!medsExpanded">
         <header class="accordion-header" (click)="medsExpanded = !medsExpanded">
           <h2 class="accordion-title">MEDICATIONS</h2>
-          <img
-            [ngSrc]="medsExpanded ? '/assets/up.png' : '/assets/down.png'"
+          <img [ngSrc]="medsExpanded ? '/assets/up.png' : '/assets/down.png'"
             alt=""
             class="accordion-icon"
+            width="20" 
+            height="20"
           />
         </header>
         <div class="accordion-content" *ngIf="medsExpanded">
@@ -110,10 +113,11 @@
       <section class="accordion-item" [class.expanded]="labsExpanded" [class.closed]="!labsExpanded">
         <header class="accordion-header" (click)="labsExpanded = !labsExpanded">
           <h2 class="accordion-title">LABS & PROCEDURES</h2>
-          <img
-            [ngSrc]="labsExpanded ? '/assets/up.png' : '/assets/down.png'"
+          <img [ngSrc]="labsExpanded ? '/assets/up.png' : '/assets/down.png'"
             alt=""
             class="accordion-icon"
+            width="20" 
+            height="20"
           />
         </header>
         <div class="accordion-content" *ngIf="labsExpanded">
@@ -145,10 +149,11 @@
       <section class="accordion-item" [class.expanded]="immunizationsExpanded" [class.closed]="!immunizationsExpanded">
         <header class="accordion-header" (click)="immunizationsExpanded = !immunizationsExpanded">
           <h2 class="accordion-title">IMMUNIZATIONS</h2>
-          <img
-            [ngSrc]="immunizationsExpanded ? '/assets/up.png' : '/assets/down.png'"
+          <img [ngSrc]="immunizationsExpanded ? '/assets/up.png' : '/assets/down.png'"
             alt=""
             class="accordion-icon"
+            width="20" 
+            height="20"
           />
         </header>
         <div class="accordion-content" *ngIf="immunizationsExpanded">
