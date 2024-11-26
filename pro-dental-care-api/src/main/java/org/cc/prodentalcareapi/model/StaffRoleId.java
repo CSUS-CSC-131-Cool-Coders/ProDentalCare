@@ -2,8 +2,12 @@
 import java.io.Serializable;
 import java.util.Objects;
 
+@Embeddable
 public class StaffRoleId implements Serializable {
+    @Column(name = "staff_id_fk")
     private String staffId;
+
+    @Column(name = "role")
     private String role;
 
     public StaffRoleId() {}

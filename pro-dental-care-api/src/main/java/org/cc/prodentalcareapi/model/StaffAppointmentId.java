@@ -2,8 +2,12 @@
 import java.io.Serializable;
 import java.util.Objects;
 
+@Embeddable
 public class StaffAppointmentId implements Serializable() {
+    @Column(name = "staff_id_fk")
     private String staffId;
+
+    @Column(name = "appt_id")
     private int appointmentId;
 
     public StaffAppointmentId() {}
@@ -31,8 +35,8 @@ public class StaffAppointmentId implements Serializable() {
 
     @Override
     public boolean equals(Object other) {
-        if (this == other) return true;
-        if (other == null || getClass() != other.getClass()) return false;
+        if (!(other instanceof StaffAppointmentId))
+            return false;
         StaffAppointmentId that = (StaffAppointmentId) other;
         return appointmentId == that.appointmentId && Objects.equals(staffId, that.staffId);
     }

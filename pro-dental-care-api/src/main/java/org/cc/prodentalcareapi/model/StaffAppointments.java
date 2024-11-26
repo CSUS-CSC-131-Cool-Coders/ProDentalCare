@@ -4,16 +4,10 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "staff_appointments")
-@IdClass(StaffAppointmentId.class)
+
 public class StaffAppointments {
-
-	@Id
-	@Column(name = "staff_id_fk", length = 9, columnDefinition = "char(9)")
-	private String staffId;
-
-	@Id
-	@Column(name = "appt_id")
-	private int appointmentId;
+	@EmbeddedId
+	private StaffAppointmentId staffAppointmentId;
 
 	public String getStaffId() {
 		return staffId;
