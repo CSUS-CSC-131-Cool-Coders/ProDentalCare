@@ -52,10 +52,7 @@ export class LoginPageComponent {
       next: res => {
         let token = res.body.token;
 
-        localStorage.setItem(DentalConstants.TOKEN_LOCAL_STORAGE_ID, token);
-
-        this.apiService.isLoggedIn = true;
-
+        this.apiService.setLoginToken(token);
         this.router.navigateByUrl("/").then(r => {
         });
       },
