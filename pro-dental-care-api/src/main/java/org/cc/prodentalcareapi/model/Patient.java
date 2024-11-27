@@ -40,6 +40,21 @@ public class Patient {
 	@Column(name = "height")
 	private int height;
 
+	public Patient(String patientId, String email, String firstName, String lastName, Date dob, String phoneNumber, String sex, String langCode, int weight, int height) {
+		setPatientId(patientId);
+		setEmail(email);
+		setFirstName(firstName);
+		setLastName(lastName);
+		setDateOfBirth(dob);
+		setPhoneNumber(phoneNumber);
+		setSex(sex);
+		setLangCode(langCode);
+		setWeight(weight);
+		setHeight(height);
+	}
+
+	public Patient() {}
+
 	public String getPatientId() {
 		return patientId;
 	}

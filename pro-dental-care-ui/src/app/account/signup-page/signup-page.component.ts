@@ -1,66 +1,101 @@
 import {Component, Input} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {
+    FormBuilder,
+    FormControl,
+    FormGroup,
+    FormsModule,
+    ReactiveFormsModule,
+    ValidationErrors,
+    Validators
+} from "@angular/forms";
 import {ValidationService} from "../../validation.service";
+import {Router} from "@angular/router";
+import {DentalConstants} from "../../dental-constants";
+import {NgIf} from "@angular/common";
 
 @Component({
-  selector: 'app-signup-page',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    FormsModule
-  ],
-  templateUrl: './signup-page.component.html',
-  styleUrl: '../login-page/login-page.component.css'
+    selector: 'app-signup-page',
+    standalone: true,
+    imports: [
+        ReactiveFormsModule,
+        FormsModule,
+        NgIf
+    ],
+    templateUrl: './signup-page.component.html',
+    styleUrl: '../login-page/login-page.component.css'
 })
 export class SignupPageComponent {
 
-  @Input()
-  public emailValid: boolean = true;
+    public form: FormGroup;
 
-  @Input()
-  public passwordValid: boolean = true;
+    @Input()
+    public firstName = new FormControl("", [
+        Validators.required,
+        Validators.minLength(2)
+    ]);
 
-  @Input()
-  public phoneValid: boolean = true;
+    @Input()
+    public lastName = new FormControl("", [
+        Validators.required,
+        Validators.minLength(2)
+    ]);
 
-  @Input()
-  public firstName: string = "";
+    @Input()
+    public email = new FormControl("", [
+        Validators.required,
+        Validators.email,
+    ]);
 
-  @Input()
-  public lastName: string = "";
+    @Input()
+    public confirmedEmail = new FormControl("", [
+        Validators.required,
+        Validators.email
+    ]);
 
-  @Input()
-  public email: string = "";
+    @Input()
+    public phone = new FormControl("", [
+        Validators.required,
+        Validators.pattern(ValidationService.phonePattern)
+    ]);
 
-  @Input()
-  public confirmedEmail: string = "";
+    @Input()
+    public password = new FormControl("", [
+        Validators.required,
+        Validators.pattern(ValidationService.passwordPattern)
+    ]);
 
-  @Input()
-  public phone: string = "";
+    @Input()
+    public confirmedPassword = new FormControl("", [
+        Validators.required
+    ]);
 
-  @Input()
-  public password: string = "";
+    public emailMatch: boolean;
+    public passwordMatch: boolean;
 
-  @Input()
-  public confirmedPassword: string = "";
+    public constructor(private validationService: ValidationService,
+                       private router: Router,
+                       private fb: FormBuilder) {
+        this.form = this.fb.group({
+            firstName: this.firstName,
+            lastName: this.lastName,
+            email: this.email,
+            confirmedEmail: this.confirmedEmail,
+            phone: this.phone,
+            password: this.password,
+            confirmedPassword: this.confirmedPassword
+        });
+    }
 
-  public constructor(private validationService: ValidationService) {
-  }
+    submitSignUp() {
+        this.emailMatch = this.email.value == this.confirmedEmail.value;
+        this.passwordMatch = this.password.value == this.confirmedPassword.value;
 
-  validateEmail() {
-    this.emailValid = this.validationService.validateEmail(this.email);
-  }
+        if (!this.emailMatch || !this.passwordMatch) {
+            return;
+        }
 
-  validatePassword() {
-    this.passwordValid = this.validationService.validatePassword(this.password);
-  }
+        sessionStorage.setItem(DentalConstants.SIGNUP_SESSION_STORAGE_ID, JSON.stringify(this.form.value));
 
-
-  validatePhone() {
-    this.phoneValid = this.validationService.validatePhone(this.phone);
-  }
-
-  submitSignUp() {
-
-  }
+        this.router.navigateByUrl("/signup/page-2");
+    }
 }
