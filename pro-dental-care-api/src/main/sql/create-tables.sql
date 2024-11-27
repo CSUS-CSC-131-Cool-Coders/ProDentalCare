@@ -1,10 +1,16 @@
 create
-database pdc;
+    database pdc;
+
+create table account
+(
+    email     varchar(128) not null primary key,
+    pass_hash varchar(128) not null
+);
 
 create table patient
 (
     patient_id char(9)      not null primary key,
-    email      varchar(100) not null,
+    email_fk   varchar(128) not null,
     pass_hash  varchar(128) not null,
     fname      varchar(40)  not null,
     lname      varchar(40)  not null,
@@ -13,15 +19,16 @@ create table patient
     sex        varchar(40)  not null,
     lang_code  char(2)      not null,
     weight     int          not null check (weight > 0),
-    height     int          not null check (height > 0)
+    height     int          not null check (height > 0),
+    foreign key (email_fk) references account (email)
 );
 
-create table patient_roles
+create table roles
 (
-    patient_id_fk char(9)     not null,
-    role          varchar(64) not null,
-    primary key (patient_id_fk, role),
-    foreign key (patient_id_fk) references patient (patient_id)
+    email_fk varchar(128) not null,
+    role     varchar(64)  not null,
+    primary key (email_fk, role),
+    foreign key (email_fk) references account (email)
 );
 
 create table payment_option
@@ -53,12 +60,14 @@ create table bills
 create table staff_member
 (
     staff_id        char(9)      not null primary key,
+    email_fk        varchar(128) not null,
     fname           varchar(40)  not null,
     lname           varchar(40)  not null,
     dob             date         not null,
     sex             varchar(40)  not null,
     bank_routing_no varchar(100) not null,
-    bank_acc_no     varchar(100) not null
+    bank_acc_no     varchar(100) not null,
+    foreign key (email_fk) references account (email)
 );
 
 create table patient_treatment_plan
@@ -69,14 +78,6 @@ create table patient_treatment_plan
     start_date    date        not null,
     end_date      date,
     foreign key (patient_id_fk) references patient (patient_id),
-    foreign key (staff_id_fk) references staff_member (staff_id)
-);
-
-create table staff_roles
-(
-    staff_id_fk char(9)     not null,
-    role        varchar(64) not null,
-    primary key (staff_id_fk, role),
     foreign key (staff_id_fk) references staff_member (staff_id)
 );
 

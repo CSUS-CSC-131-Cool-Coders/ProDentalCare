@@ -23,6 +23,7 @@ pro-dental-care-api/*.iml
 pro-dental-care-api/*.idea/
 pro-dental-care-ui/*.iml
 pro-dental-care-ui/.idea/
+pro-dental-care-ui/.angular/
 
 # Angular cache
 pro-dental-care-ui/node_modules/

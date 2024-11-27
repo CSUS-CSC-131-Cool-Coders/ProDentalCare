@@ -1,1 +1,51 @@
 /* You can add global styles to this file, and also import other style files */
+
+
+* {
+    font-family: Inter, sans-serif;
+}
+
+a {
+    color: #D71746;
+    text-decoration: none;
+}
+
+input {
+    background: rgba(255, 255, 255, 0.2);
+    border: solid 1px gray;
+    border-radius: 4px;
+}
+
+button {
+    background: #D71746;
+    border: none;
+    border-radius: 40px;
+    color: white;
+    font-weight: bold;
+    padding: 10px 40px;
+}
+
+button:disabled {
+    background: #D717465C;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+select {
+    padding: 10px;
+    margin: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid gray;
+    border-radius: 4px;
+}
+
+.content-wrapper {
+    display: flex;
+    height: 100%;
+}
+
+.error {
+    color: indianred;
+}
