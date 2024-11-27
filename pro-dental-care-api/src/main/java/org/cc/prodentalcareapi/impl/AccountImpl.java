@@ -69,6 +69,8 @@ public class AccountImpl {
 
 		List<StaffMember> staffMemberList = staffMemberRepository.findByEmail(account.getEmail());
 
+		// todo: Populate roles not by deduction but from database!
+
 		if (!staffMemberList.isEmpty()) {
 			// Must be a staff member!
 
