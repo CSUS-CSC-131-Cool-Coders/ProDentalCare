@@ -18,7 +18,7 @@ public class PatientTreatmentPlan {
     @Column(name = "plan_name", length = 40)
     private String planName;
 
-    @Column(name = "staff_id_fk", length = 9)
+    @Column(name = "staff_id_fk", length = 9, columnDefinition = "char(9)")
     private String staffId;
 
     @Temporal(TemporalType.DATE)
