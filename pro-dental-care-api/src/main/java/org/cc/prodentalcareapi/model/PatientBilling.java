@@ -1,11 +1,6 @@
 package org.cc.prodentalcareapi.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -14,7 +9,11 @@ import java.util.Date;
 @Entity
 @Table(name = "bills")
 public class PatientBilling{
-     @Id
+
+    @Id
+    @Column(name = "bill_id")
+    private int billId;
+
     @Column(name = "patient_id_fk", length = 9, columnDefinition = "char(9)")
     private String patientId;
 
@@ -28,8 +27,14 @@ public class PatientBilling{
     @Column(name = "status", length = 16)
     private String payStatus;
 
-    @Column(name = "bill_id")
-    private int billId;
+    public PatientBilling(String patientId, BigDecimal payAmount, Date dueDate, String payStatus, int billId) {
+        this.patientId = patientId;
+        this.payAmount = payAmount;
+        this.dueDate = dueDate;
+        this.payStatus = payStatus;
+        this.billId = billId;
+    }
+    public PatientBilling() {}
 
     public String getPatientId() {
         return patientId;
