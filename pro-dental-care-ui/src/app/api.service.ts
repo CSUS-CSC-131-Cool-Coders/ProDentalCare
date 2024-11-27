@@ -19,6 +19,9 @@ export class ApiService {
 
     constructor(private httpClient: HttpClient,
                 private router: Router) {
+        if (this.userRoles.length == 0 && this.getUserToken() != null) {
+            this.requestUserRoles();
+        }
     }
 
     private getUserToken(): string|null {
@@ -31,6 +34,17 @@ export class ApiService {
 
     private clearUserToken() {
         localStorage.removeItem(DentalConstants.TOKEN_STORAGE_ID);
+    }
+
+    private setUserRoles(roles: string[]) {
+        localStorage.setItem(DentalConstants.ROLE_STORAGE_ID, JSON.stringify(roles));
+    }
+
+    public getUserRoles(): string[] {
+        let roles = localStorage.getItem(DentalConstants.ROLE_STORAGE_ID);
+        if (roles != null)
+            return JSON.parse(roles);
+        return [];
     }
 
     private buildEndpoint(relPath: string): string {
@@ -89,22 +103,18 @@ export class ApiService {
             next: res => {
                 let body: any = res.body;
                 if (body != null) {
-                    this.userRoles = body.roles != null ? body.roles : [];
+                    this.setUserRoles(body.roles != null ? body.roles : []);
                 } else {
-                    this.userRoles = [];
+                    this.setUserRoles([]);
                 }
 
                 this.userReady = true;
             },
             error: err => {
-                this.userRoles = [];
+                this.setUserRoles([]);
                 this.userReady = true;
             }
         });
-    }
-
-    public getUserRoles(): string[] {
-        return this.userRoles;
     }
 
     public static isOk(statusCode: number): boolean {
