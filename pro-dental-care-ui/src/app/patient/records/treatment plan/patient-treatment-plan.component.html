@@ -1,0 +1,81 @@
+<main class="treatment-plan">
+
+  <!-- To Do Accordion -->
+  <section class="accordion-item" [class.expanded]="toDoExpanded" [class.closed]="!toDoExpanded">
+    <header class="accordion-header" (click)="toDoExpanded = !toDoExpanded">
+      <h2 class="accordion-title">To Do</h2>
+      <img [ngSrc]="toDoExpanded ? '/assets/up.png' : '/assets/down.png'"
+        alt=""
+        class="accordion-icon"
+        width="20" 
+        height="20"
+      />
+    </header>
+    <div class="accordion-content" [ngClass]="{ 'show-content': toDoExpanded }">
+      <table class="accordion-table">
+        <thead>
+          <tr>
+            <th>To Do</th>
+            <th>Appointment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              Clean Teeth
+              <div class="provider-name">Provider: Dr. Emily White</div>
+            </td>
+            <td>12/12/2024</td>
+          </tr>
+          <tr>
+            <td>
+              Follow-up visit for root canal treatment
+              <div class="provider-name">Provider: Dr. John Doe</div>
+            </td>
+            <td>06/15/2024</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Treatment Plan Accordion -->
+  <section class="accordion-item" [class.expanded]="treatmentPlanExpanded" [class.closed]="!treatmentPlanExpanded">
+    <header class="accordion-header" (click)="treatmentPlanExpanded = !treatmentPlanExpanded">
+      <h2 class="accordion-title">Treatment Plan</h2>
+      <img [ngSrc]="treatmentPlanExpanded ? '/assets/up.png' : '/assets/down.png'"
+        alt=""
+        class="accordion-icon"
+        width="20" 
+        height="20"
+      />
+    </header>
+    <div class="accordion-content" [ngClass]="{ 'show-content': treatmentPlanExpanded }">
+      <table class="accordion-table">
+        <thead>
+          <tr>
+            <th>Treatment Plan</th>
+            <th>Timeline</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              Orthodontic Adjustment
+              <div class="provider-name">Provider: Dr. Lee</div>
+            </td>
+            <td>02/01/2025 - 06/01/2025</td>
+          </tr>
+          <tr>
+            <td>
+              Monthly Check-up
+              <div class="provider-name">Provider: Dr. Smith</div>
+            </td>
+            <td>07/01/2025 - 12/31/2025</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
