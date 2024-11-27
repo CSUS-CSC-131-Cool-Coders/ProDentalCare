@@ -7,9 +7,9 @@ import org.cc.prodentalcareapi.model.StaffAppointmentId;
 import java.util.List;
 
 @Repository
-public interface StaffAppointmentRepository extends JpaRepository<StaffAppointments, StaffAppointmentId> {
+public interface StaffAppointmentsRepository extends JpaRepository<StaffAppointments, StaffAppointmentId> {
 
     List<StaffAppointments> findByStaffAppointmentIdStaffId(String staffId);
 
-    List<StaffAppointments> findByStaffAppointmentIdAppointmentId(String appointmentId);
+    List<StaffAppointments> findByStaffAppointmentIdAppointmentId(int appointmentId);
 }

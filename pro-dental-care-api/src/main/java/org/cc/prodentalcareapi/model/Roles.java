@@ -7,7 +7,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "roles")
-public class PatientRoles {
+public class Roles {
     @Id
     @Column(name = "email_fk", length = 128)
     private String email;

@@ -9,19 +9,12 @@ public class StaffAppointments {
 	@EmbeddedId
 	private StaffAppointmentId staffAppointmentId;
 
-	public String getStaffId() {
-		return staffId;
+	public StaffAppointmentId getStaffAppointmentId() {
+		return staffAppointmentId;
 	}
 
-	public void setStaffId(String staffId) {
-		this.staffId = staffId;
+	public void setStaffAppointmentId(StaffAppointmentId staffId) {
+		this.staffAppointmentId = staffId;
 	}
 
-	public String getAppointmentId() {
-		return appointmentId;
-	}
-	
-	public void setAppointmentId(int appointmentId) {
-		this.appointmentId = appointmentId;
-	}
 }

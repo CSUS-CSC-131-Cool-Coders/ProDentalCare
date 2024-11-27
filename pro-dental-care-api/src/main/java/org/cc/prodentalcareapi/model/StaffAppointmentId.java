@@ -1,13 +1,17 @@
-// StaffAppointmentId.java
+package org.cc.prodentalcareapi.model;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class StaffAppointmentId implements Serializable() {
-    @Column(name = "staff_id_fk")
+public class StaffAppointmentId implements Serializable {
+    @Column(name = "staff_id_fk", length = 9, columnDefinition = "char(9)")
     private String staffId;
 
-    @Column(name = "appt_id")
+    @Column(name = "appt_id_fk")
     private int appointmentId;
 
     public StaffAppointmentId() {}
@@ -25,11 +29,11 @@ public class StaffAppointmentId implements Serializable() {
         this.staffId = staffId;
     }
 
-    public String getAppointmentId() {
+    public int getAppointmentId() {
         return appointmentId;
     }
 
-    public void setAppointmentId(String appointmentId) {
+    public void setAppointmentId(int appointmentId) {
         this.appointmentId = appointmentId;
     }
 
