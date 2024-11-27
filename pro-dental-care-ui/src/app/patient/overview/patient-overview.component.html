@@ -16,7 +16,7 @@
         </div>
         <div class="text-content">
           <h2>Next Appointment:</h2>
-          <p>January 1st, 2025</p>
+          <p>{{nextAppointmentDate}}</p>
         </div>
       </article>
   
@@ -28,7 +28,7 @@
           </div>
           <div class="text-content">
             <h2>Current Treatment Plan:</h2>
-            <p>Floss extra well</p>
+            <p>{{treatmentPlan}}</p>
           </div>
         </article>
       </a>
@@ -41,7 +41,7 @@
         </div>
         <div class="text-content">
           <h2>Next Payment Due:</h2>
-          <p>One gazillion dollars - January 1st</p>
+          <p>${{nextBillAmt}} - {{nextBillDate}}</p>
         </div>
       </article>
     </section>

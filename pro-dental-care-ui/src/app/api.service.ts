@@ -11,8 +11,9 @@ export class ApiService {
 
     private server: string = "http://localhost:8080"
 
-    public isLoggedIn: boolean = false;
-    public userToken: any = null;
+    public isLoggedIn(): boolean {
+        return this.getUserToken() != null;
+    }
     public userRoles: string[] = [];
     public userReady: boolean = false;
 
@@ -20,14 +21,32 @@ export class ApiService {
                 private router: Router) {
     }
 
+    private getUserToken(): string|null {
+        return localStorage.getItem(DentalConstants.TOKEN_STORAGE_ID);
+    }
+
+    private setUserToken(token: string) {
+        localStorage.setItem(DentalConstants.TOKEN_STORAGE_ID, token);
+    }
+
+    private clearUserToken() {
+        localStorage.removeItem(DentalConstants.TOKEN_STORAGE_ID);
+    }
+
     private buildEndpoint(relPath: string): string {
         return this.server + relPath;
     }
 
     private populateDefaultHeaders(headers: HttpHeaders | undefined): HttpHeaders {
-        if (headers === undefined) {
+        if (headers === undefined || headers == null) {
             headers = new HttpHeaders();
         }
+
+        if (this.getUserToken() != null) {
+            headers = headers.set("Authorization", "Bearer " + this.getUserToken());
+            console.log("Set auth header");
+        }
+
         return headers;
     }
 
@@ -53,24 +72,20 @@ export class ApiService {
     }
 
     public logout(): void {
-        this.isLoggedIn = false;
-        this.userToken = null;
+        this.clearUserToken();
         this.userRoles = [];
         this.userReady = false;
         this.router.navigateByUrl("/");
     }
 
     public setLoginToken(token: any): void {
-        this.isLoggedIn = false;
-        this.userToken = token;
+        this.setUserToken(token);
         this.requestUserRoles();
         this.router.navigateByUrl("/");
     }
 
     public requestUserRoles(): void {
-        let headers = new HttpHeaders();
-        headers.set("Authorization", this.userToken);
-        this.get("/roles", headers).subscribe({
+        this.get<any|null>("/roles").subscribe({
             next: res => {
                 let body: any = res.body;
                 if (body != null) {
