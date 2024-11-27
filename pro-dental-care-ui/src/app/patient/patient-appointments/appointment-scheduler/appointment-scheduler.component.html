@@ -1,3 +1,69 @@
-<div class="cal-container">
-  <app-calendar></app-calendar>
+
+<div class='demo-app'>
+
+  <div class='demo-app-main'>
+    <full-calendar *ngIf='calendarVisible()' [options]='calendarOptions()'>
+      <ng-template #eventContent let-arg>
+        <b>{{ arg.timeText }}</b>
+        <i>{{ arg.event.title }}</i>
+      </ng-template>
+    </full-calendar>
+  </div>
+
+  <div class='demo-app-sidebar'>
+
+    <!-- Conditional Rendering: Show Appointments or Dentist Selection -->
+    <div class='demo-app-sidebar-section' *ngIf="!selectedDate">
+      <!-- Upcoming Appointments -->
+      <h2>Upcoming Appointments ({{ upcomingAppointments().length }})</h2>
+      <ul>
+        <li *ngFor="let appointment of upcomingAppointments()">
+          <b>{{ appointment.startStr | date:'shortDate' }}</b>
+          <i>{{ appointment.title }}</i>
+        </li>
+      </ul>
+    </div>
+
+    <div class='demo-app-sidebar-section'>
+      <h2>Past Appointments ({{ pastAppointments().length }})</h2>
+      <ul>
+        <li *ngFor="let appointment of pastAppointments()">
+          <b>{{ appointment.startStr | date:'shortDate' }}</b>
+          <i>{{ appointment.title }}</i>
+        </li>
+      </ul>
+    </div>
+
+    <div class='demo-app-sidebar-section' *ngIf="selectedDate">
+      <!-- Dentist Selection for Selected Date -->
+      <h2>Book Appointment on {{ selectedDate | date:'fullDate' }}</h2>
+
+      <!-- Select Dentist -->
+      <label for="Staff">Select Dentist:</label>
+      <select id="staff" [(ngModel)]="selectedDentist">
+        <option value="" disabled>Select a dentist</option>
+        <option *ngFor="let staff of staffs" [value]="staff.name">
+          {{ staff.name }}
+        </option>
+      </select>
+
+      <!-- Select Time Slot -->
+      <label for="time">Select Time Slot:</label>
+      <select id="time" [(ngModel)]="selectedTime">
+        <option value="" disabled>Select a time slot</option>
+        <option *ngFor="let slot of getAvailableSlots()" [value]="slot">
+          {{ slot }}
+        </option>
+      </select>
+
+      <!-- Book Button -->
+      <button (click)="bookAppointment()" [disabled]="!selectedDentist || !selectedTime">
+        Book Appointment
+      </button>
+
+      <!-- Cancel Booking -->
+      <button (click)="cancelBooking()">Cancel</button>
+    </div>
+  </div>
+
 </div>

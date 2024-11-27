@@ -31,8 +31,7 @@ export class StaffInformationComponent implements OnInit{
       yearsWorked: 12,
       email: "123JaneSmith@gmail.com",
       contactNumber: '1(916)123-4567',
-      qualifications: ['DDS', 'Cerrtified Invisalign Provider'],
-      profilePic: '../../../'
+      qualifications: ['DDS', 'Certified Invisalign Provider'],
     },
     {
       id: 2,

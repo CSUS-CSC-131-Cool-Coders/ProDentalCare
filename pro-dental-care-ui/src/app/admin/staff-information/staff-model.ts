@@ -8,4 +8,5 @@ export interface Staff {
   contactNumber: string;
   qualifications: string[];
   profilePic?: string;
+  availability?: string[];
 }

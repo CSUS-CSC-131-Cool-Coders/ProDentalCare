@@ -1,4 +1,15 @@
+/* calendar.component.css */
 .fc {
   max-width: 700px;
   margin: 0 auto;
+}
+
+.available-date {
+  background-color: #b3e5fc !important; /* Light blue */
+  cursor: pointer;
+}
+
+.unavailable-date {
+  background-color: #f0f0f0 !important; /* Light grey */
+  cursor: not-allowed;
 }
