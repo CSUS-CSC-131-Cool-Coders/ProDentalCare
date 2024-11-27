@@ -79,4 +79,8 @@ public class TokenService {
 	public boolean hasRole(Token token, String role) {
 		return token.getRoles().contains(role);
 	}
+
+	public String getTokenFromBearerToken(String bearerToken) {
+		return bearerToken.substring("Bearer ".length());
+	}
 }

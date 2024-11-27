@@ -1,4 +1,4 @@
-package org.cc.prodentalcareapi.model;
+package org.cc.prodentalcareapi.model.response;
 
 public class LoginResponse {
 

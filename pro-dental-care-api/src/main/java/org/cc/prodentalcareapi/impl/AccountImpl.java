@@ -2,18 +2,21 @@ package org.cc.prodentalcareapi.impl;
 
 import com.google.gson.Gson;
 import org.cc.prodentalcareapi.model.*;
+import org.cc.prodentalcareapi.model.request.LoginRequestBody;
+import org.cc.prodentalcareapi.model.request.SignupRequestBody;
+import org.cc.prodentalcareapi.model.response.LoginResponse;
+import org.cc.prodentalcareapi.model.response.RolesResponse;
 import org.cc.prodentalcareapi.repository.AccountRepository;
 import org.cc.prodentalcareapi.repository.PatientRepository;
 import org.cc.prodentalcareapi.repository.StaffMemberRepository;
 import org.cc.prodentalcareapi.security.PasswordService;
+import org.cc.prodentalcareapi.security.RequireToken;
 import org.cc.prodentalcareapi.security.Token;
 import org.cc.prodentalcareapi.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -116,6 +119,15 @@ public class AccountImpl {
 		patientRepository.saveAndFlush(patient);
 
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@RequireToken
+	@GetMapping("/roles")
+	public ResponseEntity<RolesResponse> getRoles(@RequestHeader("Authorization") String token) {
+		String tokenValue = tokenService.getTokenFromBearerToken(token);
+		Token t = tokenService.getToken(tokenValue);
+		RolesResponse rolesResponse = new RolesResponse(t.getRoles());
+		return new ResponseEntity<>(rolesResponse, HttpStatus.OK);
 	}
 
 }
