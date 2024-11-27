@@ -6,6 +6,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+
+import java.math.BigDecimal;
 import java.util.Date;
 
 
@@ -16,8 +18,8 @@ public class PatientBilling{
     @Column(name = "patient_id_fk", length = 9, columnDefinition = "char(9)")
     private String patientId;
 
-    @Column(name = "amount")
-    private float payAmount;
+    @Column(name = "amount", precision = 10, scale = 0)
+    private BigDecimal payAmount;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "due_date")
@@ -37,11 +39,11 @@ public class PatientBilling{
         this.patientId = patientId;
     }
 
-    public float getPaymentAmount() {
+    public BigDecimal getPaymentAmount() {
         return payAmount;
     }
 
-    public void setPaymentAmount(float payAmount) {
+    public void setPaymentAmount(BigDecimal payAmount) {
         this.payAmount = payAmount;
     }
 
