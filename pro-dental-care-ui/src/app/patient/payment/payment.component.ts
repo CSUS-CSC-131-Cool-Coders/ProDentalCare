@@ -38,12 +38,12 @@ export class PaymentComponent {
   @Input()
   public zipCode: number = 99999;
 
-  /*public constructor(private apiService: ApiService,
-                     private router: Router) {
-  }*/
+  public constructor(private router: Router) {
+  }
+
 
   submitPayment() {
-    //this.router.navigateByUrl("/").then(r)
-    console.log('Payment submitted');
+    this.router.navigateByUrl("/process-payment");
   }
+
 }

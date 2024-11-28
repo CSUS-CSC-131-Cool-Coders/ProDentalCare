@@ -8,8 +8,8 @@ import {NgIf} from "@angular/common";
   selector: 'app-payment-page',
   standalone: true,
   imports: [FormsModule, CommonModule, ReactiveFormsModule, NgIf],
-  templateUrl: './payment-page.component.html',
-  styleUrl: './payment-page.component.css'
+  templateUrl: './payment-processing.component.html',
+  styleUrl: './payment-processing.component.css'
 })
 export class PaymentPageComponent {
   processPayment() {

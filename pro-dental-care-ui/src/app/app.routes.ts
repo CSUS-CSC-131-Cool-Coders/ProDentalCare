@@ -3,12 +3,15 @@ import {LoginPageComponent} from "./account/login-page/login-page.component";
 import {ForgotPasswordComponent} from "./account/forgot-password/forgot-password.component";
 import {SignupPageComponent} from "./account/signup-page/signup-page.component";
 import {ResetPasswordComponent} from "./account/reset-password/reset-password.component";
+import {PaymentComponent} from "./patient/payment/payment.component";
+import {PaymentPageComponent} from "./patient/payment-processing/payment-processing.component";
 
 export const routes: Routes = [
     {path: "login", component: LoginPageComponent},
     {path: "signup", component: SignupPageComponent},
     {path: "forgot-password", component: ForgotPasswordComponent},
     {path: "reset-password", component: LoginPageComponent},
-    {path: "reset-password/:resetToken", component: ResetPasswordComponent}
-
+    {path: "reset-password/:resetToken", component: ResetPasswordComponent},
+    {path: "payments", component: PaymentComponent}, //Add route for payments
+    {path: "process-payment", component: PaymentPageComponent} //Add route for payment process
 ];
