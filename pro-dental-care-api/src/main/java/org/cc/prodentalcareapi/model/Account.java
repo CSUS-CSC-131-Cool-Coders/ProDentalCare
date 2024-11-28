@@ -16,6 +16,13 @@ public class Account {
 	@Column(name = "pass_hash", length = 128)
 	private String passHash;
 
+	public Account(String email, String passHash) {
+		setEmail(email);
+		setPassHash(passHash);
+	}
+
+	public Account() {}
+
 	public String getEmail() {
 		return email;
 	}
