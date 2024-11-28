@@ -1,4 +1,4 @@
-/* Wrapper for the overall layout for Patient Information*/
+/* Wrapper for the overall layout for Patient Information */
 .content-wrapper {
   display: flex;
   flex-direction: column;
@@ -62,13 +62,41 @@
 }
 
 .basic-info-row p {
-  flex: 1 1 30%;
+  flex: 1 1 30%; /* This ensures the elements in the row are evenly spaced */
   margin-bottom: 15px;
 }
 
 .edit-icon {
-  width: 20px;
-  height: 20px;
+  width: 34px;
+  height: 34px;
   cursor: pointer;
   margin-left: 5px;
+}
+
+.icon-container {
+  display: flex;
+  justify-content: flex-end; /* Aligning to the right */
+  width: 100%;
+  margin-top: 10px;
+}
+
+.save-icon, .cancel-icon, .edit-icon {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.save-icon {
+  width: 34px;
+  height: 34px;
+}
+
+.cancel-icon {
+  width: 34px;
+  height: 34px;
+}
+
+.error {
+  color: red;
+  font-size: 0.9em;
+  margin-top: 5px;
 }
