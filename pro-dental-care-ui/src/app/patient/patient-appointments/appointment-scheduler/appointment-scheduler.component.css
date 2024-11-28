@@ -36,7 +36,7 @@ b { /* used for event dates/times */
 
 .demo-app-sidebar-section {
   padding: 1.5em;
-  border-bottom: 1px solid #d3e2e8; /* Optional: Add separation between sections */
+  border-bottom: 1px solid #d3e2e8;
 }
 
 .demo-app-main {
@@ -79,3 +79,4 @@ button:not(:disabled) {
 button:last-child {
   background-color: #f44336; /* Red for cancel button */
 }
+

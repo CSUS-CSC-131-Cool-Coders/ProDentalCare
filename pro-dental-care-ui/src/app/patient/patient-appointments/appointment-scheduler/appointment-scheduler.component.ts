@@ -7,13 +7,15 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import { INITIAL_EVENTS, createEventId } from './event-utils';
 import { Staff } from '../../../admin/staff-information/staff-model';
 import { FormsModule } from '@angular/forms';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; // Import MatSnackBar
+import {EventImpl} from '@fullcalendar/core/internal';
 
 
 
 @Component({
   selector: 'appointment-scheduler',
   standalone: true,
-  imports: [CommonModule, FullCalendarModule, FormsModule],
+  imports: [CommonModule, FullCalendarModule, FormsModule, MatSnackBarModule],
   templateUrl: './appointment-scheduler.component.html',
   styleUrl: './appointment-scheduler.component.css'
 })
@@ -74,27 +76,46 @@ export class AppointmentSchedulerComponent {
   selectedTime: string = '';
   selectedDate: string|null = '';
   selected: DateSelectArg;
+  selectedAppointment: EventImpl | null = null;
 
   constructor(private changeDetector: ChangeDetectorRef) {
   }
 
   handleDateSelect(selectInfo: DateSelectArg) {
-    const calendarApi = selectInfo.view.calendar;
+    // Check if selected date is available and not in the past
+    const selectedDate = new Date(selectInfo.startStr);
+    const today = new Date();
+    // Set time to 00:00:00 for accurate comparison
+    selectedDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+
+    if (selectedDate < today) {
+      alert('Cannot book an appointment on selected date.');
+      return; // Exit the function early
+    }
+
     this.selected = selectInfo;
     this.selectedDate = selectInfo.startStr; // Set the selected date
     // Clear existing selections if any
     this.selectedDentist = '';
     this.selectedTime = '';
 
-    calendarApi.unselect(); // clear date selection
-
 
   }
 
   handleEventClick(clickInfo: EventClickArg) {
-    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-      clickInfo.event.remove();
-    }
+
+    // Set the selected appointment to display details
+    this.selectedAppointment = clickInfo.event;
+
+    // if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+    //   clickInfo.event.remove();
+    // }
+  }
+
+  // Close the appointment details view
+  closeAppointmentDetails() {
+    this.selectedAppointment = null;
   }
 
   handleEvents(events: EventApi[]) {
@@ -116,9 +137,14 @@ export class AppointmentSchedulerComponent {
       calendarApi.addEvent({
         id: createEventId(),
         title: `Appointment`,
-        start: this.selectedDate,
-        end: this.selectedDate,
-        allDay: false
+        start: this.selectedDate +'T'+ this.convertTimeTo24(this.selectedTime),
+        allDay: false,
+        display: 'block',
+        extendedProps: {
+          dentist: this.selectedDentist,
+          time: this.selectedTime,
+          dentistNotes: null,
+        },
       });
       // Reset selections
       calendarApi.unselect(); // clear date selection
@@ -131,18 +157,29 @@ export class AppointmentSchedulerComponent {
     }
   }
 
-  // Utility to convert 12-hour time to 24-hour format
+// Utility to convert 12-hour time to 24-hour format with seconds
   convertTimeTo24(time: string): string {
     const [timeStr, modifier] = time.split(' ');
     let [hours, minutes] = timeStr.split(':');
+
+    // Convert hours based on AM/PM
     if (modifier === 'PM' && hours !== '12') {
       hours = (parseInt(hours, 10) + 12).toString();
     }
     if (modifier === 'AM' && hours === '12') {
       hours = '00';
     }
-    return `${hours.padStart(2, '0')}:${minutes}`;
+
+    // Ensure hours and minutes are two digits
+    hours = hours.padStart(2, '0');
+    minutes = minutes.padStart(2, '0');
+
+    // Append seconds
+    const seconds = '00';
+
+    return `${hours}:${minutes}:${seconds}`;
   }
+
 
   // Get available slots based on selected dentist
   getAvailableSlots(): string[] | undefined {

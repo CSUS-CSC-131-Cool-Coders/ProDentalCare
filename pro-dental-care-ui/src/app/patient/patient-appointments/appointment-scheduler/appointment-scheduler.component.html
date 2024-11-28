@@ -12,6 +12,17 @@
 
   <div class='demo-app-sidebar'>
 
+    <!-- Show Appointment Details if an event is selected -->
+    <div class='demo-app-sidebar-section' *ngIf="selectedAppointment">
+      <h2>Appointment Details</h2>
+      <p><strong>Date:</strong> {{ selectedAppointment.start }}</p>
+      <p><strong>Dentist:</strong> {{ selectedAppointment.extendedProps['dentist'] }}</p>
+
+      <!-- Close Details Button -->
+      <button (click)="closeAppointmentDetails()">Close</button>
+    </div>
+
+
     <!-- Conditional Rendering: Show Appointments or Dentist Selection -->
     <div class='demo-app-sidebar-section' *ngIf="!selectedDate">
       <!-- Upcoming Appointments -->
@@ -24,7 +35,7 @@
       </ul>
     </div>
 
-    <div class='demo-app-sidebar-section'>
+    <div class='demo-app-sidebar-section' *ngIf="!selectedDate">
       <h2>Past Appointments ({{ pastAppointments().length }})</h2>
       <ul>
         <li *ngFor="let appointment of pastAppointments()">
