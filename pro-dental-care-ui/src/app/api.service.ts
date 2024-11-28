@@ -24,6 +24,27 @@ export class ApiService {
         }
     }
 
+    public getVisitRecords(): Observable<any> {
+        return this.get('/patient/records/visit');
+    }
+    
+    public getAllergyRecords(): Observable<any> {
+        return this.get('/patient/records/allergy');
+    }
+    
+    public getMedicationRecords(): Observable<any> {
+        return this.get('/patient/records/medication');
+    }
+    
+    public getLabRecords(): Observable<any> {
+        return this.get('/patient/records/lab');
+    }
+    
+    public getImmunizationRecords(): Observable<any> {
+        return this.get('/patient/records/immunization');
+    }
+    
+
     private getUserToken(): string|null {
         return localStorage.getItem(DentalConstants.TOKEN_STORAGE_ID);
     }
