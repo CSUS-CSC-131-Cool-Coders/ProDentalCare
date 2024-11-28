@@ -7,6 +7,7 @@ import { StaffInformationComponent } from './admin/staff-information/staff-infor
 import {
   AppointmentSchedulerComponent
 } from './patient/patient-appointments/appointment-scheduler/appointment-scheduler.component';
+import {AdminCalendarComponent} from './admin/admin-calendar/admin-calendar.component';
 
 export const routes: Routes = [
     {path: "login", component: LoginPageComponent},
@@ -15,5 +16,6 @@ export const routes: Routes = [
     {path: "reset-password", component: LoginPageComponent},
     {path: "reset-password/:resetToken", component: ResetPasswordComponent},
     {path: "staff-information", component: StaffInformationComponent},
-    {path: "patient-appointments", component: AppointmentSchedulerComponent}
+    {path: "patient-appointments", component: AppointmentSchedulerComponent},
+  {path: "admin-calendar", component: AdminCalendarComponent}
 ];
