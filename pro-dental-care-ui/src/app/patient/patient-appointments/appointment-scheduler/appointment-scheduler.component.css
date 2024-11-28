@@ -80,25 +80,6 @@ button:last-child {
   background-color: #f44336; /* Red for cancel button */
 }
 
-/* appointment-scheduler.component.css */
-
-/* Center SnackBars */
-.custom-snackbar {
-  /* Override the default positioning */
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  /* Ensure the SnackBar has sufficient z-index */
-  z-index: 10000;
-}
-
-/* Ensure the SnackBar container uses fixed positioning */
-.custom-snackbar.mat-snack-bar-container {
-  position: fixed !important;
-  /* Remove any default margin */
-  margin: 0 !important;
-}
-
 /* Custom styles for SnackBars */
 .snackbar-success {
   background-color: #4caf50; /* Green */
@@ -113,6 +94,16 @@ button:last-child {
 .snackbar-info {
   background-color: #2196f3; /* Blue */
   color: white;
+}
+
+/* Custom class to center SnackBars */
+.custom-snackbar.mat-snack-bar-container {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 10000 !important;
+  margin: 0 !important;
 }
 
 /* Prevent event titles from overflowing */
@@ -146,18 +137,27 @@ textarea {
 
 /* Style the SnackBar action button */
 .custom-snackbar .mat-simple-snackbar-action {
-  color: white; /* Ensure text is visible */
-  opacity: 0.9; /* Slight transparency */
-  background: transparent; /* Remove any background */
-  border: none; /* Remove borders */
-  font-weight: bold; /* Make the text bold */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: opacity 0.3s ease; /* Smooth transition */
+  color: white !important; /* Ensure text is visible */
+  opacity: 0.9 !important; /* Slight transparency */
+  background: transparent !important; /* Remove any background */
+  border: none !important; /* Remove borders */
+  font-weight: bold !important; /* Make the text bold */
+  cursor: pointer !important; /* Pointer cursor on hover */
+  transition: opacity 0.3s ease !important; /* Smooth transition */
 }
 
 /* Change opacity on hover instead of adding a background */
 .custom-snackbar .mat-simple-snackbar-action:hover {
-  opacity: 1; /* Fully opaque on hover */
-  /* Remove any background color or rectangle */
-  background: transparent !important;
+  opacity: 1 !important; /* Fully opaque on hover */
+  background: transparent !important; /* Remove any background color or rectangle */
+}
+
+/* Further customize the SnackBar action button */
+.custom-snackbar .mat-simple-snackbar-action {
+  padding: 4px 8px !important;
+  border-radius: 4px !important;
+}
+
+.custom-snackbar .mat-simple-snackbar-action:hover {
+  background: rgba(255, 255, 255, 0.1) !important; /* Slight background on hover */
 }

@@ -1,10 +1,9 @@
-<!-- appointment-scheduler.component.html -->
 <div class='demo-app'>
 
   <div class='demo-app-main'>
     <full-calendar *ngIf='calendarVisible()' [options]='calendarOptions()'>
       <ng-template #eventContent let-arg>
-        <b>{{ arg.timeText }}</b>
+        <b>{{ arg.event.start | date:'shortTime' }}</b>
         <i>{{ arg.event.title }}</i>
       </ng-template>
     </full-calendar>
@@ -20,7 +19,11 @@
       <p><strong>Dentist:</strong> {{ selectedAppointment.extendedProps['dentist'] }}</p>
 
       <!-- Dentist Notes Section -->
-      <p><strong>Notes:</strong> {{ selectedAppointment.extendedProps['dentistNotes'] || 'None' }}</p>
+      <p><strong>Notes:</strong></p>
+      <textarea [(ngModel)]="selectedAppointment.extendedProps['dentistNotes']" placeholder="Add notes here..."></textarea>
+      <button (click)="saveDentistNotes()" [disabled]="!selectedAppointment.extendedProps['dentistNotes']">
+        Save Notes
+      </button>
 
       <!-- Close Details Button -->
       <button (click)="closeAppointmentDetails()">Close</button>

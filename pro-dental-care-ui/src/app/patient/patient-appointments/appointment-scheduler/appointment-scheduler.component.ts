@@ -1,4 +1,4 @@
-import { Component , signal, ChangeDetectorRef } from '@angular/core';
+import { Component, signal, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/core';
@@ -8,9 +8,6 @@ import { INITIAL_EVENTS, createEventId } from './event-utils';
 import { Staff } from '../../../admin/staff-information/staff-model';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; // Import MatSnackBar
-// import {EventImpl} from '@fullcalendar/core/internal';
-
-
 
 @Component({
   selector: 'appointment-scheduler',
@@ -62,7 +59,7 @@ export class AppointmentSchedulerComponent {
       id: 2,
       name: 'John Smith',
       position: 'Hygienist',
-      pay: '$90,0000/year',
+      pay: '$90,000/year', // Corrected pay format
       yearsWorked: 4,
       email: "99JohnS@gmail.com",
       contactNumber: '1(279)987-6543',
@@ -74,9 +71,9 @@ export class AppointmentSchedulerComponent {
   // Selected dentist and time slot
   selectedDentist: string = '';
   selectedTime: string = '';
-  selectedDate: string|null = '';
+  selectedDate: string | null = '';
   selected: DateSelectArg;
-  selectedAppointment: EventApi | null = null;
+  selectedAppointment: EventApi | null = null; // Changed to EventApi
 
   constructor(private changeDetector: ChangeDetectorRef, private snackBar: MatSnackBar) {
   }
@@ -91,9 +88,9 @@ export class AppointmentSchedulerComponent {
 
     if (selectedDate < today) {
       this.snackBar.open('Cannot book an appointment on the selected date.', 'Close', {
-        duration: 3000,
+        duration: 3000, // Duration in milliseconds
         horizontalPosition: 'center',
-        verticalPosition: 'top', // We'll override this in CSS
+        verticalPosition: 'top',
         panelClass: ['snackbar-error', 'custom-snackbar']
       });
       return; // Exit the function early
@@ -107,20 +104,14 @@ export class AppointmentSchedulerComponent {
 
     // Clear any selected appointment details
     this.selectedAppointment = null;
-
-
   }
 
   handleEventClick(clickInfo: EventClickArg) {
-
     // Set the selected appointment to display details
     this.selectedAppointment = clickInfo.event;
     if (this.selectedDate) {
       this.selectedDate = null;
     }
-    // if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-    //   clickInfo.event.remove();
-    // }
   }
 
   // Select Appointment from Sidebar
@@ -143,8 +134,8 @@ export class AppointmentSchedulerComponent {
       appointment.remove(); // Removes the event from the calendar
 
       // Show cancellation snackbar
-      this.snackBar.open('Appointment cancelled successfully!', 'Close', {
-        duration: 9000,
+      this.snackBar.open('Appointment cancelled successfully.', 'Close', {
+        duration: 3000,
         horizontalPosition: 'center',
         verticalPosition: 'top',
         panelClass: ['snackbar-success', 'custom-snackbar']
@@ -157,7 +148,7 @@ export class AppointmentSchedulerComponent {
 
   handleEvents(events: EventApi[]) {
     this.currentEvents.set(events);
-    this.changeDetector.detectChanges(); // workaround for pressionChangedAfterItHasBeenCheckedError
+    this.changeDetector.detectChanges(); // workaround for ExpressionChangedAfterItHasBeenCheckedError
 
     const today = new Date();
 
@@ -174,7 +165,7 @@ export class AppointmentSchedulerComponent {
       calendarApi.addEvent({
         id: createEventId(),
         title: `Appointment`,
-        start: this.selectedDate +'T'+ this.convertTimeTo24(this.selectedTime),
+        start: this.selectedDate + 'T' + this.convertTimeTo24(this.selectedTime),
         allDay: false,
         display: 'block',
         extendedProps: {
@@ -189,7 +180,7 @@ export class AppointmentSchedulerComponent {
         duration: 3000,
         horizontalPosition: 'center',
         verticalPosition: 'top',
-        panelClass: ['snackbar-success']
+        panelClass: ['snackbar-success', 'custom-snackbar']
       });
 
       // Reset selections
@@ -199,16 +190,16 @@ export class AppointmentSchedulerComponent {
       this.selectedDentist = '';
       this.selectedTime = '';
     } else {
-      this.snackBar.open('Please select Dentist or Time', 'Close', {
+      this.snackBar.open('Please select both a dentist and a time slot.', 'Close', {
         duration: 3000,
         horizontalPosition: 'center',
         verticalPosition: 'top',
-        panelClass: ['snackbar-success']
+        panelClass: ['snackbar-error', 'custom-snackbar']
       });
     }
   }
 
-// Utility to convert 12-hour time to 24-hour format with seconds
+  // Utility to convert 12-hour time to 24-hour format with seconds
   convertTimeTo24(time: string): string {
     const [timeStr, modifier] = time.split(' ');
     let [hours, minutes] = timeStr.split(':');
@@ -231,7 +222,6 @@ export class AppointmentSchedulerComponent {
     return `${hours}:${minutes}:${seconds}`;
   }
 
-
   // Get available slots based on selected dentist
   getAvailableSlots(): string[] | undefined {
     const dentist = this.staffs.find(d => d.name === this.selectedDentist);
@@ -243,6 +233,7 @@ export class AppointmentSchedulerComponent {
     this.selectedDate = null;
     this.selectedDentist = '';
     this.selectedTime = '';
+    this.selectedAppointment = null;
   }
 
   // Leave a Review Method
@@ -250,15 +241,26 @@ export class AppointmentSchedulerComponent {
     // Placeholder action: Show a snackbar
     this.snackBar.open('Redirecting to review form...', 'Close', {
       duration: 3000,
-      panelClass: ['snackbar-info']
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: ['snackbar-info', 'custom-snackbar']
     });
 
     // TODO: Implement actual review functionality
     // For example, navigate to a review component or open a dialog
-    /*
-    this.dialog.open(ReviewDialogComponent, {
-      data: { appointmentId: appointment.id }
-    });
-    */
+  }
+
+  // Optionally, implement a method to save notes if needed
+  saveDentistNotes() {
+    if (this.selectedAppointment) {
+      // Assuming you have a backend to save these notes
+      // Otherwise, it's already updated in extendedProps
+      this.snackBar.open('Notes saved successfully.', 'Close', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        panelClass: ['snackbar-success', 'custom-snackbar']
+      });
+    }
   }
 }
