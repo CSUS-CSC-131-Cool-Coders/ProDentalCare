@@ -36,7 +36,7 @@ b { /* used for event dates/times */
 
 .demo-app-sidebar-section {
   padding: 1.5em;
-  border-bottom: 1px solid #d3e2e8;
+  border-bottom: 1px solid #d3e2e8; /* Optional: Add separation between sections */
 }
 
 .demo-app-main {
@@ -80,3 +80,84 @@ button:last-child {
   background-color: #f44336; /* Red for cancel button */
 }
 
+/* appointment-scheduler.component.css */
+
+/* Center SnackBars */
+.custom-snackbar {
+  /* Override the default positioning */
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  /* Ensure the SnackBar has sufficient z-index */
+  z-index: 10000;
+}
+
+/* Ensure the SnackBar container uses fixed positioning */
+.custom-snackbar.mat-snack-bar-container {
+  position: fixed !important;
+  /* Remove any default margin */
+  margin: 0 !important;
+}
+
+/* Custom styles for SnackBars */
+.snackbar-success {
+  background-color: #4caf50; /* Green */
+  color: white;
+}
+
+.snackbar-error {
+  background-color: #f44336; /* Red */
+  color: white;
+}
+
+.snackbar-info {
+  background-color: #2196f3; /* Blue */
+  color: white;
+}
+
+/* Prevent event titles from overflowing */
+.fc-daygrid-day-frame .fc-event {
+  white-space: nowrap;          /* Prevent text from wrapping */
+  overflow: hidden;             /* Hide overflowing text */
+  text-overflow: ellipsis;      /* Add ellipsis (...) for overflowed text */
+  max-width: 100%;              /* Ensure event does not exceed container width */
+}
+
+/* Adjust font size for better fit */
+.fc-event-title {
+  font-size: 12px;              /* Adjust as needed */
+}
+
+/* Ensure the event container does not cause overflow */
+.fc-daygrid-day-frame {
+  overflow: hidden;             /* Hide any overflowing content */
+}
+
+/* Style for textarea */
+textarea {
+  width: 100%;
+  height: 80px;
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  resize: vertical;
+}
+
+/* Style the SnackBar action button */
+.custom-snackbar .mat-simple-snackbar-action {
+  color: white; /* Ensure text is visible */
+  opacity: 0.9; /* Slight transparency */
+  background: transparent; /* Remove any background */
+  border: none; /* Remove borders */
+  font-weight: bold; /* Make the text bold */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: opacity 0.3s ease; /* Smooth transition */
+}
+
+/* Change opacity on hover instead of adding a background */
+.custom-snackbar .mat-simple-snackbar-action:hover {
+  opacity: 1; /* Fully opaque on hover */
+  /* Remove any background color or rectangle */
+  background: transparent !important;
+}

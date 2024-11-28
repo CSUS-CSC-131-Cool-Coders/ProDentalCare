@@ -8,7 +8,7 @@ import { INITIAL_EVENTS, createEventId } from './event-utils';
 import { Staff } from '../../../admin/staff-information/staff-model';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; // Import MatSnackBar
-import {EventImpl} from '@fullcalendar/core/internal';
+// import {EventImpl} from '@fullcalendar/core/internal';
 
 
 
@@ -76,9 +76,9 @@ export class AppointmentSchedulerComponent {
   selectedTime: string = '';
   selectedDate: string|null = '';
   selected: DateSelectArg;
-  selectedAppointment: EventImpl | null = null;
+  selectedAppointment: EventApi | null = null;
 
-  constructor(private changeDetector: ChangeDetectorRef) {
+  constructor(private changeDetector: ChangeDetectorRef, private snackBar: MatSnackBar) {
   }
 
   handleDateSelect(selectInfo: DateSelectArg) {
@@ -90,7 +90,12 @@ export class AppointmentSchedulerComponent {
     today.setHours(0, 0, 0, 0);
 
     if (selectedDate < today) {
-      alert('Cannot book an appointment on selected date.');
+      this.snackBar.open('Cannot book an appointment on the selected date.', 'Close', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top', // We'll override this in CSS
+        panelClass: ['snackbar-error', 'custom-snackbar']
+      });
       return; // Exit the function early
     }
 
@@ -100,6 +105,9 @@ export class AppointmentSchedulerComponent {
     this.selectedDentist = '';
     this.selectedTime = '';
 
+    // Clear any selected appointment details
+    this.selectedAppointment = null;
+
 
   }
 
@@ -107,15 +115,44 @@ export class AppointmentSchedulerComponent {
 
     // Set the selected appointment to display details
     this.selectedAppointment = clickInfo.event;
-
+    if (this.selectedDate) {
+      this.selectedDate = null;
+    }
     // if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
     //   clickInfo.event.remove();
     // }
   }
 
+  // Select Appointment from Sidebar
+  selectAppointment(appointment: EventApi) {
+    this.selectedAppointment = appointment;
+    // If a date is selected, clear it to hide appointment lists
+    if (this.selectedDate) {
+      this.selectedDate = null;
+    }
+  }
+
   // Close the appointment details view
   closeAppointmentDetails() {
     this.selectedAppointment = null;
+  }
+
+  // Cancel Appointment Method
+  cancelAppointment(appointment: EventApi) {
+    if (confirm('Are you sure you want to cancel this appointment?')) {
+      appointment.remove(); // Removes the event from the calendar
+
+      // Show cancellation snackbar
+      this.snackBar.open('Appointment cancelled successfully!', 'Close', {
+        duration: 9000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        panelClass: ['snackbar-success', 'custom-snackbar']
+      });
+
+      // Clear selected appointment details
+      this.selectedAppointment = null;
+    }
   }
 
   handleEvents(events: EventApi[]) {
@@ -146,6 +183,15 @@ export class AppointmentSchedulerComponent {
           dentistNotes: null,
         },
       });
+
+      // Show success snackbar
+      this.snackBar.open('Appointment booked successfully!', 'Close', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        panelClass: ['snackbar-success']
+      });
+
       // Reset selections
       calendarApi.unselect(); // clear date selection
 
@@ -153,7 +199,12 @@ export class AppointmentSchedulerComponent {
       this.selectedDentist = '';
       this.selectedTime = '';
     } else {
-      alert('Please select both a dentist and a time slot.');
+      this.snackBar.open('Please select Dentist or Time', 'Close', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        panelClass: ['snackbar-success']
+      });
     }
   }
 
@@ -192,5 +243,22 @@ export class AppointmentSchedulerComponent {
     this.selectedDate = null;
     this.selectedDentist = '';
     this.selectedTime = '';
+  }
+
+  // Leave a Review Method
+  leaveReview(appointment: EventApi) {
+    // Placeholder action: Show a snackbar
+    this.snackBar.open('Redirecting to review form...', 'Close', {
+      duration: 3000,
+      panelClass: ['snackbar-info']
+    });
+
+    // TODO: Implement actual review functionality
+    // For example, navigate to a review component or open a dialog
+    /*
+    this.dialog.open(ReviewDialogComponent, {
+      data: { appointmentId: appointment.id }
+    });
+    */
   }
 }
