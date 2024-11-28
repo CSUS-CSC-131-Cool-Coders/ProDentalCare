@@ -1,0 +1,183 @@
+<div class="content-wrapper">
+
+  <!-- Section 1: Basic Information -->
+  <div class="section" (click)="toggleSection(0)" [class.expanded]="expandedSection === 0">
+    <div class="section-header">BASIC INFORMATION</div>
+    <div class="section-content" *ngIf="expandedSection === 0" (click)="preventToggle($event)">
+      <p>
+        <span class="label">Name</span><br>
+        <span *ngIf="!editMode" class="value">{{ basicInfo.patientName || 'N/A' }}</span>
+        <input *ngIf="editMode" type="text" [(ngModel)]="editBasicInfo.patientName" />
+      </p>
+      <p>
+        <span class="label">Date Of Birth</span><br>
+        <span *ngIf="!editMode" class="value">{{ basicInfo.patientDOB || 'N/A' }}</span>
+        <input *ngIf="editMode" type="date" [(ngModel)]="editBasicInfo.patientDOB" />
+      </p>
+      <p>
+        <span class="label">Race</span><br>
+        <span *ngIf="!editMode" class="value">{{ basicInfo.patientRace || 'N/A' }}</span>
+        <input *ngIf="editMode" type="text" [(ngModel)]="editBasicInfo.patientRace" />
+      </p>
+      <div class="row basic-info-row">
+        <p>
+          <span class="label">Sex</span><br>
+          <span *ngIf="!editMode" class="value">{{ basicInfo.patientSex || 'N/A' }}</span>
+          <select *ngIf="editMode" [(ngModel)]="editBasicInfo.patientSex">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </p>
+        <p>
+          <span class="label">Marital Status</span><br>
+          <span *ngIf="!editMode" class="value">{{ basicInfo.patientMaritalStatus || 'N/A' }}</span>
+          <input *ngIf="editMode" type="text" [(ngModel)]="editBasicInfo.patientMaritalStatus" />
+        </p>
+        <p>
+          <span class="label">Preferred Language</span><br>
+          <span *ngIf="!editMode" class="value">{{ basicInfo.patientPrefLanguage || 'N/A' }}</span>
+          <input *ngIf="editMode" type="text" [(ngModel)]="editBasicInfo.patientPrefLanguage" />
+        </p>
+        <p>
+          <span class="label">Patient No.</span><br>
+          <span *ngIf="!editMode" class="value">{{ basicInfo.patientNumber || 'N/A' }}</span>
+          <input *ngIf="editMode" type="text" [(ngModel)]="editBasicInfo.patientNumber" />
+        </p>
+        <p>
+          <span class="label">Weight</span><br>
+          <span *ngIf="!editMode" class="value">{{ basicInfo.patientWeight || 'N/A' }}</span>
+          <input *ngIf="editMode" type="text" [(ngModel)]="editBasicInfo.patientWeight" />
+        </p>
+        <p>
+          <span class="label">Height</span><br>
+          <span *ngIf="!editMode" class="value">{{ basicInfo.patientHeight || 'N/A' }}</span>
+          <input *ngIf="editMode" type="text" [(ngModel)]="editBasicInfo.patientHeight" />
+        </p>
+      </div>
+      <div class="icon-container">
+        <img *ngIf="!editMode" class="edit-icon" ngSrc="/assets/edit_icon.png" width="54" height="54" (click)="enableEdit($event)" />
+        <img *ngIf="editMode" class="save-icon" ngSrc="/assets/save_icon.png" width="54" height="54" (click)="saveButton($event)" />
+        <img *ngIf="editMode" class="cancel-icon" ngSrc="/assets/cancel_icon.png" width="54" height="54" (click)="cancelButton($event)" />
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Section 2: Contact Information -->
+  <div class="section" (click)="toggleSection(1)" [class.expanded]="expandedSection === 1">
+    <div class="section-header">CONTACT INFORMATION</div>
+    <div class="section-content" *ngIf="expandedSection === 1" (click)="preventToggle($event)">
+      <p>
+        <span class="label">Phone Type</span><br>
+        <span *ngIf="!editMode" class="value">{{ contactInfo.phoneType || 'N/A' }}</span>
+        <select *ngIf="editMode" [(ngModel)]="editContactInfo.phoneType">
+          <option value="Mobile">Mobile</option>
+          <option value="Home">Home</option>
+          <option value="Work">Work</option>
+        </select>
+      </p>
+      <p>
+        <span class="label">Phone Number</span><br>
+        <span *ngIf="!editMode" class="value">{{ contactInfo.phoneNumber || 'N/A' }}</span>
+        <input *ngIf="editMode" type="text" [(ngModel)]="editContactInfo.phoneNumber" />
+      </p>
+      <p>
+        <span class="label">Email</span><br>
+        <span *ngIf="!editMode" class="value">{{ contactInfo.contactEmail || 'N/A' }}</span>
+        <input *ngIf="editMode" type="email" [(ngModel)]="editContactInfo.contactEmail" (ngModelChange)="validateEmail()" placeholder="Email"/>
+      <div class="error" *ngIf="!emailValid">Please enter a valid email</div>
+      <div class="icon-container">
+        <img *ngIf="!editMode" class="edit-icon" ngSrc="/assets/edit_icon.png" width="54" height="54" (click)="enableEdit($event)"/>
+        <img *ngIf="editMode" class="save-icon" ngSrc="/assets/save_icon.png" width="54" height="54" (click)="saveButton($event)"/>
+        <img *ngIf="editMode" class="cancel-icon" ngSrc="/assets/cancel_icon.png" width="54" height="54" (click)="cancelButton($event)"/>
+      </div>
+    </div>
+  </div>
+
+  <!--Section 3: Emergency Contact Information-->
+  <div class="section" (click)="toggleSection(2)" [class.expanded]="expandedSection === 2">
+    <div class="section-header">EMERGENCY CONTACT INFORMATION</div>
+    <div class="section-content" *ngIf="expandedSection === 2" (click)="preventToggle($event)">
+      <p>
+        <span class="label">Relationship</span><br>
+        <span *ngIf="!editMode" class="value">{{ emergencyContactInfo.relationship || 'N/A' }}</span>
+        <input *ngIf="editMode" type="text" [(ngModel)]="editEmergencyContactInfo.relationship" />
+      </p>
+      <p>
+        <span class="label">Phone Type</span><br>
+        <span *ngIf="!editMode" class="value">{{ emergencyContactInfo.phoneType || 'N/A' }}</span>
+        <select *ngIf="editMode" [(ngModel)]="editEmergencyContactInfo.phoneType">
+          <option value="Mobile">Mobile</option>
+          <option value="Home">Home</option>
+          <option value="Work">Work</option>
+        </select>
+      </p>
+      <p>
+        <span class="label">Phone Number</span><br>
+        <span *ngIf="!editMode" class="value">{{ emergencyContactInfo.phoneNumber || 'N/A' }}</span>
+        <input *ngIf="editMode" type="text" [(ngModel)]="editEmergencyContactInfo.phoneNumber" />
+      </p>
+      <p>
+      <p>
+        <span class="label">Email</span><br>
+        <span *ngIf="!editMode" class="value">{{ emergencyContactInfo.emergencyContactEmail || 'N/A' }}</span>
+        <input *ngIf="editMode" type="email" [(ngModel)]="editEmergencyContactInfo.emergencyContactEmail" (ngModelChange)="validateEmail()" placeholder="Email"/>
+      <div class="error" *ngIf="!emailValid">Please enter a valid email</div>
+      <div class="icon-container">
+        <img *ngIf="!editMode" class="edit-icon" ngSrc="/assets/edit_icon.png" width="54" height="54" (click)="enableEdit($event)"/>
+        <img *ngIf="editMode" class="save-icon" ngSrc="/assets/save_icon.png" width="54" height="54" (click)="saveButton($event)"/>
+        <img *ngIf="editMode" class="cancel-icon" ngSrc="/assets/cancel_icon.png" width="54" height="54" (click)="cancelButton($event)"/>
+      </div>
+    </div>
+  </div>
+
+  <!--Section 4: Address section-->
+  <div class="section" (click)="toggleSection(3)" [class.expanded]="expandedSection === 3">
+    <div class="section-header">ADDRESS</div>
+    <div class="section-content" *ngIf="expandedSection === 3">
+      <div class="address-field">
+        <p>
+          <span class="label">Country</span><br>
+          <span *ngIf="!editMode" class="value">{{ addressInfo.country || 'N/A' }}</span>
+          <select *ngIf="editMode" [(ngModel)]="editAddressInfo.country" (click)="preventToggle($event)">
+            <option value="United States of America">United States of America</option>
+            <option value="Canada">Canada</option>
+          </select>
+        </p>
+        <p>
+          <span class="label">State/Province/Region</span><br>
+          <span *ngIf="!editMode" class="value">{{ addressInfo.state || 'N/A' }}</span>
+          <input *ngIf="editMode" type="text" [(ngModel)]="editAddressInfo.state" (click)="preventToggle($event)" />
+        </p>
+        <div class="row">
+          <p>
+            <span class="label">Zip/Postal Code</span><br>
+            <span *ngIf="!editMode" class="value">{{ addressInfo.postalCode || 'N/A' }}</span>
+            <input *ngIf="editMode" type="text" [(ngModel)]="editAddressInfo.postalCode" (click)="preventToggle($event)" />
+          </p>
+          <p>
+            <span class="label">City</span><br>
+            <span *ngIf="!editMode" class="value">{{ addressInfo.city || 'N/A' }}</span>
+            <input *ngIf="editMode" type="text" [(ngModel)]="editAddressInfo.city" (click)="preventToggle($event)" />
+          </p>
+        </div>
+        <p>
+          <span class="label">Address Line 1</span><br>
+          <span *ngIf="!editMode" class="value">{{ addressInfo.addressLineOne || 'N/A' }}</span>
+          <input *ngIf="editMode" type="text" [(ngModel)]="editAddressInfo.addressLineOne" (click)="preventToggle($event)" />
+        </p>
+        <p>
+          <span class="label">Address Line 2</span><br>
+          <span *ngIf="!editMode" class="value">{{ addressInfo.addressLineTwo || 'N/A' }}</span>
+          <input *ngIf="editMode" type="text" [(ngModel)]="editAddressInfo.addressLineTwo" (click)="preventToggle($event)" />
+        </p>
+      </div>
+      <div class="icon-container">
+        <img *ngIf="!editMode" class="edit-icon" ngSrc="/assets/edit_icon.png" width="54" height="54" (click)="enableEdit($event)" />
+        <img *ngIf="editMode" class="save-icon" ngSrc="/assets/save_icon.png" width="54" height="54" (click)="saveButton($event)" />
+        <img *ngIf="editMode" class="cancel-icon" ngSrc="/assets/cancel_icon.png" width="54" height="54" (click)="cancelButton($event)" />
+      </div>
+    </div>
+  </div>
+
+</div>
