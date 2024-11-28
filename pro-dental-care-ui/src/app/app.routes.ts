@@ -8,6 +8,9 @@ import {Page2Component} from "./account/signup-page/page-2/page-2.component";
 import {PatientOverviewComponent} from './patient/overview/patient-overview.component';
 import {PatientHealthRecords} from './patient/records/health records/health-records.component';
 import {PatientTreatmentPlan} from './patient/records/treatment plan/patient-treatment-plan.component';
+import {StaffDashboardComponent} from './staff/staff-dashboard/staff-dashboard.component';
+import {StaffInformationComponent} from './staff/staff-information/staff-information.component';
+import {CalendarComponent} from './staff/calendar/calendar.component';
 
 
 export const routes: Routes = [
@@ -20,5 +23,8 @@ export const routes: Routes = [
     {path: "dashboard", component: VisitorDashboardComponent},
     {path: "patient/dashboard", component: PatientOverviewComponent}, // Add the route for OverviewComponent
     {path: "patient/records", component: PatientHealthRecords},
-    {path: "patient/treatment", component: PatientTreatmentPlan}
+    {path: "patient/treatment", component: PatientTreatmentPlan},
+    {path: "staff/dashboard", component: StaffDashboardComponent},
+    {path: "staff/staff-information", component: StaffInformationComponent},
+    {path: "staff/calendar", component: CalendarComponent}
 ];

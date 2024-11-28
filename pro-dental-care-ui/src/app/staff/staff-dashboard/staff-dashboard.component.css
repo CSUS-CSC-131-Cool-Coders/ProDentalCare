@@ -1,0 +1,85 @@
+.dashboard{
+  font-size: 30px;
+  position: absolute;
+  width: 180px;
+  bottom: 847px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 10px;
+  background-color: lightgrey;
+}
+.space{
+  height: 54px;
+}
+.overview{
+  height: 50px;
+  width: 190px;
+
+  font-size: 20px;
+  color: black;
+
+  background-image: url("/assets/squares.png");
+  background-repeat: no-repeat;
+  background-size: 30px;
+  background-position-x: 5px;
+  background-position-y: 10px;
+  background-color: #ededed;
+}
+.calendar{
+  height: 50px;
+  width: 190px;
+
+  font-size: 20px;
+  color: black;
+
+  background-image: url("/assets/calendar.png");
+  background-repeat: no-repeat;
+  background-size: 30px;
+  background-position-x: 5px;
+  background-position-y: 10px;
+  background-color: #ededed;
+}
+.my-info{
+  height: 70px;
+  width: 190px;
+
+  font-size: 20px;
+  color: black;
+
+  background-image: url("/assets/person.png");
+  background-repeat: no-repeat;
+  background-size: 30px;
+  background-position-x: 5px;
+  background-position-y: 20px;
+  background-color: #ededed;
+}
+.patient-info{
+  height: 60px;
+  width: 190px;
+
+  font-size: 20px;
+  color: black;
+
+  background-image: url("/assets/person.png");
+  background-repeat: no-repeat;
+  background-size: 30px;
+  background-position-x: 5px;
+  background-position-y: 20px;
+  background-color: #ededed;
+}
+.overview:hover{
+  background-color: white;
+}
+.calendar:hover{
+  background-color: white;
+}
+.my-info:hover{
+  background-color: white;
+}
+.patient-info:hover{
+  background-color: white;
+}
+button{
+  border-radius: 0px;
+}
+
