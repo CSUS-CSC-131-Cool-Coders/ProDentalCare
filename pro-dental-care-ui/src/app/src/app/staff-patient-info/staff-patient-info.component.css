@@ -1,0 +1,40 @@
+/* Apply basic styles to the body */
+body, html {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+}
+
+/* Style the container to align the buttons vertically with a gap */
+.button-container {
+  display: flex;
+  flex-direction: column;  /* Align buttons vertically */
+  align-items: flex-start; /* Align buttons to the left */
+  gap: 30px;               /* Add 20px space between the buttons */
+}
+
+/* Style the individual button */
+.custom-button {
+  width: 945px;
+  height: 115px;
+  background-color: #f5f5f5; /* light gray */
+  border: 1px solid #ddd; /* light border */
+  border-radius: 8px; /* rounded corners */
+  cursor: pointer;
+  text-align: left; /* Align text to the left */
+  padding-left: 150px; /* 150px padding inside the button */
+  font-family: Arial, sans-serif; /* font style */
+  color: black;
+  font-size: 30px;
+  position: relative;
+}
+
+/* Optionally, style the text inside the button */
+.custom-button .custom-text {
+  color: #000; /* black text */
+  font-size: 20px; /* text size */
+  line-height: 115px; /* vertically center the text */
+}
