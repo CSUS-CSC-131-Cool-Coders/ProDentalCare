@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AllergyRecordRepository extends JpaRepository<AllergyRecord, Long> {
-    // Add custom query methods if necessary
+public interface AllergyRecordRepository extends JpaRepository<AllergyRecord, String> {
+    // Custom query methods can be added here if needed
 }

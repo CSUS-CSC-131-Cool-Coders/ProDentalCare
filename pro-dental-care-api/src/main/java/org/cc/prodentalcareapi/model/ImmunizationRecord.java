@@ -25,7 +25,7 @@ public class ImmunizationRecord {
         return immunization;
     }
 
-    public void setComment(String immunization) {
+    public void setImmunization(String immunization) {
         this.immunization = immunization;
     }
 }

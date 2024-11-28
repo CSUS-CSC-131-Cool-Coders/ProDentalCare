@@ -17,7 +17,7 @@ public class VisitRecordEntity {
         return allergy;
     }
 
-    public void setAllgy(string allergy) {
+    public void setAllergy(string allergy) {
         this.allergy = allergy;
     }
 

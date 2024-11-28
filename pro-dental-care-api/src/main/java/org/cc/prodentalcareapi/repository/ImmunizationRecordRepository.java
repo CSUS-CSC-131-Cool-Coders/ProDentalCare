@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ImmunizationRecordRepository extends JpaRepository<ImmunizationRecord, Long> {
-    // Add custom query methods if necessary
+public interface ImmunizationRecordRepository extends JpaRepository<ImmunizationRecord, String> {
+    // Custom query methods can be added here if needed
 }

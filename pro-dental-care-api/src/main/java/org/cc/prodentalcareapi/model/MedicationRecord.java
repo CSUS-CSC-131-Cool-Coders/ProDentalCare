@@ -25,7 +25,7 @@ public class MedicationRecord {
         return medication;
     }
 
-    public void setMedication(String meds) {
+    public void setMedication(String medication) {
         this.medication = medication;
     }
 
@@ -33,7 +33,7 @@ public class MedicationRecord {
         return directions;
     }
 
-    public void setNotes(String directions) {
+    public void setDirections(String directions) {
         this.directions = directions;
     }
 }
