@@ -1,4 +1,4 @@
-package org.cc.prodentalcareapi.model.response;
+package org.cc.prodentalcareapi.model;
 
 import java.util.Date;
 import java.util.List;

@@ -2,12 +2,13 @@
 
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatExpansionModule } from '@angular/material/expansion'; // Import Expansion Module
-import { MatCardModule } from '@angular/material/card'; // Optional: For card layouts
-import { MatIconModule } from '@angular/material/icon'; // Optional: For icons
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { ApiService } from '../../api.service'; // Adjust the path as necessary
-import { StaffMemberDTO } from '../../models/staff-member-dto'; // Adjust the path as necessary
-import { AdminStaffInfoResponse } from '../../models/amin-staff-info-response'; // Adjust the path as necessary
+import { StaffInfo } from '../../models/staff-info'; // Adjust the path as necessary
+import { AdminStaffInfoResponse } from '../../models/admin-staff-info-response';
+import {MatProgressSpinner} from '@angular/material/progress-spinner'; // Adjust the path as necessary
 
 @Component({
   selector: 'app-staff-information',
@@ -17,6 +18,7 @@ import { AdminStaffInfoResponse } from '../../models/amin-staff-info-response'; 
     MatExpansionModule,
     MatCardModule,
     MatIconModule,
+    MatProgressSpinner,
   ],
   templateUrl: './staff-information.component.html',
   styleUrls: ['./staff-information.component.css']
@@ -24,25 +26,30 @@ import { AdminStaffInfoResponse } from '../../models/amin-staff-info-response'; 
 export class StaffInformationComponent implements OnInit {
   constructor(private apiService: ApiService) {}
 
-  staffs: StaffMemberDTO[] = []; // Initialize as empty array
+  staffs: StaffInfo[] = []; // Initialize as empty array
+  isLoading: boolean = false;
+  errorMessage: string = '';
 
   ngOnInit(): void {
     this.fetchStaffInformation();
   }
 
   fetchStaffInformation(): void {
+    this.isLoading = true;
     this.apiService.get<AdminStaffInfoResponse>('/admin/staff-information').subscribe({
       next: res => {
+        this.isLoading = false;
         if (res.status === 200 && res.body) {
           this.staffs = res.body.staffMembers;
         } else {
           console.error('Unexpected response structure:', res);
-          // Optionally, display a user-friendly message in the UI
+          this.errorMessage = 'Unexpected response from the server.';
         }
       },
       error: err => {
+        this.isLoading = false;
         console.error('Error fetching staff information:', err);
-        // Optionally, display an error message in the UI
+        this.errorMessage = 'Failed to load staff information. Please try again later.';
       }
     });
   }

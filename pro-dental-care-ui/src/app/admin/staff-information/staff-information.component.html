@@ -9,24 +9,39 @@
       View and manage all staff members.
     </p>
   </header>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="isLoading" class="flex justify-center items-center mt-5">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="mt-5 text-red-500">
+    {{ errorMessage }}
+  </div>
+
   <!-- Section for Staff List -->
-  <section class="mt-11 w-full max-md:mt-10 max-md:max-w-full">
+  <section class="mt-11 w-full max-md:mt-10 max-md:max-w-full" *ngIf="!isLoading && !errorMessage">
     <mat-accordion>
       <mat-expansion-panel *ngFor="let staff of staffs">
         <mat-expansion-panel-header>
           <mat-panel-title>
-            {{ staff.firstName }} {{ staff.lastName }} - {{ staff.position }}
+            {{ staff.firstName }} {{ staff.lastName }} -
+<!--            {{ staff.position }}-->
           </mat-panel-title>
           <mat-panel-description>
             {{ staff.email }}
           </mat-panel-description>
         </mat-expansion-panel-header>
         <div class="flex flex-col gap-2">
-          <p><strong>Contact Number:</strong> {{ staff.contactNumber }}</p>
+<!--          <p><strong>Contact Number:</strong> {{ staff.contactNumber }}</p>-->
+          <p><strong>Date of Birth:</strong> {{ staff.dateOfBirth | date: 'longDate' }}</p>
+<!--          <p><strong>Sex:</strong> {{ staff.sex }}</p>-->
+          <!-- Future Fields:
           <p><strong>Pay:</strong> {{ staff.pay }}</p>
           <p><strong>Years Worked:</strong> {{ staff.yearsWorked }}</p>
-          <p><strong>Qualifications:</strong> {{ staff.qualifications?.join(', ') }}</p>
-          <!-- Add more fields as necessary -->
+          <p><strong>Qualifications:</strong> {{ staff.qualifications.join(', ') }}</p>
+          -->
         </div>
       </mat-expansion-panel>
     </mat-accordion>

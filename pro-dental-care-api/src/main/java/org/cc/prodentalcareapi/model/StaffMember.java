@@ -34,6 +34,14 @@ public class StaffMember {
 	@Column(name = "bank_acc_no", length = 100)
 	private String bankAccountNumber;
 
+	public StaffMember(String staffId, String email, String firstName, String lastName, Date dateOfBirth, String sex) {
+		setStaffId(staffId);
+		setEmail(email);
+		setFirstName(firstName);
+		setLastName(lastName);
+		setDateOfBirth(dateOfBirth);
+		setSex(sex);
+	}
 
 	public String getStaffId() {
 		return staffId;
