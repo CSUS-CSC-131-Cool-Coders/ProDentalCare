@@ -1,0 +1,137 @@
+<div class="payment-container">
+  <h1>Payment Information</h1>
+  <div class="row">
+    <div class="form-group">
+      <label for="name">Name on Card<span class="asterisk">*</span></label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        ngModel
+        class="form-control"
+        placeholder="John Doe"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="cardNumber">Card Number<span class="asterisk">*</span></label>
+      <input
+        type="text"
+        id="cardNumber"
+        name="cardNumber"
+        ngModel
+        class="form-control"
+        placeholder="1234 1234 1234 1234"
+        required
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group">
+      <label for="expiry">Expiration Date<span class="asterisk">*</span></label>
+      <input
+        type="text"
+        id="expiry"
+        name="expiry"
+        ngModel
+        class="form-control"
+        placeholder="MM / YY"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="cvc">CVC<span class="asterisk">*</span></label>
+      <input
+        type="text"
+        id="cvc"
+        name="cvc"
+        ngModel
+        class="form-control"
+        placeholder="123"
+        required
+      />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group">
+      <label for="address">Address<span class="asterisk">*</span></label>
+      <input
+        type="text"
+        id="address"
+        name="address"
+        ngModel
+        class="form-control"
+        placeholder="1234 Washington Drive"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="address2">Second Address <span class="asterisk-empty"> </span></label>
+      <input
+        type="text"
+        id="address2"
+        name="address2"
+        ngModel
+        class="form-control"
+        placeholder=""
+      />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group">
+      <label for="city">City<span class="asterisk">*</span></label>
+      <input
+        type="text"
+        id="city"
+        name="city"
+        ngModel
+        class="form-control"
+        placeholder="Sacramento"
+        required
+      />
+    </div>
+
+    <div class="form-state">
+      <label for="state">State<span class="asterisk">*</span></label>
+      <input
+        type="text"
+        id="state"
+        name="state"
+        ngModel
+        class="form-control"
+        placeholder="California"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="zipCode">ZIP Code<span class="asterisk">*</span></label>
+      <input
+        type="text"
+        id="zipCode"
+        name="zipCode"
+        ngModel
+        class="form-control"
+        placeholder="00000"
+        required
+      />
+    </div>
+  </div>
+
+  <span class="required-label">required=<span class="asterisk">*</span></span>
+  <div class="payment-choice">
+    <span class="payment-amount">Choose payment amount:</span>
+    <select id="paymentAmount" name="paymentAmount" class="form-control" required>
+      <option value="" disabled selected>Select an option</option>
+      <option value="accountBalance">Account Balance: {{accountBalance}}</option>
+      <option value="amountDue">Amount Due: {{amountDue}}</option>
+    </select>
+  </div>
+
+  <button (click)="submitPayment()" id="buttonPaySubmit" style="margin-top: 75px">Pay Now</button>
+</div>
