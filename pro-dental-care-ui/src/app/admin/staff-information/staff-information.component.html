@@ -1,29 +1,34 @@
-<div class="staff-information-container">
+<!-- src/app/staff-information/staff-information.component.html -->
 
-  <mat-accordion>
-    <mat-expansion-panel *ngFor="let staff of staffs">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <mat-icon svgIcon="person" class="profile-icon"></mat-icon>
-          {{ staff.name }} - {{ staff.position }}
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-
-      <mat-card>
-        <div class="staff-details">
-          <div class="column">
-            <p><strong>Name:</strong> {{ staff.name }}</p>
-            <p><strong>Position:</strong> {{ staff.position }}</p>
-            <p><strong>Pay:</strong> {{ staff.pay }}</p>
-            <p><strong>Years Worked:</strong> {{ staff.yearsWorked }}</p>
-          </div>
-          <div class="column">
-            <p><strong>Email:</strong> {{ staff.email }}</p>
-            <p><strong>Contact Number:</strong> {{ staff.contactNumber }}</p>
-            <p><strong>Qualifications:</strong> {{ staff.qualifications }}</p>
-          </div>
+<main class="flex flex-col p-14 bg-white max-w-[940px] max-md:px-5">
+  <header class="flex flex-col max-w-full leading-tight w-full">
+    <h1 class="tracking-tight font-bold text-gray-800 text-2xl max-md:max-w-full">
+      Staff Information
+    </h1>
+    <p class="mt-2 text-gray-600 text-md max-md:max-w-full">
+      View and manage all staff members.
+    </p>
+  </header>
+  <!-- Section for Staff List -->
+  <section class="mt-11 w-full max-md:mt-10 max-md:max-w-full">
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let staff of staffs">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ staff.firstName }} {{ staff.lastName }} - {{ staff.position }}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{ staff.email }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="flex flex-col gap-2">
+          <p><strong>Contact Number:</strong> {{ staff.contactNumber }}</p>
+          <p><strong>Pay:</strong> {{ staff.pay }}</p>
+          <p><strong>Years Worked:</strong> {{ staff.yearsWorked }}</p>
+          <p><strong>Qualifications:</strong> {{ staff.qualifications?.join(', ') }}</p>
+          <!-- Add more fields as necessary -->
         </div>
-      </mat-card>
-    </mat-expansion-panel>
-  </mat-accordion>
-</div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </section>
+</main>

@@ -1,9 +1,13 @@
+// src/app/staff-information/staff-information.component.ts
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion'; // Import Expansion Module
 import { MatCardModule } from '@angular/material/card'; // Optional: For card layouts
 import { MatIconModule } from '@angular/material/icon'; // Optional: For icons
-import { Staff } from './staff-model';
+import { ApiService } from '../../api.service'; // Adjust the path as necessary
+import { StaffMemberDTO } from '../../models/staff-member-dto'; // Adjust the path as necessary
+import { AdminStaffInfoResponse } from '../../models/amin-staff-info-response'; // Adjust the path as necessary
 
 @Component({
   selector: 'app-staff-information',
@@ -15,36 +19,31 @@ import { Staff } from './staff-model';
     MatIconModule,
   ],
   templateUrl: './staff-information.component.html',
-  styleUrl: './staff-information.component.css'
+  styleUrls: ['./staff-information.component.css']
 })
-export class StaffInformationComponent implements OnInit{
-  constructor() {
+export class StaffInformationComponent implements OnInit {
+  constructor(private apiService: ApiService) {}
 
-  }
-
-  staffs: Staff[] = [
-    {
-      id: 1,
-      name: 'Jane Doe',
-      position: 'Dentist',
-      pay: '$150,000/year',
-      yearsWorked: 12,
-      email: "123JaneSmith@gmail.com",
-      contactNumber: '1(916)123-4567',
-      qualifications: ['DDS', 'Certified Invisalign Provider'],
-    },
-    {
-      id: 2,
-      name: 'John Smith',
-      position: 'Hygienist',
-      pay: '$90,0000/year',
-      yearsWorked: 4,
-      email: "99JohnS@gmail.com",
-      contactNumber: '1(279)987-6543',
-      qualifications: ['RDH', 'CDH'],
-    },
-  ]
+  staffs: StaffMemberDTO[] = []; // Initialize as empty array
 
   ngOnInit(): void {
+    this.fetchStaffInformation();
+  }
+
+  fetchStaffInformation(): void {
+    this.apiService.get<AdminStaffInfoResponse>('/admin/staff-information').subscribe({
+      next: res => {
+        if (res.status === 200 && res.body) {
+          this.staffs = res.body.staffMembers;
+        } else {
+          console.error('Unexpected response structure:', res);
+          // Optionally, display a user-friendly message in the UI
+        }
+      },
+      error: err => {
+        console.error('Error fetching staff information:', err);
+        // Optionally, display an error message in the UI
+      }
+    });
   }
 }
