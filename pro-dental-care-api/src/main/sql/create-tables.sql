@@ -14,6 +14,7 @@ create table patient
     pass_hash  varchar(128) not null,
     fname      varchar(40)  not null,
     lname      varchar(40)  not null,
+    race       varchar(40)  not null,
     dob        date         not null,
     phone_no   varchar(11)  not null check (char_length(phone_no) <= 11 and char_length(phone_no) >= 10),
     sex        varchar(40)  not null,

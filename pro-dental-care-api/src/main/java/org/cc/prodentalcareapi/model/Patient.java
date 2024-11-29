@@ -28,6 +28,9 @@ public class Patient {
 	@Column(name = "phone_no", length = 11)
 	private String phoneNumber;
 
+//	@Column(name = "race", length = 40)
+//	private String race;
+
 	@Column(name = "sex", length = 40)
 	private String sex;
 
@@ -40,7 +43,7 @@ public class Patient {
 	@Column(name = "height")
 	private int height;
 
-	public Patient(String patientId, String email, String firstName, String lastName, Date dob, String phoneNumber, String sex, String langCode, int weight, int height) {
+	public Patient(String patientId, String email, String firstName, String lastName, Date dob, String phoneNumber, String sex, /*String race,*/ String langCode, int weight, int height) {
 		setPatientId(patientId);
 		setEmail(email);
 		setFirstName(firstName);
@@ -48,6 +51,7 @@ public class Patient {
 		setDateOfBirth(dob);
 		setPhoneNumber(phoneNumber);
 		setSex(sex);
+		//setRace(race);
 		setLangCode(langCode);
 		setWeight(weight);
 		setHeight(height);
@@ -102,6 +106,14 @@ public class Patient {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+
+//	public String getRace() {
+//		return race;
+//	}
+//
+//	public void setRace(String race) {
+//		this.race = race;
+//	}
 
 	public String getSex() {
 		return sex;
