@@ -47,10 +47,6 @@ export class PaymentPageComponent implements OnInit {
   @Input()
   public amountDue: string;
 
-  submitPayment() {
-    alert('Processing payment...');
-    // Add logic to integrate with Stripe, PayPal, or other payment gateways
-  }
   @HostListener('input', ['$event.target'])
   onInput(target: HTMLInputElement): void {
     if (target.id === 'cardNumber') {
@@ -91,9 +87,7 @@ export class PaymentPageComponent implements OnInit {
   public constructor(private apiService: ApiService) {}
 
   public ngOnInit(): void {
-    this.apiService.checkAccess("patient", "/payment-processing");
-
-    this.apiService.get("").subscribe({
+    this.apiService.get("patient/payments/payment-processing").subscribe({
       next: res => {
         let body: any = res.body;
         this.cardHolder = body.cardHolder;
@@ -106,12 +100,35 @@ export class PaymentPageComponent implements OnInit {
         this.state = body.state;
         this.zipCode = body.zipCode;
 
-        this.accountBalance = body.nextAppointmentDate;
-        this.amountDue = body.treatmentPlan;
+        this.accountBalance = body.currentPayment?.amount || 'N/A';
+        this.amountDue = body.currentPayment?.amount || 'N/A';
       },
       error: err => {
         console.log(err);
       }
+    });
+  }
+
+  submitPayment() {
+    const paymentInfo = {
+      cardHolder: this.cardHolder,
+      cardNumber: this.cardNumber.replace(/\s/g, ''), // Remove spaces
+      expDate: this.expDate,
+      cvc: this.cvc,
+      address: this.address,
+      address2: this.address2,
+      city: this.city,
+      state: this.state,
+      zipCode: this.zipCode,
+    };
+
+    this.apiService.post('patient/payments/submit', paymentInfo).subscribe({
+      next: (response) => {
+        alert('Payment successfully processed!');
+      },
+      error: (err) => {
+        console.error('An error occurred while processing your payment.');
+      },
     });
   }
 }
