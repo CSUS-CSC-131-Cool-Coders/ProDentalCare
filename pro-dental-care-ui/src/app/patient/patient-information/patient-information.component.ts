@@ -73,6 +73,7 @@ export class PatientInformationComponent implements OnInit {
   saveButton(event: Event): void {
     event.stopPropagation();
 
+    // todo: check if the emails been updated, then validate if not, run through - otherwise save-button bricks here
     // Validate email fields
     // this.validateEmail();
     // this.validateEmergencyEmail();

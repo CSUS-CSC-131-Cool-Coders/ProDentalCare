@@ -14,14 +14,33 @@ create table patient
     pass_hash  varchar(128) not null,
     fname      varchar(40)  not null,
     lname      varchar(40)  not null,
-    race       varchar(40)  not null,
+    race       varchar(40)  not null, /*added*/
+    marital_status varchar(40) not null, /*added*/
     dob        date         not null,
+    phone_type varchar(40)  not null, /*added*/
     phone_no   varchar(11)  not null check (char_length(phone_no) <= 11 and char_length(phone_no) >= 10),
     sex        varchar(40)  not null,
     lang_code  char(2)      not null,
     weight     int          not null check (weight > 0),
     height     int          not null check (height > 0),
+    country    varchar(40) not null, /*added*/
+    state      varchar(40)  not null, /*added*/
+    address_one    varchar(128) not null, /*added*/
+    address_two     varchar(128) not null, /*added*/
+    zip_code   varchar(5)   not null check (char_length(zip_code) = 5), /*added*/
     foreign key (email_fk) references account (email)
+);
+
+/*added*/
+create table patient_emergency_contact
+(
+    patient_id_fk char(9)      not null primary key,
+    emergency_email_fk   varchar(128) not null,
+    relationship       varchar(40)  not null,
+    emergency_phone_type varchar(40)  not null,
+    emergency_phone_no   varchar(11)  not null check (char_length(emergency_phone_no) <= 11 and char_length(emergency_phone_no) >= 10), /*idk if this should refrence fk phone num from patient*/
+    foreign key (emergency_email_fk) references account (email),
+    foreign key (patient_id_fk) references patient (patient_id)
 );
 
 create table roles
