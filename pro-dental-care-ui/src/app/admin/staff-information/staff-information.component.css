@@ -1,29 +1,68 @@
-/* staff-information.component.css */
+/* Container Styling */
 .staff-information-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+  max-width: 800px; /* Ensures the container doesn't span too wide */
+  margin: 10px auto; /* Centers the container */
+  padding: 20px; /* Adds padding around the container */
 }
 
-h2 {
+/* Header Styling */
+.header {
+  text-align: center; /* Centers the text */
+  margin-bottom: 30px; /* Adds space below the header */
+}
+
+.header h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.header p {
+  font-size: 1rem;
+  color: #666;
+}
+
+/* Loading Indicator Styling */
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Error Message Styling */
+.error-message {
+  color: red;
   text-align: center;
-  margin-bottom: 30px;
+  margin-top: 20px;
 }
 
-mat-expansion-panel {
-  margin-bottom: 15px;
+/* Staff List Styling */
+.staff-list {
+  margin-top: 20px;
+}
+
+/* Custom Mat Expansion Panel Styling */
+.mat-expansion-panel-custom {
+  margin-bottom: 15px; /* Space between panels */
+  border: 1px solid #ddd; /* Adds a light border */
+  border-radius: 5px; /* Rounds the corners */
+}
+
+.mat-expansion-panel-custom .mat-expansion-panel-header {
+  background-color: #f9f9f9; /* Light grey background for headers */
   padding: 20px;
 }
 
-mat-card {
-  padding: 15px;
-  background-color: #f9f9f9;
+.mat-expansion-panel-custom .mat-expansion-panel-content {
+  padding: 20px; /* Adds padding inside the panel content */
 }
 
+/* Staff Details Styling */
 .staff-details {
   display: flex;
   flex-wrap: wrap;
   gap: 20px; /* Space between columns */
+  padding: 10px;
 }
 
 .column {
@@ -32,18 +71,12 @@ mat-card {
 }
 
 .column p {
-  margin: 5px 0;
-}
-
-.profile-icon {
-  vertical-align: middle;
-  margin-right: 10px;
-  color: #3f51b5; /* Optional: Change icon color */
+  margin: 5px 0; /* Spacing between paragraphs */
 }
 
 /* Responsive Adjustments */
 @media (max-width: 600px) {
   .staff-details {
-    flex-direction: column;
+    flex-direction: column; /* Stacks columns vertically on small screens */
   }
 }

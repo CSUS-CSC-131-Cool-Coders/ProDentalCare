@@ -43,6 +43,10 @@ public class StaffMember {
 		setSex(sex);
 	}
 
+	public StaffMember() {
+
+	}
+
 	public String getStaffId() {
 		return staffId;
 	}

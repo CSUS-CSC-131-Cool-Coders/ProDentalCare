@@ -1,47 +1,42 @@
-<!-- src/app/staff-information/staff-information.component.html -->
-
-<main class="flex flex-col p-14 bg-white max-w-[940px] max-md:px-5">
-  <header class="flex flex-col max-w-full leading-tight w-full">
-    <h1 class="tracking-tight font-bold text-gray-800 text-2xl max-md:max-w-full">
-      Staff Information
-    </h1>
-    <p class="mt-2 text-gray-600 text-md max-md:max-w-full">
-      View and manage all staff members.
-    </p>
+<main class="staff-information-container bg-white">
+  <header class="header">
+    <h1>Staff Information</h1>
+    <p>View and manage all staff members.</p>
   </header>
 
   <!-- Loading Indicator -->
-  <div *ngIf="isLoading" class="flex justify-center items-center mt-5">
+  <div *ngIf="isLoading" class="loading-indicator">
     <mat-spinner></mat-spinner>
   </div>
 
   <!-- Error Message -->
-  <div *ngIf="errorMessage" class="mt-5 text-red-500">
+  <div *ngIf="errorMessage" class="error-message">
     {{ errorMessage }}
   </div>
 
   <!-- Section for Staff List -->
-  <section class="mt-11 w-full max-md:mt-10 max-md:max-w-full" *ngIf="!isLoading && !errorMessage">
+  <section class="staff-list" *ngIf="!isLoading && !errorMessage">
     <mat-accordion>
-      <mat-expansion-panel *ngFor="let staff of staffs">
+      <mat-expansion-panel *ngFor="let staff of staffs" class="mat-expansion-panel-custom">
         <mat-expansion-panel-header>
           <mat-panel-title>
-            {{ staff.firstName }} {{ staff.lastName }} -
-<!--            {{ staff.position }}-->
+            {{ staff.firstName }} {{ staff.lastName }} - {{ staff.position }}
           </mat-panel-title>
           <mat-panel-description>
             {{ staff.email }}
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <div class="flex flex-col gap-2">
-<!--          <p><strong>Contact Number:</strong> {{ staff.contactNumber }}</p>-->
-          <p><strong>Date of Birth:</strong> {{ staff.dateOfBirth | date: 'longDate' }}</p>
-<!--          <p><strong>Sex:</strong> {{ staff.sex }}</p>-->
-          <!-- Future Fields:
-          <p><strong>Pay:</strong> {{ staff.pay }}</p>
-          <p><strong>Years Worked:</strong> {{ staff.yearsWorked }}</p>
-          <p><strong>Qualifications:</strong> {{ staff.qualifications.join(', ') }}</p>
-          -->
+        <div class="staff-details">
+          <div class="column">
+            <p><strong>Staff ID:</strong> {{ staff.staffId }}</p>
+            <p><strong>Date of Birth:</strong> {{ staff.dateOfBirth | date: 'longDate' }}</p>
+            <p><strong>Qualifications:</strong> {{ staff.qualifications?.join(', ') || 'N/A'}}</p>
+          </div>
+          <div class="column">
+            <p><strong>Position:</strong> {{ staff.position || 'N/A' }}</p>
+            <p><strong>Pay:</strong> {{ staff.salary || 'N/A' }}</p>
+            <p><strong>Years Worked:</strong> {{ staff.yearsWorked || 'N/A' }}</p>
+          </div>
         </div>
       </mat-expansion-panel>
     </mat-accordion>
