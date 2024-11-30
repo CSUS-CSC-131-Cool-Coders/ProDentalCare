@@ -5,10 +5,10 @@ import { CommonModule } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { ApiService } from '../../api.service'; // Adjust the path as necessary
-import { StaffInfo } from '../../models/staff-info'; // Adjust the path as necessary
+import { ApiService } from '../../api.service';
+import { StaffInfo } from '../../models/staff-info';
 import { AdminStaffInfoResponse } from '../../models/admin-staff-info-response';
-import {MatProgressSpinner} from '@angular/material/progress-spinner'; // Adjust the path as necessary
+import {MatProgressSpinner} from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-staff-information',

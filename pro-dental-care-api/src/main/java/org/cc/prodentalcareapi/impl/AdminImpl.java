@@ -1,8 +1,12 @@
 package org.cc.prodentalcareapi.impl;
 
 import org.cc.prodentalcareapi.model.StaffMember;
+import org.cc.prodentalcareapi.model.Event;
+import org.cc.prodentalcareapi.model.response.AdminCalendarResponse;
+import org.cc.prodentalcareapi.model.response.AdminCalendarResponse.EventInfo;
 import org.cc.prodentalcareapi.model.response.AdminStaffInfoResponse;
 import org.cc.prodentalcareapi.model.response.AdminStaffInfoResponse.StaffInfo;
+import org.cc.prodentalcareapi.repository.EventRepository;
 import org.cc.prodentalcareapi.repository.StaffMemberRepository;
 import org.cc.prodentalcareapi.security.RequireToken;
 import org.cc.prodentalcareapi.security.Token;
@@ -78,4 +82,51 @@ public class AdminImpl {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @RequireToken
+    @GetMapping("/calendar")
+    public ResponseEntity<AdminCalendarResponse> getCalendarEvents(@RequestHeader(name = "Authorization") String token) {
+        // Token validation (same as in getStaffInfo)
+        String tokenValue = tokenService.getTokenFromBearerToken(token);
+        Token t = tokenService.getToken(tokenValue);
+
+        if (t == null || ObjectUtils.isEmpty(t.getUsername())) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        // (Optional) Check if user has admin privileges
+
+        // Fetch all events
+        List<Event> events = eventRepository.findAll();
+
+        // Map events to EventInfo
+        List<EventInfo> eventInfos = new ArrayList<>();
+        for (Event event : events) {
+            EventInfo info = new EventInfo();
+            info.setEventId(event.getEventId());
+            info.setTitle(event.getTitle());
+            info.setStartTime(event.getStartTime().toString()); // Format as needed
+            info.setEndTime(event.getEndTime().toString()); // Format as needed
+            info.setEventType(event.getEventType());
+
+            // Fetch staff member name
+            StaffMember staff = staffMemberRepository.findById(event.getStaffMemberId()).orElse(null);
+            if (staff != null) {
+                info.setStaffMemberName(staff.getFirstName() + " " + staff.getLastName());
+            } else {
+                info.setStaffMemberName("N/A");
+            }
+
+            info.setNotes(event.getNotes());
+            eventInfos.add(info);
+        }
+
+        // Construct response
+        AdminCalendarResponse response = new AdminCalendarResponse();
+        response.setEvents(eventInfos);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
 }
