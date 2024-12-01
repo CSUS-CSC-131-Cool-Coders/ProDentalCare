@@ -1,21 +1,16 @@
 package org.cc.prodentalcareapi.model.response;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class StaffPatientInfoResponse {
-    private BasicInfo basicInfo;
 
-    public StaffPatientInfoResponse() {
-        this.basicInfo = new BasicInfo;
-    }
+    private final List<BasicInfo> basicInfo = new ArrayList<>();
 
     // Getters and Setters
-    public BasicInfo getBasicInfo() {
+    public List<BasicInfo> getBasicInfo() {
         return basicInfo;
-    }
-
-    public void setBasicInfo(BasicInfo basicInfo) {
-        this.basicInfo = basicInfo;
     }
 
     // Nested Class Representing Sections
