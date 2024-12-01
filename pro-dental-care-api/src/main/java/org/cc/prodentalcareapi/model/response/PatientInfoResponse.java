@@ -6,8 +6,6 @@ public class PatientInfoResponse {
 
     // Contact Information
     private ContactInfo contactInfo;
-    // Emergency Contact Information
-    private EmergencyContactInfo emergencyContactInfo;
     // Basic Information
     private BasicInfo basicInfo;
     // Address Information
@@ -15,7 +13,6 @@ public class PatientInfoResponse {
 
     public PatientInfoResponse() {
         this.contactInfo = new ContactInfo();
-        this.emergencyContactInfo = new EmergencyContactInfo();
         this.basicInfo = new BasicInfo();
         this.addressInfo = new AddressInfo();
     }
@@ -27,14 +24,6 @@ public class PatientInfoResponse {
 
     public void setContactInfo(ContactInfo contactInfo) {
         this.contactInfo = contactInfo;
-    }
-
-    public EmergencyContactInfo getEmergencyContactInfo() {
-        return emergencyContactInfo;
-    }
-
-    public void setEmergencyContactInfo(EmergencyContactInfo emergencyContactInfo) {
-        this.emergencyContactInfo = emergencyContactInfo;
     }
 
     public BasicInfo getBasicInfo() {
@@ -82,46 +71,6 @@ public class PatientInfoResponse {
 
         public void setContactEmail(String contactEmail) {
             this.contactEmail = contactEmail;
-        }
-    }
-
-    public static class EmergencyContactInfo {
-        private String relationship = "N/A";
-        private String phoneType = "N/A";
-        private String phoneNumber = "N/A";
-        private String emergencyContactEmail = "N/A";
-
-        // Getters and Setters
-        public String getRelationship() {
-            return relationship;
-        }
-
-        public void setRelationship(String relationship) {
-            this.relationship = relationship;
-        }
-
-        public String getPhoneType() {
-            return phoneType;
-        }
-
-        public void setPhoneType(String phoneType) {
-            this.phoneType = phoneType;
-        }
-
-        public String getPhoneNumber() {
-            return phoneNumber;
-        }
-
-        public void setPhoneNumber(String phoneNumber) {
-            this.phoneNumber = phoneNumber;
-        }
-
-        public String getEmergencyContactEmail() {
-            return emergencyContactEmail;
-        }
-
-        public void setEmergencyContactEmail(String emergencyContactEmail) {
-            this.emergencyContactEmail = emergencyContactEmail;
         }
     }
 
