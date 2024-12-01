@@ -7,5 +7,4 @@ import java.util.List;
 
 public interface PatientTreatmentRepository extends JpaRepository<PatientTreatmentPlan, String> {
 
-    List<PatientTreatmentPlan> findAllByPatientIdOrderByPatientId(String patientId);
 }

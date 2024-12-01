@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController()
 @RequestMapping("/patient/records")
@@ -78,16 +79,15 @@ public class PatientTreatmentImpl {
         Patient patient = patientList.get(0);
 
         //Get next treatment plan and appointment
-        List<PatientTreatmentPlan> treatments = patientTreatmentRepository.findAllByPatientIdOrderByPatientId(patient.getPatientId());
+        Optional<PatientTreatmentPlan> treatmentOptional = patientTreatmentRepository.findById(patient.getPatientId());
         List<AppointmentSummary> appointments = appointmentSummaryRepository.findAllAppointmentsByPatientIdOrderByDateAsc(patient.getPatientId());
 
 
         PatientTreatmentPlan treatment = null;
         Appointments appointment = null;
 
-        for (PatientTreatmentPlan plan : treatments) {
-            treatment = plan;
-            break;
+        if (treatmentOptional.isPresent()) {
+            treatment = treatmentOptional.get();
         }
 
         if (treatment != null) {
