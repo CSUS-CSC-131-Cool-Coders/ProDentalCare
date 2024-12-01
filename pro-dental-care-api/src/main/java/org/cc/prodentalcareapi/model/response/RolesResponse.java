@@ -1,13 +1,13 @@
 package org.cc.prodentalcareapi.model.response;
 
-import java.util.List;
+import java.util.Set;
 
 public class RolesResponse {
 
-	public List<String> roles;
+	public Set<String> roles;
 
 	public RolesResponse() {}
-	public RolesResponse(List<String> roles) {
+	public RolesResponse(Set<String> roles) {
 		this.roles = roles;
 	}
 

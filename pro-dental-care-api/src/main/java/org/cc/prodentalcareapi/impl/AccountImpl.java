@@ -8,6 +8,7 @@ import org.cc.prodentalcareapi.model.response.LoginResponse;
 import org.cc.prodentalcareapi.model.response.RolesResponse;
 import org.cc.prodentalcareapi.repository.AccountRepository;
 import org.cc.prodentalcareapi.repository.PatientRepository;
+import org.cc.prodentalcareapi.repository.RolesRepository;
 import org.cc.prodentalcareapi.repository.StaffMemberRepository;
 import org.cc.prodentalcareapi.security.PasswordService;
 import org.cc.prodentalcareapi.security.RequireToken;
@@ -26,6 +27,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Optional;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 @RestController
@@ -38,18 +40,20 @@ public class AccountImpl {
 	private final StaffMemberRepository staffMemberRepository;
 	private final PasswordService passwordService;
 	private final TokenService tokenService;
+	private final RolesRepository rolesRepository;
 
 	@Autowired
 	public AccountImpl(AccountRepository accountRepository,
 					   PatientRepository patientRepository,
 					   StaffMemberRepository staffMemberRepository,
 					   PasswordService passwordService,
-					   TokenService tokenService) {
+					   TokenService tokenService, RolesRepository rolesRepository) {
 		this.accountRepository = accountRepository;
 		this.patientRepository = patientRepository;
 		this.staffMemberRepository = staffMemberRepository;
 		this.passwordService = passwordService;
 		this.tokenService = tokenService;
+		this.rolesRepository = rolesRepository;
 	}
 
 	@PostMapping("/login")
@@ -67,36 +71,18 @@ public class AccountImpl {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
-		List<StaffMember> staffMemberList = staffMemberRepository.findByEmail(account.getEmail());
+		List<Roles> roles = rolesRepository.findByRoleIdEmail(account.getEmail());
 
-		// todo: Populate roles not by deduction but from database!
+		Token token = new Token(account.getEmail());
 
-		if (!staffMemberList.isEmpty()) {
-			// Must be a staff member!
-
-			Token token = new Token(account.getEmail(), List.of("dentist"));
-			String encryptedToken = tokenService.encrypt((new Gson()).toJson(token));
-			LoginResponse response = new LoginResponse(account.getEmail(), encryptedToken);
-
-			return new ResponseEntity<>(response, HttpStatus.OK);
+		for (Roles role : roles) {
+			token.getRoles().add(role.getRoleId().getRole());
 		}
 
-		List<Patient> patientList = patientRepository.findByEmail(account.getEmail());
+		String encryptedToken = tokenService.encrypt((new Gson()).toJson(token));
+		LoginResponse response = new LoginResponse(account.getEmail(), encryptedToken);
 
-
-		if (!patientList.isEmpty()) {
-			// Must be a patient!
-
-			Token token = new Token(account.getEmail(), List.of("patient"));
-			String encryptedToken = tokenService.encrypt((new Gson()).toJson(token));
-			LoginResponse response = new LoginResponse(account.getEmail(), encryptedToken);
-
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		}
-
-		// We are SOL because we have an account without an associated patient or staff member object.
-		// Status code 418 is hilarious. enSee: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/418
-		return new ResponseEntity<>(HttpStatus.valueOf(418));
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@PostMapping("/signup")

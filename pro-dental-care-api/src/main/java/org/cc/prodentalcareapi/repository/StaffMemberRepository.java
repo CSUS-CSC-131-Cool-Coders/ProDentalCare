@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface StaffMemberRepository extends JpaRepository<StaffMember, String> {
 	List<StaffMember> findByEmail(String email);
+
+	List<StaffMember> findByStaffId(String staffId);
 }
