@@ -29,11 +29,13 @@ public class AdminImpl {
 
     private final TokenService tokenService;
     private final StaffMemberRepository staffMemberRepository;
+    private final EventRepository eventRepository;
 
     @Autowired
-    public AdminImpl(TokenService tokenService, StaffMemberRepository staffMemberRepository) {
+    public AdminImpl(TokenService tokenService, StaffMemberRepository staffMemberRepository, EventRepository eventRepository) {
         this.tokenService = tokenService;
         this.staffMemberRepository = staffMemberRepository;
+        this.eventRepository = eventRepository;
     }
 
     @RequireToken

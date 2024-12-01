@@ -7,9 +7,10 @@ import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullca
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { INITIAL_EVENTS, createEventId } from './event-utils';
-import { Staff } from '../staff-information/staff-model';
+import { EventInfo } from '../../models/event-info';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; // Import MatSnackBar
+import { AdminCalendarResponse } from '../../models/admin-calendar-response';
 import { ApiService } from '../../api.service';
 
 @Component({
@@ -39,31 +40,6 @@ export class AdminCalendarComponent {
   upcomingEvents = signal<EventApi[]>([]);
   pastEvents = signal<EventApi[]>([]);
 
-  staffs: Staff[] = [
-    {
-      id: 1,
-      name: 'Jane Doe',
-      position: 'Manager',
-      pay: '$150,000/year',
-      yearsWorked: 12,
-      email: 'jane.doe@example.com',
-      contactNumber: '1(916)123-4567',
-      qualifications: ['MBA', 'Certified Project Manager'],
-      availability: ['09:00 AM', '10:00 AM', '11:00 AM', '02:00 PM'],
-    },
-    {
-      id: 2,
-      name: 'John Smith',
-      position: 'Developer',
-      pay: '$90,000/year',
-      yearsWorked: 4,
-      email: 'john.smith@example.com',
-      contactNumber: '1(279)987-6543',
-      qualifications: ['B.Sc. Computer Science', 'Certified Angular Developer'],
-      availability: ['09:30 AM', '10:30 AM', '01:00 PM', '03:00 PM'],
-    },
-    // Add more staff members as needed
-  ];
 
   // Selected event type, staff, and time slot
   selectedEventType: string = '';
