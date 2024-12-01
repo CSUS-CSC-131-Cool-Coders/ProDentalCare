@@ -12,6 +12,16 @@ public class RoleId {
 	@Column(name = "role", length = 64)
 	private String role;
 
+	public RoleId() {
+
+	}
+
+	public RoleId(String email, String role) {
+		this.email = email;
+		this.role = role;
+	}
+
+
 	public String getEmail() {
 		return email;
 	}

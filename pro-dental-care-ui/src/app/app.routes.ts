@@ -15,6 +15,7 @@ import {
     StaffPatientInfoPage2Component
 } from './src/app/staff-patient-info/staff-patient-info-page2/staff-patient-info-page2.component';
 import {PatientInformationComponent} from './patient/patient-information/patient-information.component';
+import {StaffSignupComponent} from "./account/signup-page/staff-signup/staff-signup.component";
 
 export const routes: Routes = [
     {path: "patient-info-staff-view-page-2", component: StaffPatientInfoPage2Component},
@@ -22,6 +23,7 @@ export const routes: Routes = [
     {path: "login", component: LoginPageComponent},
     {path: "signup", component: SignupPageComponent},
     {path: "signup/page-2", component: Page2Component},
+    {path: "staff/signup", component: StaffSignupComponent},
     {path: "forgot-password", component: ForgotPasswordComponent},
     {path: "reset-password", component: LoginPageComponent},
     {path: "reset-password/:resetToken", component: ResetPasswordComponent},

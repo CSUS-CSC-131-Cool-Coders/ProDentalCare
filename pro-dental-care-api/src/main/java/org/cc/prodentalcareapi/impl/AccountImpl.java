@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import org.cc.prodentalcareapi.model.*;
 import org.cc.prodentalcareapi.model.request.LoginRequestBody;
 import org.cc.prodentalcareapi.model.request.SignupRequestBody;
+import org.cc.prodentalcareapi.model.request.SimpleResponse;
+import org.cc.prodentalcareapi.model.request.StaffSignupRequestBody;
 import org.cc.prodentalcareapi.model.response.LoginResponse;
 import org.cc.prodentalcareapi.model.response.RolesResponse;
 import org.cc.prodentalcareapi.repository.AccountRepository;
@@ -27,7 +29,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Optional;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Logger;
 
 @RestController
@@ -65,6 +66,10 @@ public class AccountImpl {
 		}
 
 		Account account = accountOptional.get();
+
+		if (!account.isEnabled()) {
+			return new ResponseEntity<>(HttpStatus.LOCKED);
+		}
 
 		if(!passwordService.equals(body.password, account.getPassHash())) {
 			// Password doesn't match hashed password so bad login request
@@ -120,10 +125,47 @@ public class AccountImpl {
 		LOG.info(String.format("Account created %s", account));
 		LOG.info(String.format("Patient record created %s", patient));
 
+		Roles roles = new Roles(new RoleId(account.getEmail(), "patient"));
+
 		accountRepository.saveAndFlush(account);
 		patientRepository.saveAndFlush(patient);
+		rolesRepository.saveAndFlush(roles);
 
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@PostMapping("/staff/signup")
+	public ResponseEntity<SimpleResponse> processStaffSignUpRequest(@RequestBody StaffSignupRequestBody body) throws NoSuchAlgorithmException, InvalidKeySpecException {
+		Optional<Account> accountOptional = accountRepository.findById(body.email);
+		if (accountOptional.isPresent()) {
+			// Account already exists
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		// Exception added to method signature. This can probably throw a 500, though unlikely
+		String encodedPassword = passwordService.hashPassword(body.password);
+		Account account = new Account(body.email, encodedPassword, false);
+
+		StaffMember staffMember = new StaffMember(body.ssn,
+				body.email,
+				body.firstName,
+				body.lastName,
+				body.dob,
+				body.sex,
+				body.bankRoutingNo,
+				body.bankAccNo);
+
+		LOG.info(String.format("Account created %s", account));
+		LOG.info(String.format("Staff record created %s", staffMember));
+
+		Roles roles = new Roles(new RoleId(account.getEmail(), "dentist"));
+
+
+		accountRepository.saveAndFlush(account);
+		staffMemberRepository.saveAndFlush(staffMember);
+		rolesRepository.saveAndFlush(roles);
+
+		return new ResponseEntity<>(new SimpleResponse("Account has been successfully created, but you will need to wait for an admin to activate your account."), HttpStatus.OK);
 	}
 
 	@RequireToken

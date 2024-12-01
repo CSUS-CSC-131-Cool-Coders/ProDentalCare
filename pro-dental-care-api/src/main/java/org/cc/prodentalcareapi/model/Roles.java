@@ -9,6 +9,12 @@ public class Roles {
     @EmbeddedId
     private RoleId roleId;
 
+	public Roles() {}
+
+	public Roles(RoleId roleId) {
+		this.roleId = roleId;
+	}
+
 	public RoleId getRoleId() {
 		return roleId;
 	}
