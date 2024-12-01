@@ -67,7 +67,25 @@ public class Patient {
 	@Column(name = "height")
 	private int height;
 
-	public Patient(String patientId, String email, String firstName, String lastName, Date dob, String phoneNumber, String sex, String race, String maritalStatus, String phoneType, String city, String country, String state, String addressOne, String addressTwo, String zipCode, String langCode, int weight, int height) {
+	public Patient(String patientId,
+				   String email,
+				   String firstName,
+				   String lastName,
+				   Date dob,
+				   String phoneNumber,
+				   String sex,
+				   String race,
+				   String maritalStatus,
+				   String phoneType,
+				   String city,
+				   String country,
+				   String state,
+				   String addressOne,
+				   String addressTwo,
+				   String zipCode,
+				   String langCode,
+				   int weight,
+				   int height) {
 		setPatientId(patientId);
 		setEmail(email);
 		setFirstName(firstName);
@@ -90,10 +108,6 @@ public class Patient {
 	}
 
 	public Patient() {}
-
-	// created this so that it would compile
-	public Patient(String ssn, String email, String firstName, String lastName, Date dob, String phone, String sex, String lang, int weight, int height) {
-	}
 
 	public String getPatientId() {
 		return patientId;

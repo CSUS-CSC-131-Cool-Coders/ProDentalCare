@@ -97,8 +97,25 @@ public class AccountImpl {
 		String encodedPassword = passwordService.hashPassword(body.password);
 		Account account = new Account(body.email, encodedPassword);
 
-
-		Patient patient = new Patient(body.ssn, body.email, body.firstName, body.lastName, body.dob, body.phone, body.sex, body.lang, body.weight, body.height);
+		Patient patient = new Patient(body.ssn,
+				body.email,
+				body.firstName,
+				body.lastName,
+				body.dob,
+				body.phone,
+				body.sex,
+				body.race,
+				body.maritalStatus,
+				body.phoneType,
+				body.city,
+				body.country,
+				body.state,
+				body.addressOne,
+				body.addressTwo,
+				body.zipCode,
+				body.lang,
+				body.weight,
+				body.height);
 
 		LOG.info(String.format("Account created %s", account));
 		LOG.info(String.format("Patient record created %s", patient));

@@ -8,6 +8,10 @@
         <small class="error" *ngIf="!selectedLang.untouched && !selectedLang.valid">Please select a language!</small>
         <small class="error" *ngIf="!height.untouched && !height.valid">Please enter your height!</small>
         <small class="error" *ngIf="!weight.untouched && !weight.valid">Please enter your weight!</small>
+        <small class="error" *ngIf="!addressOne.untouched && !addressOne.valid">Please enter your address!</small>
+        <small class="error" *ngIf="!city.untouched && !city.valid">Please enter your city!</small>
+        <small class="error" *ngIf="!state.untouched && !state.valid">Please enter your state!</small>
+        <small class="error" *ngIf="!addressOne.untouched && !addressOne.valid">Please enter address!</small>
 
         <input type="text" [formControl]="ssn" placeholder="SSN or TIN"/>
         <input type="date" [formControl]="dob" placeholder="Date of Birth"/>
@@ -19,9 +23,22 @@
             </select>
         </span>
         <span style="display: flex; flex-direction: row; align-items: stretch; margin: 0 -15px;">
+            <input type="text" [formControl]="race" placeholder="Race"/>
+            <input type="text" [formControl]="maritalStatus" placeholder="Marital Status"/>
+        </span>
+        <span style="display: flex; flex-direction: row; align-items: stretch; margin: 0 -15px;">
             <input type="text" [formControl]="height" placeholder="Height"/>
             <input type="text" [formControl]="weight" placeholder="Weight"/>
         </span>
+        <label>Address</label>
+        <input type="text" [formControl]="addressOne" placeholder="123 Sesame St"/>
+        <input type="text" [formControl]="addressTwo" placeholder="Apt 42"/>
+        <span style="display: flex; flex-direction: row; align-items: stretch; margin: 0 -15px;">
+            <input type="text" [formControl]="city" placeholder="City"/>
+            <input type="text" [formControl]="zip" placeholder="Zip Code"/>
+        </span>
+        <input type="text" [formControl]="state" placeholder="State"/>
+        <input type="text" [formControl]="country" placeholder="Country"/>
         <button type="submit" [disabled]="!form.valid" style="margin-top: 40px">Sign Up</button>
         <p>Have an account? Login <a href="/login" style="text-decoration: underline">here</a></p>
     </form>

@@ -15,5 +15,14 @@ public class SignupRequestBody {
 	public int height;
 	public int weight;
 
+	public String race;
+	public String maritalStatus;
+	public String phoneType;
+	public String country;
+	public String state;
+	public String city;
+	public String addressOne;
+	public String addressTwo;
+	public String zipCode;
 
 }
