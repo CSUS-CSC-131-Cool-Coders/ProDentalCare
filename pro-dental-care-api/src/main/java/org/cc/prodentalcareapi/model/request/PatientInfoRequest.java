@@ -17,7 +17,6 @@ public class PatientInfoRequest {
         this.contactInfo = contactInfo;
     }
 
-
     public BasicInfo getBasicInfo() {
         return basicInfo;
     }

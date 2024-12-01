@@ -1,12 +1,8 @@
 package org.cc.prodentalcareapi.impl;
 
-import org.cc.prodentalcareapi.model.PatientEmergencyContact;
-import org.cc.prodentalcareapi.model.response.PatientEmergencyContactResponse;
 import org.cc.prodentalcareapi.model.response.PatientInfoResponse;
 import org.cc.prodentalcareapi.model.request.PatientInfoRequest;
-import org.cc.prodentalcareapi.model.request.PatientEmergencyContactRequest;
 import org.cc.prodentalcareapi.model.Patient;
-import org.cc.prodentalcareapi.repository.PatientEmergencyContactRepository;
 import org.cc.prodentalcareapi.repository.PatientRepository;
 import org.cc.prodentalcareapi.security.RequireToken;
 import org.cc.prodentalcareapi.security.Token;
@@ -25,13 +21,11 @@ public class PatientInfoImpl {
 
     private final TokenService tokenService;
     private final PatientRepository patientRepository;
-    private final PatientEmergencyContactRepository patientEmergencyContactRepository;
 
     @Autowired
-    public PatientInfoImpl(TokenService tokenService, PatientRepository patientRepository, PatientEmergencyContactRepository patientEmergencyContactRepository) {
+    public PatientInfoImpl(TokenService tokenService, PatientRepository patientRepository) {
         this.tokenService = tokenService;
         this.patientRepository = patientRepository;
-        this.patientEmergencyContactRepository = patientEmergencyContactRepository;
     }
 
     @RequireToken
@@ -63,47 +57,10 @@ public class PatientInfoImpl {
     }
 
     @RequireToken
-    @GetMapping("/emergency-contact")
-    public ResponseEntity<PatientEmergencyContactResponse> getEmergencyContact(@RequestHeader(name = "Authorization") String token) {
-        String tokenValue = tokenService.getTokenFromBearerToken(token);
-        Token t = tokenService.getToken(tokenValue);
-
-        if (t == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-
-        String email = t.getUsername();
-        if (ObjectUtils.isEmpty(email)) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-
-        // Retrieve patient record by email
-        List<Patient> patientList = patientRepository.findByEmail(email);
-        if (patientList.size() != 1) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        Patient patient = patientList.get(0);
-
-        // Retrieve emergency contact by patientId
-        List<PatientEmergencyContact> emergencyContacts = patientEmergencyContactRepository.findByPatientId(patient.getPatientId());
-        if (emergencyContacts.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        PatientEmergencyContact emergencyContact = emergencyContacts.get(0);
-
-        // Build and return the response
-        PatientEmergencyContactResponse response = buildEmergencyContactResponse(emergencyContact);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @RequireToken
     @PutMapping("/info")
     public ResponseEntity<PatientInfoResponse> updatePatientInfo(
             @RequestHeader(name = "Authorization") String token,
-            @RequestBody PatientInfoRequest patientInfo,
-            @RequestBody PatientEmergencyContactRequest patientEmergencyContact) {
+            @RequestBody PatientInfoRequest patientInfo) {
 
         String tokenValue = tokenService.getTokenFromBearerToken(token);
         Token t = tokenService.getToken(tokenValue);
@@ -125,15 +82,7 @@ public class PatientInfoImpl {
 
         Patient patient = patientList.get(0);
 
-        // Retrieve or create the PatientEmergencyContact record by patientId
-        List<PatientEmergencyContact> emergencyContacts = patientEmergencyContactRepository.findByPatientId(patient.getPatientId());
-        PatientEmergencyContact emergencyContact = new PatientEmergencyContact();
-        for (PatientEmergencyContact contact : emergencyContacts) {
-            emergencyContact = contact;
-            break;
-        }
-
-        // Update patient details
+        // Update patient details for the basic info, contact info, and address fields
         if (patientInfo.getBasicInfo() != null) {
             patient.setFirstName(extractFirstName(patientInfo.getBasicInfo().getPatientName()));
             patient.setLastName(extractLastName(patientInfo.getBasicInfo().getPatientName()));
@@ -157,19 +106,10 @@ public class PatientInfoImpl {
             patient.setState(patientInfo.getAddressInfo().getState());
             patient.setZipCode(patientInfo.getAddressInfo().getPostalCode());
             patient.setCountry(patientInfo.getAddressInfo().getCountry());
-        }
-
-        // Update emergency contact details
-        if (patientEmergencyContact.getEmergencyContactInfo() != null) {
-            emergencyContact.setPatientId(patient.getPatientId());
-            emergencyContact.setEmergencyPhoneType(patientEmergencyContact.getEmergencyContactInfo().getPhoneType());
-            emergencyContact.setEmergencyPhoneNo(patientEmergencyContact.getEmergencyContactInfo().getPhoneNo());
-            emergencyContact.setEmergencyEmail(patientEmergencyContact.getEmergencyContactInfo().getEmergencyContactEmail());
-            emergencyContact.setEmergencyRelationship(patientEmergencyContact.getEmergencyContactInfo().getRelationship());
+            patient.setCity(patientInfo.getAddressInfo().getCity());
         }
 
         patientRepository.save(patient);
-        patientEmergencyContactRepository.save(emergencyContact);
 
         // Build and return the updated response
         PatientInfoResponse updatedResponse = buildPatientInfoResponse(patient);
@@ -206,21 +146,8 @@ public class PatientInfoImpl {
         addressInfo.setState(patient.getState());
         addressInfo.setPostalCode(patient.getZipCode());
         addressInfo.setCountry(patient.getCountry());
+        addressInfo.setCity(patient.getCity());
         response.setAddressInfo(addressInfo);
-
-        return response;
-    }
-
-    private PatientEmergencyContactResponse buildEmergencyContactResponse(PatientEmergencyContact emergencyContact) {
-        PatientEmergencyContactResponse response = new PatientEmergencyContactResponse();
-
-        // Emergency contact info
-        PatientEmergencyContactResponse.EmergencyContactInfo emergencyContactInfo = new PatientEmergencyContactResponse.EmergencyContactInfo();
-        emergencyContactInfo.setRelationship(emergencyContact.getEmergencyRelationship());
-        emergencyContactInfo.setPhoneType(emergencyContact.getEmergencyPhoneType());
-        emergencyContactInfo.setPhoneNumber(emergencyContact.getEmergencyPhoneNo());
-        emergencyContactInfo.setEmergencyContactEmail(emergencyContact.getEmergencyEmail());
-        response.setEmergencyContactInfo(emergencyContactInfo);
 
         return response;
     }

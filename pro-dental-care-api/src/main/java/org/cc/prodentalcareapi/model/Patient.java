@@ -43,8 +43,8 @@ public class Patient {
 	@Column(name = "state", length = 40)
 	private String state;
 
-//	@Column(name = "city", length = 40)
-//	private String city;
+	@Column(name = "city", length = 40)
+	private String city;
 
 	@Column(name = "address_one", length = 128)
 	private String addressOne;
@@ -67,7 +67,7 @@ public class Patient {
 	@Column(name = "height")
 	private int height;
 
-	public Patient(String patientId, String email, String firstName, String lastName, Date dob, String phoneNumber, String sex, String race, String maritalStatus, String phoneType, /*String city,*/ String country, String state, String addressOne, String addressTwo, String zipCode, String langCode, int weight, int height) {
+	public Patient(String patientId, String email, String firstName, String lastName, Date dob, String phoneNumber, String sex, String race, String maritalStatus, String phoneType, String city, String country, String state, String addressOne, String addressTwo, String zipCode, String langCode, int weight, int height) {
 		setPatientId(patientId);
 		setEmail(email);
 		setFirstName(firstName);
@@ -83,7 +83,7 @@ public class Patient {
 		setAddressOne(addressOne);
 		setAddressTwo(addressTwo);
 		setZipCode(zipCode);
-		//setCity(city);
+		setCity(city);
 		setLangCode(langCode);
 		setWeight(weight);
 		setHeight(height);
@@ -179,13 +179,13 @@ public class Patient {
 		return state;
 	}
 
-//	public String getCity() {
-//		return city;
-//	}
-//
-//	public void setCity(String city) {
-//		this.city = city;
-//	}
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
 
 	public void setState(String state) {
 		this.state = state;
