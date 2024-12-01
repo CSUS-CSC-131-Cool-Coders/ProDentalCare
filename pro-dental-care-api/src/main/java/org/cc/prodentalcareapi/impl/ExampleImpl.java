@@ -1,6 +1,7 @@
 package org.cc.prodentalcareapi.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import com.google.gson.Gson;
 import org.cc.prodentalcareapi.security.Token;
@@ -37,7 +38,7 @@ public class ExampleImpl {
 
 		Token token = new Token(
 				loginDetail.username,
-				loginDetail.username.equals("admin") ? List.of("admin", "dentist") : List.of("dentist")
+				loginDetail.username.equals("admin") ? Set.of("admin", "dentist") : Set.of("dentist")
 		);
 
 		String tokenJsonUnencrypted = (new Gson()).toJson(token);
