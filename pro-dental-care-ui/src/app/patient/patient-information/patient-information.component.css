@@ -61,6 +61,20 @@
   gap: 20px;
 }
 
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.select-wrapper, .input-wrapper {
+  flex: 1 1 30%; /* Ensure all form elements have equal width */
+}
+
 .basic-info-row p {
   flex: 1 1 30%; /* This ensures the elements in the row are evenly spaced */
   margin-bottom: 15px;

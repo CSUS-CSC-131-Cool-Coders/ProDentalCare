@@ -12,7 +12,6 @@ import {StaffPatientInfoComponent} from './src/app/staff-patient-info/staff-pati
 import {
     StaffPatientInfoPage2Component
 } from './src/app/staff-patient-info/staff-patient-info-page2/staff-patient-info-page2.component';
-
 import {PatientInformationComponent} from './patient/patient-information/patient-information.component';
 
 export const routes: Routes = [
@@ -29,5 +28,6 @@ export const routes: Routes = [
     {path: "dashboard", component: VisitorDashboardComponent},
     {path: "patient/dashboard", component: PatientOverviewComponent}, // Add the route for OverviewComponent
     {path: "patient/records", component: PatientHealthRecords},
-    {path: "patient/treatment", component: PatientTreatmentPlan}
+    {path: "patient/treatment", component: PatientTreatmentPlan},
+    {path: "patient/patient-information", component: PatientInformationComponent}
 ];

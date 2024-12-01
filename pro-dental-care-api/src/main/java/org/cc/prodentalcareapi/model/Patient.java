@@ -28,6 +28,33 @@ public class Patient {
 	@Column(name = "phone_no", length = 11)
 	private String phoneNumber;
 
+	@Column(name = "race", length = 40)
+	private String race;
+
+	@Column(name = "marital_status", length = 40)
+	private String maritalStatus;
+
+	@Column(name = "phone_type", length = 40)
+	private String phoneType;
+
+	@Column(name = "country", length = 40)
+	private String country;
+
+	@Column(name = "state", length = 40)
+	private String state;
+
+	@Column(name = "city", length = 40)
+	private String city;
+
+	@Column(name = "address_one", length = 128)
+	private String addressOne;
+
+	@Column(name = "address_two", length = 128)
+	private String addressTwo;
+
+	@Column(name = "zip_code", length = 5)
+	private String zipCode;
+
 	@Column(name = "sex", length = 40)
 	private String sex;
 
@@ -40,7 +67,7 @@ public class Patient {
 	@Column(name = "height")
 	private int height;
 
-	public Patient(String patientId, String email, String firstName, String lastName, Date dob, String phoneNumber, String sex, String langCode, int weight, int height) {
+	public Patient(String patientId, String email, String firstName, String lastName, Date dob, String phoneNumber, String sex, String race, String maritalStatus, String phoneType, String city, String country, String state, String addressOne, String addressTwo, String zipCode, String langCode, int weight, int height) {
 		setPatientId(patientId);
 		setEmail(email);
 		setFirstName(firstName);
@@ -48,12 +75,25 @@ public class Patient {
 		setDateOfBirth(dob);
 		setPhoneNumber(phoneNumber);
 		setSex(sex);
+		setRace(race);
+		setMaritalStatus(maritalStatus);
+		setPhoneType(phoneType);
+		setCountry(country);
+		setState(state);
+		setAddressOne(addressOne);
+		setAddressTwo(addressTwo);
+		setZipCode(zipCode);
+		setCity(city);
 		setLangCode(langCode);
 		setWeight(weight);
 		setHeight(height);
 	}
 
 	public Patient() {}
+
+	// created this so that it would compile
+	public Patient(String ssn, String email, String firstName, String lastName, Date dob, String phone, String sex, String lang, int weight, int height) {
+	}
 
 	public String getPatientId() {
 		return patientId;
@@ -101,6 +141,78 @@ public class Patient {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+
+	public String getRace() {
+		return race;
+	}
+
+	public void setRace(String race) {
+		this.race = race;
+	}
+
+	public String getMaritalStatus() {
+		return maritalStatus;
+	}
+
+	public void setMaritalStatus(String maritalStatus) {
+		this.maritalStatus = maritalStatus;
+	}
+
+	public String getPhoneType() {
+		return phoneType;
+	}
+
+	public void setPhoneType(String phoneType) {
+		this.phoneType = phoneType;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getAddressOne() {
+		return addressOne;
+	}
+
+	public void setAddressOne(String addressOne) {
+		this.addressOne = addressOne;
+	}
+
+	public String getAddressTwo() {
+		return addressTwo;
+	}
+
+	public void setAddressTwo(String addressTwo) {
+		this.addressTwo = addressTwo;
+	}
+
+	public String getZipCode() {
+		return zipCode;
+	}
+
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
 	}
 
 	public String getSex() {

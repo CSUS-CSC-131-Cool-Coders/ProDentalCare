@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { ValidationService } from '../../validation.service';
+import { ApiService } from '../../api.service';
 
 @Component({
   selector: 'app-patient-information',
@@ -15,53 +16,49 @@ import { ValidationService } from '../../validation.service';
   templateUrl: './patient-information.component.html',
   styleUrls: ['./patient-information.component.css'],
 })
-export class PatientInformationComponent {
+export class PatientInformationComponent implements OnInit {
   expandedSection: number | null = null;
   editMode = false;
 
-  // Initializing and setting these fields to default N/A rather than having placeholder constant here
-  contactInfo = {
-    phoneType: 'N/A',
-    phoneNumber: 'N/A',
-    contactEmail: 'N/A',
-  };
-  editContactInfo = { ...this.contactInfo };
-
-  emergencyContactInfo = {
-    relationship: 'N/A',
-    phoneType: 'N/A',
-    phoneNumber: 'N/A',
-    emergencyContactEmail: 'N/A',
-  };
-  editEmergencyContactInfo = { ...this.emergencyContactInfo };
-
-  basicInfo = {
-    patientName: 'N/A',
-    patientDOB: 'N/A',
-    patientRace: 'N/A',
-    patientSex: 'N/A',
-    patientMaritalStatus: 'N/A',
-    patientPrefLanguage: 'N/A',
-    patientNumber: 'N/A',
-    patientWeight: 'N/A',
-    patientHeight: 'N/A',
-  };
-  editBasicInfo = { ...this.basicInfo };
+  contactInfo: any = {};
+  emergencyContactInfo: any = {};
+  basicInfo: any = {};
+  addressInfo: any = {};
 
   emailValid: boolean = true;
   emergencyEmailValid: boolean = true;
 
-  addressInfo = {
-    country: 'N/A',
-    state: 'N/A',
-    postalCode: 'N/A',
-    city: 'N/A',
-    addressLineOne: 'N/A',
-    addressLineTwo: 'N/A',
-  };
-  editAddressInfo = { ...this.addressInfo };
+  constructor(private validationService: ValidationService, private apiService: ApiService) {}
 
-  constructor(private validationService: ValidationService) {}
+  ngOnInit(): void {
+    this.apiService.checkAccess('patient', '/info');
+    this.apiService.get('/patient/info').subscribe({
+      next: (res: any) => {
+        const body = res.body;
+        if (body) {
+          this.contactInfo = body.contactInfo || {};
+          this.basicInfo = body.basicInfo || {};
+          this.addressInfo = body.addressInfo || {};
+        }
+      },
+      error: (err) => {
+        console.error('Failed to fetch patient information:', err);
+      },
+    });
+
+    this.apiService.checkAccess('patient', '/emergency-contact');
+    this.apiService.get('/patient/emergency-contact').subscribe({
+      next: (res: any) => {
+        const body = res.body;
+        if (body) {
+          this.emergencyContactInfo = body.emergencyContactInfo || {};
+        }
+      },
+      error: (err) => {
+        console.error('Failed to fetch emergency contact information:', err);
+      },
+    });
+  }
 
   toggleSection(index: number): void {
     this.expandedSection = this.expandedSection === index ? null : index;
@@ -71,49 +68,72 @@ export class PatientInformationComponent {
     event.stopPropagation();
   }
 
-  validateEmail(): void {
-    this.emailValid = this.validationService.validateEmail(
-      this.editContactInfo.contactEmail
-    );
+  validateEmail(): boolean {
+    this.emailValid = this.validationService.validateEmail(this.contactInfo.contactEmail || '');
+    return this.emailValid;
   }
 
-  validateEmergencyEmail(): void {
+  validateEmergencyEmail(): boolean {
     this.emergencyEmailValid = this.validationService.validateEmail(
-      this.editEmergencyContactInfo.emergencyContactEmail
+      this.emergencyContactInfo.emergencyContactEmail || ''
     );
+    return this.emergencyEmailValid;
   }
 
   enableEdit(event: Event): void {
     event.stopPropagation();
     this.editMode = true;
-    this.editContactInfo = { ...this.contactInfo };
-    this.editEmergencyContactInfo = { ...this.emergencyContactInfo };
-    this.editBasicInfo = { ...this.basicInfo };
-    this.editAddressInfo = { ...this.addressInfo};
   }
 
   saveButton(event: Event): void {
     event.stopPropagation();
 
-    if (this.editContactInfo.contactEmail !== this.contactInfo.contactEmail) {
-      this.validateEmail();
-      if (!this.emailValid) return;
+    // Validate email fields
+    const isEmailValid = this.validateEmail();
+    const isEmergencyEmailValid = this.validateEmergencyEmail();
+
+    if (!isEmailValid || !isEmergencyEmailValid) {
+      console.error('Email validation failed. Aborting save operation.');
+      alert('Invalid email format. Please correct and try again.');
+      return;
     }
 
-    if (this.editEmergencyContactInfo.emergencyContactEmail !== this.emergencyContactInfo.emergencyContactEmail) {
-      this.validateEmergencyEmail();
-      if (!this.emergencyEmailValid) return;
-    }
+    // payload for UI
+    const updatedData = {
+      basicInfo: this.basicInfo,
+      contactInfo: this.contactInfo,
+      addressInfo: this.addressInfo,
+    };
 
-    this.contactInfo = { ...this.editContactInfo };
-    this.emergencyContactInfo = { ...this.editEmergencyContactInfo };
-    this.basicInfo = { ...this.editBasicInfo };
-    this.addressInfo = { ...this.editAddressInfo};
-    this.editMode = false;
+    // Calling the API to save the updated data for patient info
+    this.apiService.put('/patient/info', updatedData).subscribe({
+      next: (res) => {
+        console.log('Patient information updated successfully:', res);
+        this.editMode = false; // Exit edit mode on success
+      },
+      error: (err) => {
+        console.error('Failed to update patient information:', err);
+        alert('An error occurred while saving patient information. Please try again.');
+      },
+    });
+
+    // Calling the API to save the updated data for emergency contact
+    this.apiService.put('/patient/emergency-contact', { emergencyContactInfo: this.emergencyContactInfo }).subscribe({
+      next: (res) => {
+        console.log('Patient emergency contact information updated successfully:', res);
+        this.editMode = false; // Exit edit mode on success
+      },
+      error: (err) => {
+        console.error('Failed to update patient emergency contact information:', err);
+        alert('An error occurred while saving emergency contact information. Please try again.');
+      },
+    });
   }
 
   cancelButton(event: Event): void {
     event.stopPropagation();
     this.editMode = false;
+
+    this.ngOnInit();
   }
 }
