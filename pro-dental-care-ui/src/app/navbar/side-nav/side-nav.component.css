@@ -9,6 +9,10 @@ button {
     padding-right: 20px;
 }
 
+.selected {
+    background-color: yellow;
+}
+
 .button-wrapper {
     display: flex;
     flex-direction: row;

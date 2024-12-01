@@ -1,35 +1,78 @@
 <div class="content-wrapper">
-    <button class="button-title" disabled>
-        <h2>Find Care</h2>
-    </button>
-    <button class="button-wrapper">
-        <img ngSrc="/assets/grid.png" height="30" width="30"/>
-        <h2>Overview</h2>
-    </button>
-    <button class="button-wrapper">
-        <img ngSrc="/assets/calendar.png" height="30" width="30"/>
-        <h2>Appointments</h2>
-    </button>
-    <button class="button-title" disabled>
-        <h2>My Record</h2>
-    </button>
-    <button class="button-wrapper">
-        <img ngSrc="/assets/folder.png" height="30" width="30"/>
-        <h2>Health Records</h2>
-    </button>
-    <button class="button-wrapper">
-        <img ngSrc="/assets/treatment-plan.png" height="30" width="24" style="padding-right: 6px"/>
-        <h2>Treatment Plan</h2>
-    </button>
-    <button class="button-wrapper">
-        <img ngSrc="/assets/user.png" height="30" width="30"/>
-        <h2>My Information</h2>
-    </button>
-    <button class="button-title" disabled>
-        <h2>My Payments</h2>
-    </button>
-    <button class="button-wrapper">
-        <img ngSrc="/assets/grid.png" height="30" width="30"/>
-        <h2>Payment Summary</h2>
-    </button>
+<!--    Patient -->
+    <ng-container *ngIf="this.apiService.hasRole('patient')">
+        <button class="button-title" disabled>
+            <h2>Find Care</h2>
+        </button>
+        <button class="button-wrapper" id="patientOverview">
+            <img ngSrc="/assets/grid.png" height="30" width="30"/>
+            <h2>Overview</h2>
+        </button>
+        <button class="button-wrapper" id="patientAppointments">
+            <img ngSrc="/assets/calendar.png" height="30" width="30"/>
+            <h2>Appointments</h2>
+        </button>
+        <button class="button-title" disabled>
+            <h2>My Record</h2>
+        </button>
+        <button class="button-wrapper" id="patientHealthRecords">
+            <img ngSrc="/assets/folder.png" height="30" width="30"/>
+            <h2>Health Records</h2>
+        </button>
+        <button class="button-wrapper" id="patientTreatmentPlan">
+            <img ngSrc="/assets/treatment-plan.png" height="30" width="24" style="padding-right: 6px"/>
+            <h2>Treatment Plan</h2>
+        </button>
+        <button class="button-wrapper" id="patientInformation">
+            <img ngSrc="/assets/user.png" height="30" width="30"/>
+            <h2>My Information</h2>
+        </button>
+        <button class="button-title" disabled>
+            <h2>My Payments</h2>
+        </button>
+        <button class="button-wrapper" id="patientPaymentSummary">
+            <img ngSrc="/assets/grid.png" height="30" width="30"/>
+            <h2>Payment Summary</h2>
+        </button>
+    </ng-container>
+<!--    Dentist -->
+    <ng-container *ngIf="this.apiService.hasRole('dentist')">
+        <button class="button-title" disabled>
+            <h2>Dashboard</h2>
+        </button>
+        <button class="button-wrapper" id="dentistOverview">
+            <img ngSrc="/assets/grid.png" height="30" width="30"/>
+            <h2>Overview</h2>
+        </button>
+        <button class="button-wrapper" id="dentistCalendar">
+            <img ngSrc="/assets/calendar.png" height="30" width="30"/>
+            <h2>Calendar</h2>
+        </button>
+        <button class="button-wrapper" id="dentistInformation">
+            <img ngSrc="/assets/user.png" height="30" width="30"/>
+            <h2>My Information</h2>
+        </button>
+        <button class="button-wrapper" id="dentistPatientInformation">
+            <img ngSrc="/assets/folder.png" height="30" width="30"/>
+            <h2>Patient Information</h2>
+        </button>
+    </ng-container>
+<!--    Admin -->
+    <ng-container *ngIf="this.apiService.hasRole('admin')">
+        <button class="button-title" disabled>
+            <h2>Dashboard</h2>
+        </button>
+        <button class="button-wrapper" id="adminOverview">
+            <img ngSrc="/assets/grid.png" height="30" width="30"/>
+            <h2>Overview</h2>
+        </button>
+        <button class="button-wrapper" id="adminCalendar">
+            <img ngSrc="/assets/calendar.png" height="30" width="30"/>
+            <h2>Calendar</h2>
+        </button>
+        <button class="button-wrapper" id="adminStaffInformation">
+            <img ngSrc="/assets/user.png" height="30" width="30"/>
+            <h2>Staff Information</h2>
+        </button>
+    </ng-container>
 </div>
