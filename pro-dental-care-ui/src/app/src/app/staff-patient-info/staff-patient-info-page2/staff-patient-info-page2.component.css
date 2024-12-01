@@ -1,0 +1,154 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  .content-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    display: block;
+  }
+  
+  .section {
+    background-color: #ffffff;
+    border-radius: 8px;
+    margin-bottom: 30px; /* Space between sections */
+    overflow: hidden;
+    border: 1px solid #ddd;
+    display: block; /* Ensures sections stack vertically */
+  }
+  
+  .section-header {
+    background-color: #f8f8f8;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .section-header:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .section-content {
+    display: none;  /* Hidden by default */
+    padding: 15px;
+    background-color: #f9f9f9;
+  }
+  
+  .section-content input,
+  .section-content select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .section-content input[type="date"] {
+    padding: 10px;
+  }
+  
+  .section-content p {
+    margin-bottom: 10px;
+  }
+  
+  
+  /* Expanded state styles */
+  .section.expanded .section-content {
+    display: block;
+  }
+  
+  /* Label styles */
+  label {
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+  }
+  
+  /* Error message styling */
+  .error {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  
+  /* Icon styling */
+  .icon-container {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 10px;
+  }
+  
+  .icon-container img {
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  
+  .edit-icon,
+  .save-icon,
+  .cancel-icon {
+    width: 30px;
+    height: 30px;
+  }
+  
+  /* Hover effect for icons */
+  .icon-container img:hover {
+    opacity: 0.7;
+  }
+  
+  /* Section label and content style */
+  .section-content p {
+    font-size: 16px;
+  }
+  
+  .section-content p span.label {
+    font-weight: bold;
+  }
+  
+  .section-header {
+    cursor: pointer;
+    padding: 12px;
+    background-color: #ccc;
+    color: black; 
+    font-size: 16px;
+  }
+  
+  .section-header:hover {
+    background-color: #ccc;
+  }
+  
+  .section-content input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .section-content select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Add styles for the section headers */
+  .section-header {
+    background-color: #ccc;
+    color: black;
+    font-size: 18px;
+    padding: 12px;
+  }
+  
+  .section-header:hover {
+    background-color: #ccc;
+  }
+  

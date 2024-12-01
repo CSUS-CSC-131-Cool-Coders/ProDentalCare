@@ -1,13 +1,19 @@
 package org.cc.prodentalcareapi.security;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Token {
 
 	private String username;
-	private final List<String> roles;
+	private final Set<String> roles;
 
-	public Token(String username, List<String> roles) {
+	public Token(String username) {
+		setUsername(username);
+		this.roles = new HashSet<>();
+	}
+
+	public Token(String username, Set<String> roles) {
 		setUsername(username);
 		this.roles = roles;
 	}
@@ -20,7 +26,7 @@ public class Token {
 		this.username = username;
 	}
 
-	public final List<String> getRoles() {
+	public final Set<String> getRoles() {
 		return roles;
 	}
 }

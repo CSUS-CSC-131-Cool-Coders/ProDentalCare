@@ -2,6 +2,7 @@ import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core'
 import {NgIf, NgOptimizedImage} from "@angular/common";
 import {NavigationEnd, Router, RouterLink} from "@angular/router";
 import {filter, Subscription} from "rxjs";
+import {ApiService} from "../api.service";
 
 @Component({
   selector: 'app-navbar',
@@ -23,7 +24,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   private routerSubscription!: Subscription;
 
-  public constructor(private router: Router) {}
+  public constructor(private router: Router,
+                     protected apiService: ApiService) {}
 
   ngOnInit(): void {
     this.routerSubscription = this.router.events
@@ -46,5 +48,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.routerSubscription.unsubscribe();
     }
   }
+
+
+  public logout(): void {
+    this.apiService.logout();
+  }
+
 
 }
