@@ -25,6 +25,7 @@ create table patient
     height         int          not null check (height > 0),
     country        varchar(40)  not null,
     state          varchar(40)  not null,
+    city           varchar(40) not null,
     address_one    varchar(128) not null,
     address_two    varchar(128) not null,
     zip_code       varchar(5)   not null check (char_length(zip_code) = 5),
