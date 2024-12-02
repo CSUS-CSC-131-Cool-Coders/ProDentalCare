@@ -1,0 +1,16 @@
+<main class="patient-list">
+    <h1 class="header">Select a Patient</h1>
+    <section class="accordion-container">
+      <section
+        class="accordion-item"
+        *ngFor="let patient of patients"
+        (click)="goToPatientInformation(patient.id)"
+      >
+        <header class="accordion-header">
+          <h2>{{ patient.name }}</h2>
+          <p><strong>Date of Birth:</strong> {{ patient.dob }}</p>
+        </header>
+      </section>
+    </section>
+  </main>
+  

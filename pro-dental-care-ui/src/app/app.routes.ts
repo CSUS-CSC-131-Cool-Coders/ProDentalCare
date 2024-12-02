@@ -10,16 +10,13 @@ import {Page2Component} from "./account/signup-page/page-2/page-2.component";
 import {PatientOverviewComponent} from './patient/overview/patient-overview.component';
 import {PatientHealthRecords} from './patient/records/health records/health-records.component';
 import {PatientTreatmentPlan} from './patient/records/treatment plan/patient-treatment-plan.component';
-import {StaffPatientInfoComponent} from './src/app/staff-patient-info/staff-patient-info.component';
-import {
-    StaffPatientInfoPage2Component
-} from './src/app/staff-patient-info/staff-patient-info-page2/staff-patient-info-page2.component';
 import {PatientInformationComponent} from './patient/patient-information/patient-information.component';
 import {StaffSignupComponent} from "./account/signup-page/staff-signup/staff-signup.component";
+import { StaffPatientComponent } from './staff/patient information/staff-patient.component';
+import { StaffPatientInformationComponent } from './staff/patient information/staff-patient-information.component';
+
 
 export const routes: Routes = [
-    {path: "patient-info-staff-view-page-2", component: StaffPatientInfoPage2Component},
-    {path: "patient-info-staff-view", component: StaffPatientInfoComponent},
     {path: "login", component: LoginPageComponent},
     {path: "signup", component: SignupPageComponent},
     {path: "signup/page-2", component: Page2Component},
@@ -36,5 +33,7 @@ export const routes: Routes = [
     {path: "patient/patient-information", component: PatientInformationComponent},
     {path: "reset-password/:resetToken", component: ResetPasswordComponent},
     {path: "payments", component: PaymentComponent}, //Add route for payments
-    {path: "process-payment", component: PaymentPageComponent} //Add route for payment process
+    {path: "process-payment", component: PaymentPageComponent}, //Add route for payment process
+    {path: 'staff/patient', component: StaffPatientComponent },
+    {path: 'staff/patient-information/:id', component: StaffPatientInformationComponent }
 ];

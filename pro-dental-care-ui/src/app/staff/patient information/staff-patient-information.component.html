@@ -1,0 +1,154 @@
+<main class="patient-summary">
+    <h1 class="header">{{ patientName }}</h1>
+  
+    <!-- Accordion Sections -->
+    <section class="medical-records">
+      <!-- Visits Accordion -->
+      <section class="accordion-item" [class.expanded]="visitsExpanded" [class.closed]="!visitsExpanded">
+        <header class="accordion-header" (click)="visitsExpanded = !visitsExpanded">
+          <h2 class="accordion-title">VISITS</h2>
+          <img [ngSrc]="visitsExpanded ? '/assets/up.png' : '/assets/down.png'"
+               alt=""
+               class="accordion-icon"
+               width="20" 
+               height="20" />
+        </header>
+        <div class="accordion-content" *ngIf="visitsExpanded">
+          <table class="accordion-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Provider</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let visit of visits">
+                <td>{{ visit.date }}</td>
+                <td>{{ visit.provider }}</td>
+                <td>{{ visit.notes }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+  
+      <!-- Allergies Accordion -->
+      <section class="accordion-item" [class.expanded]="allergiesExpanded" [class.closed]="!allergiesExpanded">
+        <header class="accordion-header" (click)="allergiesExpanded = !allergiesExpanded">
+          <h2 class="accordion-title">ALLERGIES</h2>
+          <img [ngSrc]="allergiesExpanded ? '/assets/up.png' : '/assets/down.png'"
+               alt=""
+               class="accordion-icon"
+               width="20" 
+               height="20" />
+        </header>
+        <div class="accordion-content" *ngIf="allergiesExpanded">
+          <table class="accordion-table">
+            <thead>
+              <tr>
+                <th>Allergy</th>
+                <th>Comment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let allergy of allergies">
+                <td>{{ allergy.name }}</td>
+                <td>{{ allergy.comment }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+  
+      <!-- Medications Accordion -->
+      <section class="accordion-item" [class.expanded]="medsExpanded" [class.closed]="!medsExpanded">
+        <header class="accordion-header" (click)="medsExpanded = !medsExpanded">
+          <h2 class="accordion-title">MEDICATIONS</h2>
+          <img [ngSrc]="medsExpanded ? '/assets/up.png' : '/assets/down.png'"
+               alt=""
+               class="accordion-icon"
+               width="20" 
+               height="20" />
+        </header>
+        <div class="accordion-content" *ngIf="medsExpanded">
+          <table class="accordion-table">
+            <thead>
+              <tr>
+                <th>Date Prescribed</th>
+                <th>Medication</th>
+                <th>Directions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let medication of medications">
+                <td>{{ medication.datePrescribed }}</td>
+                <td>{{ medication.name }}</td>
+                <td>{{ medication.directions }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+  
+      <!-- Labs Accordion -->
+      <section class="accordion-item" [class.expanded]="labsExpanded" [class.closed]="!labsExpanded">
+        <header class="accordion-header" (click)="labsExpanded = !labsExpanded">
+          <h2 class="accordion-title">LABS & PROCEDURES</h2>
+          <img [ngSrc]="labsExpanded ? '/assets/up.png' : '/assets/down.png'"
+               alt=""
+               class="accordion-icon"
+               width="20" 
+               height="20" />
+        </header>
+        <div class="accordion-content" *ngIf="labsExpanded">
+          <table class="accordion-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Lab Name</th>
+                <th>Comments</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let lab of labs">
+                <td>{{ lab.date }}</td>
+                <td>{{ lab.name }}</td>
+                <td>{{ lab.comments }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+  
+      <!-- Immunizations Accordion -->
+      <section class="accordion-item" [class.expanded]="immunizationsExpanded" [class.closed]="!immunizationsExpanded">
+        <header class="accordion-header" (click)="immunizationsExpanded = !immunizationsExpanded">
+          <h2 class="accordion-title">IMMUNIZATIONS</h2>
+          <img [ngSrc]="immunizationsExpanded ? '/assets/up.png' : '/assets/down.png'"
+               alt=""
+               class="accordion-icon"
+               width="20" 
+               height="20" />
+        </header>
+        <div class="accordion-content" *ngIf="immunizationsExpanded">
+          <table class="accordion-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Immunization</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let immunization of immunizations">
+                <td>{{ immunization.date }}</td>
+                <td>{{ immunization.name }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+  
+    </section>
+  </main>
+  
