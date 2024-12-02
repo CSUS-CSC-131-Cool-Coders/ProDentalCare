@@ -138,6 +138,19 @@ export class ApiService {
         });
     }
 
+    /**
+    * Checks if the current user has the required role, and navigates to the fallbackUrl if they do not have the role!
+    * */
+    public checkAccess(requiredRole: string, fallbackUrl: string) {
+        if (!this.getUserRoles().includes(requiredRole)) {
+            this.router.navigateByUrl(fallbackUrl);
+        }
+    }
+
+    public hasRole(role: string) {
+        return this.getUserRoles().includes(role);
+    }
+
     public static isOk(statusCode: number): boolean {
         return statusCode > 199 && statusCode < 300;
     }
