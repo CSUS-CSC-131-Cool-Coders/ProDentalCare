@@ -151,7 +151,25 @@ export class StaffPatientInformationComponent implements OnInit {
       this.newLabs.push({ date: '', lab: '', comment: '' });
     }
     saveNewLabs(): void {
-      this.newLabs = [];
+        let body = this.newLabs;
+        this.apiService.post("/staff/patient-information/" + this.patientInfo.patient.patientId + "/labs", body).subscribe({
+            next: res => {
+                if (ApiService.isOk(res.status)) {
+                    if (this.patientInfo.labs == null) {
+                        this.patientInfo.labs = [];
+                    }
+                    for (let lab of this.newLabs) {
+                        this.patientInfo.labs.push(lab);
+                    }
+                }
+
+                this.newLabs = [];
+            },
+            error: err => {
+                alert("There was an error updating the patient's allergy information.");
+                this.newLabs = [];
+            }
+        });
     }
   
     // Immunizations Methods
@@ -178,14 +196,6 @@ export class StaffPatientInformationComponent implements OnInit {
                 this.newImmunizations = [];
             }
         });
-    }
-
-      // To Do Methods
-    addToDo(): void {
-      this.newToDos.push({ note: '', provider: '', date: '' });
-    }
-    saveNewToDos(): void {
-      this.newToDos = [];
     }
 
     saveNewTreatmentPlan(): void {

@@ -1,10 +1,7 @@
 package org.cc.prodentalcareapi.impl;
 
 import org.cc.prodentalcareapi.model.*;
-import org.cc.prodentalcareapi.model.request.AllergyUpdateRequest;
-import org.cc.prodentalcareapi.model.request.ImmunizationUpdateRequest;
-import org.cc.prodentalcareapi.model.request.MedicationUpdateRequest;
-import org.cc.prodentalcareapi.model.request.PatientTreatmentPlanUpdateRequest;
+import org.cc.prodentalcareapi.model.request.*;
 import org.cc.prodentalcareapi.model.response.AppointmentsWithStaffName;
 import org.cc.prodentalcareapi.model.response.PatientInformationStaffViewResponse;
 import org.cc.prodentalcareapi.model.response.PatientListResponse;
@@ -223,6 +220,28 @@ public class StaffInfoImpl {
 			record.setDate(immunization.date);
 			try {
 				immunizationRecordRepository.saveAndFlush(record);
+			} catch (Exception e) {
+				// ignore
+			}
+		}
+
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@RequireToken
+	@PostMapping("/patient-information/{patientId}/labs")
+	public ResponseEntity<String> updatePatientLabs(@RequestHeader(name = "Authorization") String token, @PathVariable("patientId") String patientId, @RequestBody List<LabUpdateRequest> request) {
+		if (isValidStaffToken(token).isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+		for (LabUpdateRequest lab : request) {
+			LabRecord record = new LabRecord();
+			record.setPatientId(patientId);
+			record.setLab(lab.lab);
+			record.setComment(lab.comment);
+			record.setDate(lab.date);
+			try {
+				labRecordRepository.saveAndFlush(record);
 			} catch (Exception e) {
 				// ignore
 			}
