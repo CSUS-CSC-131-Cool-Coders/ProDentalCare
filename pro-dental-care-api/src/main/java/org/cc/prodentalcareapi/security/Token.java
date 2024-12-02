@@ -29,4 +29,8 @@ public class Token {
 	public final Set<String> getRoles() {
 		return roles;
 	}
+
+	public boolean hasRole(String role) {
+		return roles.contains(role);
+	}
 }
