@@ -1,5 +1,15 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ApiService } from '../api.service';
+
+interface StaffInfo {
+  fullName: string;
+  position: string;
+  staff_id: string;
+  dateOfBirth: string;
+  sex: string;
+  payRate: string;
+}
 
 @Component({
   selector: 'app-staff-information',
@@ -9,28 +19,39 @@ import { Component, OnInit } from '@angular/core';
   imports: [CommonModule],
 })
 export class StaffInformationComponent implements OnInit {
-  staffInfo: any = {
-    name: '',
-    title: '',
-    supervisor: '',
-    staffId: '',
-    employmentType: '',
+  expandedSection: number | null = null; // Track which section is expanded
+
+  staffInfo: StaffInfo = {
+    fullName: '',
+    position: '',
+    staff_id: '',
+    dateOfBirth: '',
+    sex: '',
     payRate: '',
-    yearsOfService: 0,
   };
 
-  constructor() {}
+  constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
-    // Initialize staff information
-    this.staffInfo = {
-      name: 'Jane Doe',
-      title: 'Nurse',
-      supervisor: 'Dr. Smith',
-      staffId: 'ST12345',
-      employmentType: 'Full-Time',
-      payRate: '40',
-      yearsOfService: 5,
-    };
+    this.apiService.checkAccess('staff', '/staff-information');
+    this.apiService.get('/staff/staff-information').subscribe({
+      next: (res: any) => {
+        const body = res.body;
+        if (body && body.staffInfo) {
+          this.staffInfo = body.staffInfo;
+        }
+      },
+      error: (err) => {
+        console.error('Failed to fetch staff information:', err);
+      },
+    });
+  }
+
+  toggleSection(index: number): void {
+    this.expandedSection = this.expandedSection === index ? null : index;
+  }
+
+  preventToggle(event: Event): void {
+    event.stopPropagation();
   }
 }
