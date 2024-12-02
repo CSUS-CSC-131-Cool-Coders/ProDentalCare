@@ -83,9 +83,6 @@ public class PatientImpl {
 
 		Patient patient = patientList.get(0);
 
-		response.firstName = patient.getFirstName();
-		response.lastName = patient.getLastName();
-
 		List<Appointments> appointmentList = appointmentsRepository.findAllAppointmentsByPatientIdOrderByDateAsc(patient.getPatientId());
 		if (!appointmentList.isEmpty()) {
 			Date date = appointmentList.get(0).getDate();

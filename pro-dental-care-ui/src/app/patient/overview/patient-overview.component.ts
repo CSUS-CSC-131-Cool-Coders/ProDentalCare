@@ -15,10 +15,6 @@ import {timeout} from "rxjs";
 export class PatientOverviewComponent implements OnInit {
 
   @Input()
-  public firstName: string;
-  @Input()
-  public lastName: string;
-  @Input()
   public nextAppointmentDate: string;
   @Input()
   public treatmentPlan: string;
@@ -36,8 +32,6 @@ export class PatientOverviewComponent implements OnInit {
     this.apiService.get("/patient/dashboard").subscribe({
       next: res => {
         let body: any = res.body;
-        this.firstName = body.firstName;
-        this.lastName = body.lastName;
         this.nextAppointmentDate = body.nextAppointmentDate;
         this.treatmentPlan = body.treatmentPlan;
         if (body.nextPayment != null) {
