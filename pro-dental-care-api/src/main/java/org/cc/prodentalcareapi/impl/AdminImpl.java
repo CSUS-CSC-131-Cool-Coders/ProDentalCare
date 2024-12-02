@@ -1,12 +1,15 @@
 package org.cc.prodentalcareapi.impl;
 
+
+import org.cc.prodentalcareapi.model.Appointments;
 import org.cc.prodentalcareapi.model.StaffMember;
-import org.cc.prodentalcareapi.model.Event;
-import org.cc.prodentalcareapi.model.response.AdminCalendarResponse;
-import org.cc.prodentalcareapi.model.response.AdminCalendarResponse.EventInfo;
+import org.cc.prodentalcareapi.model.StaffAppointments;
+import org.cc.prodentalcareapi.model.response.AdminAppointmentsResponse;
+import org.cc.prodentalcareapi.model.response.AdminAppointmentsResponse.AppointmentInfo;
 import org.cc.prodentalcareapi.model.response.AdminStaffInfoResponse;
 import org.cc.prodentalcareapi.model.response.AdminStaffInfoResponse.StaffInfo;
-import org.cc.prodentalcareapi.repository.EventRepository;
+import org.cc.prodentalcareapi.repository.AppointmentsRepository;
+import org.cc.prodentalcareapi.repository.StaffAppointmentsRepository;
 import org.cc.prodentalcareapi.repository.StaffMemberRepository;
 import org.cc.prodentalcareapi.security.RequireToken;
 import org.cc.prodentalcareapi.security.Token;
@@ -20,7 +23,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -29,13 +35,18 @@ public class AdminImpl {
 
     private final TokenService tokenService;
     private final StaffMemberRepository staffMemberRepository;
-    private final EventRepository eventRepository;
+    private final AppointmentsRepository appointmentsRepository;
+    private final StaffAppointmentsRepository staffAppointmentsRepository;
 
     @Autowired
-    public AdminImpl(TokenService tokenService, StaffMemberRepository staffMemberRepository, EventRepository eventRepository) {
+    public AdminImpl(TokenService tokenService,
+                     StaffMemberRepository staffMemberRepository,
+                     AppointmentsRepository appointmentsRepository,
+                     StaffAppointmentsRepository staffAppointmentsRepository) {
         this.tokenService = tokenService;
         this.staffMemberRepository = staffMemberRepository;
-        this.eventRepository = eventRepository;
+        this.appointmentsRepository = appointmentsRepository;
+        this.staffAppointmentsRepository = staffAppointmentsRepository;
     }
 
     @RequireToken
@@ -87,47 +98,75 @@ public class AdminImpl {
 
     @RequireToken
     @GetMapping("/calendar")
-    public ResponseEntity<AdminCalendarResponse> getCalendarEvents(@RequestHeader(name = "Authorization") String token) {
-        // Token validation (same as in getStaffInfo)
+    public ResponseEntity<AdminAppointmentsResponse> getCalendarAppointments(@RequestHeader(name = "Authorization") String token) {
+        // Extract token from Bearer token
         String tokenValue = tokenService.getTokenFromBearerToken(token);
         Token t = tokenService.getToken(tokenValue);
 
-        if (t == null || ObjectUtils.isEmpty(t.getUsername())) {
+        // Validate token
+        if (t == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        // (Optional) Check if user has admin privileges
+        String email = t.getUsername();
 
-        // Fetch all events
-        List<Event> events = eventRepository.findAll();
+        if (ObjectUtils.isEmpty(email)) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
 
-        // Map events to EventInfo
-        List<EventInfo> eventInfos = new ArrayList<>();
-        for (Event event : events) {
-            EventInfo info = new EventInfo();
-            info.setEventId(event.getEventId());
-            info.setTitle(event.getTitle());
-            info.setStartTime(event.getStartTime().toString()); // Format as needed
-            info.setEndTime(event.getEndTime().toString()); // Format as needed
-            info.setEventType(event.getEventType());
+        // (Optional) Verify if the user has admin privileges
+        // Example:
+        // if (!t.getRoles().contains("ADMIN")) {
+        //     return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        // }
 
-            // Fetch staff member name
-            StaffMember staff = staffMemberRepository.findById(event.getStaffMemberId()).orElse(null);
-            if (staff != null) {
-                info.setStaffMemberName(staff.getFirstName() + " " + staff.getLastName());
-            } else {
-                info.setStaffMemberName("N/A");
+        // Retrieve all appointments
+        List<Appointments> appointments = appointmentsRepository.findAll();
+
+        // Map Appointments to AppointmentInfo with assigned staff
+        List<AppointmentInfo> appointmentInfos = new ArrayList<>();
+        for (Appointments appt : appointments) {
+            AppointmentInfo info = new AppointmentInfo();
+            info.setAppointmentId(appt.getAppointmentId());
+            info.setDate(appt.getDate());
+            info.setStatus(appt.getStatus());
+            info.setDentistNotes(appt.getDentistNotes());
+            info.setPatientId(appt.getPatientId());
+
+            // Fetch assigned staff members
+            List<StaffAppointments> staffAppts = staffAppointmentsRepository.findByStaffAppointmentIdAppointmentId(appt.getAppointmentId());
+            List<StaffInfo> staffInfos = new ArrayList<>();
+            for (StaffAppointments staffAppt : staffAppts) {
+                StaffMember staff = staffMemberRepository.findById(staffAppt.getStaffAppointmentId().getStaffId()).orElse(null);
+                if (staff != null) {
+                    StaffInfo staffInfo = new StaffInfo();
+                    staffInfo.setStaffId(staff.getStaffId());
+                    staffInfo.setEmail(staff.getEmail());
+                    staffInfo.setFirstName(staff.getFirstName());
+                    staffInfo.setLastName(staff.getLastName());
+                    staffInfo.setDateOfBirth(staff.getDateOfBirth());
+                    staffInfos.add(staffInfo);
+                }
             }
-
-            info.setNotes(event.getNotes());
-            eventInfos.add(info);
+            info.setStaffMembers(staffInfos);
+            appointmentInfos.add(info);
         }
 
         // Construct response
-        AdminCalendarResponse response = new AdminCalendarResponse();
-        response.setEvents(eventInfos);
+        AdminAppointmentsResponse response = new AdminAppointmentsResponse();
+        response.setAppointments(appointmentInfos);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    /**
+     * Helper method to parse date strings if needed.
+     * (Implement as required based on your date format)
+     */
+    private Date parseDate(String dateStr) throws ParseException {
+        // Example: "2023-10-01T14:30:00"
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        return formatter.parse(dateStr);
     }
 
 

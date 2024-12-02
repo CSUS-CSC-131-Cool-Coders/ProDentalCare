@@ -1,5 +1,3 @@
-// src/app/admin-calendar/admin-calendar.component.ts
-
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
@@ -9,9 +7,10 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { AdminCalendarResponse } from '../../models/admin-calendar-response';
-import { EventInfo } from '../../models/event-info';
+import { AdminAppointmentsResponse } from '../../models/admin-appointments-response';
+import { AppointmentInfo, StaffInfo } from '../../models/appointment-info';
 import { ApiService } from '../../api.service';
+import { AdminStaffInfoResponse } from '../../models/admin-staff-info-response';
 
 @Component({
   selector: 'admin-calendar',
@@ -27,7 +26,7 @@ import { ApiService } from '../../api.service';
 })
 export class AdminCalendarComponent implements OnInit {
   // State Variables
-  events: EventInfo[] = [];
+  appointments: AppointmentInfo[] = [];
   isLoading: boolean = false;
   errorMessage: string = '';
 
@@ -42,43 +41,18 @@ export class AdminCalendarComponent implements OnInit {
     selectMirror: true,
     dayMaxEvents: true,
     select: this.handleDateSelect.bind(this),
-    eventClick: this.handleEventClick.bind(this),
+    // eventClick: this.handleAppointmentClick.bind(this),
     eventsSet: this.handleEvents.bind(this),
   };
 
-  // Selected Event Details
+  // Selected Appointment Details
   selectedDate: string | null = '';
-  selectedEventType: string = '';
+  selectedAppointment: AppointmentInfo | null = null;
   selectedStaff: string = '';
-  selectedEvent: EventApi | null = null;
-  selectedEventTypeTime: string = '';
+  selectedStatus: string = '';
 
-  // Sample Staff Data (Consider fetching from API)
-  staffs: Staff[] = [
-    {
-      id: 1,
-      name: 'Jane Doe',
-      position: 'Manager',
-      pay: '$150,000/year',
-      yearsWorked: 12,
-      email: 'jane.doe@example.com',
-      contactNumber: '1(916)123-4567',
-      qualifications: ['MBA', 'Certified Project Manager'],
-      availability: ['09:00 AM', '10:00 AM', '11:00 AM', '02:00 PM'],
-    },
-    {
-      id: 2,
-      name: 'John Smith',
-      position: 'Developer',
-      pay: '$90,000/year',
-      yearsWorked: 4,
-      email: 'john.smith@example.com',
-      contactNumber: '1(279)987-6543',
-      qualifications: ['B.Sc. Computer Science', 'Certified Angular Developer'],
-      availability: ['09:30 AM', '10:30 AM', '01:00 PM', '03:00 PM'],
-    },
-    // Add more staff members as needed
-  ];
+  // Available Staff Members
+  staffs: StaffInfo[] = [];
 
   constructor(
     private apiService: ApiService,
@@ -86,31 +60,36 @@ export class AdminCalendarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.fetchCalendarEvents();
+    this.fetchCalendarAppointments();
+    this.fetchStaffInformation();
   }
 
   /**
-   * Fetches calendar events from the backend API.
+   * Fetches calendar appointments from the backend API.
    */
-  fetchCalendarEvents(): void {
+  fetchCalendarAppointments(): void {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.apiService.get<AdminCalendarResponse>('/admin/calendar').subscribe({
+    this.apiService.get<AdminAppointmentsResponse>('/admin/calendar').subscribe({
       next: (res) => {
         this.isLoading = false;
-        if (res.events) {
-          this.events = res.events;
+        if (res.body && res.status === 200) {
+          this.appointments = res.body.appointments;
           this.populateCalendarEvents();
         } else {
           console.error('Unexpected response structure:', res);
           this.errorMessage = 'Unexpected response from the server.';
+          this.snackBar.open(this.errorMessage, 'Close', {
+            duration: 3000,
+            panelClass: ['snackbar-error', 'custom-snackbar'],
+          });
         }
       },
       error: (err) => {
         this.isLoading = false;
-        console.error('Error fetching calendar events:', err);
-        this.errorMessage = 'Failed to load calendar events. Please try again later.';
+        console.error('Error fetching calendar appointments:', err);
+        this.errorMessage = 'Failed to load calendar appointments. Please try again later.';
         this.snackBar.open(this.errorMessage, 'Close', {
           duration: 3000,
           panelClass: ['snackbar-error', 'custom-snackbar'],
@@ -120,22 +99,83 @@ export class AdminCalendarComponent implements OnInit {
   }
 
   /**
-   * Populates the calendar with fetched events.
+   * Fetches staff information from the backend API.
+   */
+  fetchStaffInformation(): void {
+    this.apiService.get<AdminStaffInfoResponse>('/admin/staff-information').subscribe({
+      next: (res) => {
+        if (res.body && res.status === 200) {
+          this.staffs = res.body.staffMembers.map((staff: StaffInfo) => ({
+            ...staff,
+            name: `${staff.firstName} ${staff.lastName}`,
+          }));
+        } else {
+          console.error('Unexpected staff information structure:', res);
+          this.snackBar.open('Unexpected staff information from server.', 'Close', {
+            duration: 3000,
+            panelClass: ['snackbar-error', 'custom-snackbar'],
+          });
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching staff information:', err);
+        this.snackBar.open('Failed to load staff information.', 'Close', {
+          duration: 3000,
+          panelClass: ['snackbar-error', 'custom-snackbar'],
+        });
+      }
+    });
+  }
+
+  /**
+   * Populates the calendar with fetched appointments.
    */
   populateCalendarEvents(): void {
-    const formattedEvents = this.events.map((event) => ({
-      id: event.eventId.toString(),
-      title: event.title,
-      start: event.startTime,
-      end: event.endTime,
+    const formattedEvents = this.appointments.map((appt) => ({
+      id: appt.appointmentId.toString(),
+      title: `Patient ID: ${appt.patientId}`,
+      start: appt.date, // Ensure 'date' includes time if necessary
+      end: appt.date, // Adjust end time if necessary
       extendedProps: {
-        eventType: event.eventType,
-        staff: event.staffMemberName,
-        eventNotes: event.notes,
+        status: appt.status,
+        dentistNotes: appt.dentistNotes,
+        patientId: appt.patientId,
+        staffMembers: this.getStaffNames(appt),
       },
     }));
 
     this.calendarOptions.events = formattedEvents;
+  }
+
+  /**
+   * Retrieves concatenated staff member names for an appointment.
+   * @param appt - The appointment information.
+   * @returns A comma-separated string of staff member names.
+   */
+  getStaffNames(appt: AppointmentInfo): string {
+    return appt.staffMembers.map(s => s.name).join(', ');
+  }
+
+  /**
+   * Retrieves upcoming appointments.
+   * @returns An array of upcoming AppointmentInfo objects.
+   */
+  getUpcomingAppointments(): AppointmentInfo[] {
+    const today = new Date();
+    // Normalize today's date
+    today.setHours(0, 0, 0, 0);
+    return this.appointments.filter(a => new Date(a.date) >= today);
+  }
+
+  /**
+   * Retrieves past appointments.
+   * @returns An array of past AppointmentInfo objects.
+   */
+  getPastAppointments(): AppointmentInfo[] {
+    const today = new Date();
+    // Normalize today's date
+    today.setHours(0, 0, 0, 0);
+    return this.appointments.filter(a => new Date(a.date) < today);
   }
 
   /**
@@ -149,7 +189,7 @@ export class AdminCalendarComponent implements OnInit {
     today.setHours(0, 0, 0, 0);
 
     if (selectedDate < today) {
-      this.snackBar.open('Cannot schedule an event on the selected date.', 'Close', {
+      this.snackBar.open('Cannot schedule an appointment on the selected date.', 'Close', {
         duration: 3000,
         panelClass: ['snackbar-error', 'custom-snackbar'],
       });
@@ -157,66 +197,72 @@ export class AdminCalendarComponent implements OnInit {
     }
 
     this.selectedDate = selectInfo.startStr;
-    this.selectedEventType = '';
-    this.selectedStaff = '';
-    this.selectedEvent = null;
+    this.selectedAppointment = null;
+    this.selectedStatus = '';
   }
 
   /**
    * Handles event click on the calendar.
    * @param clickInfo - Information about the clicked event.
    */
-  handleEventClick(clickInfo: EventClickArg): void {
-    this.selectedEvent = clickInfo.event;
-    this.selectedDate = null;
+  handleAppointmentClick(clickInfo: AppointmentInfo): void {
+    const apptId = parseInt(String(clickInfo.appointmentId), 10);
+    const appt = this.appointments.find(a => a.appointmentId === apptId);
+    if (appt) {
+      this.selectedAppointment = appt;
+      this.selectedDate = null;
+    }
   }
+
+  // // Select Appointment from Sidebar
+  // selectAppointment(appointment: EventApi) {
+  //   this.selectedAppointment = appointment;
+  //   // If a date is selected, clear it to hide appointment lists
+  //   if (this.selectedDate) {
+  //     this.selectedDate = null;
+  //   }
+  // }
 
   /**
    * Handles events set on the calendar.
    * @param events - Array of current events on the calendar.
    */
   handleEvents(events: EventApi[]): void {
-    const today = new Date();
-
-    const upcoming = events.filter((event) => new Date(event.start!) >= today);
-    const past = events.filter((event) => new Date(event.start!) < today);
-
-    // You can store upcoming and past events if needed
+    // Optionally handle any event-related logic
   }
 
   /**
-   * Schedules a new event by sending it to the backend API.
+   * Schedules a new appointment by sending it to the backend API.
    */
-  scheduleEvent(): void {
-    if (this.selectedEventType && this.selectedStaff && this.selectedDate && this.selectedEventTypeTime) {
-      const newEvent: Partial<EventInfo> = {
-        title: `${this.selectedEventType} with ${this.selectedStaff}`,
-        startTime: `${this.selectedDate}T${this.convertTimeTo24(this.selectedEventTypeTime)}`,
-        endTime: `${this.selectedDate}T${this.convertTimeTo24(this.selectedEventTypeTime)}`, // Adjust endTime as needed
-        eventType: this.selectedEventType,
-        staffMemberName: this.selectedStaff,
-        notes: '',
+  scheduleAppointment(): void {
+    if (this.selectedDate && this.selectedStaff && this.selectedStatus) {
+      const appointmentPayload = {
+        date: this.selectedDate,
+        status: this.selectedStatus,
+        dentistNotes: '',
+        patientId: 'PATIENT123', // Replace with actual patient ID selection
+        staffMemberId: this.selectedStaff, // Assuming single staff member for simplicity
       };
 
-      this.apiService.post('/admin/calendar', newEvent).subscribe({
+      this.apiService.post('/admin/calendar', appointmentPayload).subscribe({
         next: () => {
-          this.snackBar.open('Event scheduled successfully!', 'Close', {
+          this.snackBar.open('Appointment scheduled successfully!', 'Close', {
             duration: 3000,
             panelClass: ['snackbar-success', 'custom-snackbar'],
           });
-          this.fetchCalendarEvents();
+          this.fetchCalendarAppointments();
           this.resetScheduling();
         },
         error: (error) => {
-          console.error('Error scheduling event:', error);
-          this.snackBar.open('Failed to schedule event.', 'Close', {
+          console.error('Error scheduling appointment:', error);
+          this.snackBar.open('Failed to schedule appointment.', 'Close', {
             duration: 3000,
             panelClass: ['snackbar-error', 'custom-snackbar'],
           });
         }
       });
     } else {
-      this.snackBar.open('Please select an event type, staff member, and time slot.', 'Close', {
+      this.snackBar.open('Please select a date, staff member, and status.', 'Close', {
         duration: 3000,
         panelClass: ['snackbar-error', 'custom-snackbar'],
       });
@@ -228,95 +274,53 @@ export class AdminCalendarComponent implements OnInit {
    */
   resetScheduling(): void {
     this.selectedDate = null;
-    this.selectedEventType = '';
+    this.selectedAppointment = null;
     this.selectedStaff = '';
-    this.selectedEventTypeTime = '';
+    this.selectedStatus = '';
   }
 
   /**
-   * Converts 12-hour time format to 24-hour format.
-   * @param time - Time string in 12-hour format (e.g., "02:00 PM").
-   * @returns Time string in 24-hour format (e.g., "14:00:00").
+   * Cancels an existing appointment.
+   * @param appointment - The appointment to cancel.
    */
-  convertTimeTo24(time: string): string {
-    const [timeStr, modifier] = time.split(' ');
-    let [hours, minutes] = timeStr.split(':');
-
-    if (modifier === 'PM' && hours !== '12') {
-      hours = (parseInt(hours, 10) + 12).toString();
-    }
-    if (modifier === 'AM' && hours === '12') {
-      hours = '00';
-    }
-
-    hours = hours.padStart(2, '0');
-    minutes = minutes.padStart(2, '0');
-
-    return `${hours}:${minutes}:00`;
+  cancelAppointment(appointment: AppointmentInfo): void {
+    // if (confirm('Are you sure you want to cancel this appointment?')) {
+    //   this.apiService.delete(`/admin/calendar/${appointment.appointmentId}`).subscribe({
+    //     next: () => {
+    //       this.snackBar.open('Appointment cancelled successfully.', 'Close', {
+    //         duration: 3000,
+    //         panelClass: ['snackbar-success', 'custom-snackbar'],
+    //       });
+    //       this.fetchCalendarAppointments();
+    //       this.selectedAppointment = null;
+    //     },
+    //     error: (error) => {
+    //       console.error('Error cancelling appointment:', error);
+    //       this.snackBar.open('Failed to cancel appointment.', 'Close', {
+    //         duration: 3000,
+    //         panelClass: ['snackbar-error', 'custom-snackbar'],
+    //       });
+    //     }
+    //   });
+    // }
   }
 
   /**
-   * Retrieves available time slots based on the selected staff member.
-   * @returns Array of available time slots or undefined.
+   * Saves notes for an appointment.
    */
-  getAvailableTimeSlots(): string[] | undefined {
-    const staff = this.staffs.find((s) => s.name === this.selectedStaff);
-    return staff ? staff.availability : [];
-  }
+  saveAppointmentNotes(): void {
+    if (this.selectedAppointment) {
+      const updatedNotes = this.selectedAppointment.dentistNotes;
 
-  /**
-   * Cancels the scheduling process and resets selections.
-   */
-  cancelScheduling(): void {
-    this.resetScheduling();
-  }
+      const updatePayload = { notes: updatedNotes };
 
-  /**
-   * Closes the event details view.
-   */
-  closeEventDetails(): void {
-    this.selectedEvent = null;
-  }
-
-  /**
-   * Cancels an existing event.
-   * @param event - The event to cancel.
-   */
-  cancelEvent(event: EventApi): void {
-    if (confirm('Are you sure you want to cancel this event?')) {
-      // Remove from backend first
-      this.apiService.delete(`/admin/calendar/${event.id}`).subscribe({
-        next: () => {
-          event.remove(); // Removes the event from the calendar
-          this.snackBar.open('Event cancelled successfully.', 'Close', {
-            duration: 3000,
-            panelClass: ['snackbar-success', 'custom-snackbar'],
-          });
-          this.selectedEvent = null;
-        },
-        error: (error) => {
-          console.error('Error cancelling event:', error);
-          this.snackBar.open('Failed to cancel event.', 'Close', {
-            duration: 3000,
-            panelClass: ['snackbar-error', 'custom-snackbar'],
-          });
-        }
-      });
-    }
-  }
-
-  /**
-   * Saves notes for an event.
-   */
-  saveEventNotes(): void {
-    if (this.selectedEvent) {
-      const updatedNotes = this.selectedEvent.extendedProps['eventNotes'] || '';
-      this.apiService.put(`/admin/calendar/${this.selectedEvent.id}`, { notes: updatedNotes }).subscribe({
+      this.apiService.put(`/admin/calendar/${this.selectedAppointment.appointmentId}`, updatePayload).subscribe({
         next: () => {
           this.snackBar.open('Notes saved successfully.', 'Close', {
             duration: 3000,
             panelClass: ['snackbar-success', 'custom-snackbar'],
           });
+          this.fetchCalendarAppointments(); // Refresh to get updated notes
         },
         error: (error) => {
           console.error('Error saving notes:', error);
@@ -330,10 +334,24 @@ export class AdminCalendarComponent implements OnInit {
   }
 
   /**
-   * Optional: Redirects to a review form or performs another action.
-   * @param event - The event to review.
+   * Closes the appointment details view.
    */
-  leaveReview(event: EventApi): void {
+  closeEventDetails(): void {
+    this.selectedAppointment = null;
+  }
+
+  /**
+   * Cancels the scheduling process and resets selections.
+   */
+  cancelScheduling(): void {
+    this.resetScheduling();
+  }
+
+  /**
+   * Optional: Implement review functionality if needed.
+   * @param appointment - The appointment to review.
+   */
+  leaveReview(appointment: AppointmentInfo): void {
     this.snackBar.open('Redirecting to review form...', 'Close', {
       duration: 3000,
       panelClass: ['snackbar-info', 'custom-snackbar'],

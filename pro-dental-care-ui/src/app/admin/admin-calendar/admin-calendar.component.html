@@ -1,10 +1,9 @@
-<!-- admin-calendar.html -->
 <div class="demo-app">
 
   <div class="demo-app-main">
-    <full-calendar *ngIf="calendarVisible()" [options]="calendarOptions()">
+    <full-calendar [options]="calendarOptions">
       <ng-template #eventContent let-arg>
-        <b>{{ arg.event.start | date: 'shortTime' }}</b>
+        <b>{{ arg.event.start | date:'shortDate' }}</b>
         <i>{{ arg.event.title }}</i>
       </ng-template>
     </full-calendar>
@@ -12,90 +11,77 @@
 
   <div class="demo-app-sidebar">
 
-    <!-- Show Event Details if an event is selected -->
-    <div class="demo-app-sidebar-section" *ngIf="selectedEvent">
-      <h2>Event Details</h2>
-      <p><strong>Date:</strong> {{ selectedEvent.start | date: 'fullDate' }}</p>
-      <p><strong>Time:</strong> {{ selectedEvent.start | date: 'shortTime' }} - {{ selectedEvent.end | date: 'shortTime' }}</p>
-      <p><strong>Event Type:</strong> {{ selectedEvent.extendedProps['eventType'] }}</p>
-      <p><strong>Staff Member:</strong> {{ selectedEvent.extendedProps['staff'] }}</p>
+    <!-- Show Appointment Details if an appointment is selected -->
+    <div class="demo-app-sidebar-section" *ngIf="selectedAppointment">
+      <h2>Appointment Details</h2>
+      <p><strong>Date:</strong> {{ selectedAppointment.date | date:'fullDate' }}</p>
+      <p><strong>Status:</strong> {{ selectedAppointment.status }}</p>
+      <p><strong>Patient ID:</strong> {{ selectedAppointment.patientId }}</p>
+      <p><strong>Staff Members:</strong> {{ getStaffNames(selectedAppointment) }}</p>
 
-      <!-- Event Notes Section -->
-      <p><strong>Notes:</strong></p>
-      <textarea [(ngModel)]="selectedEvent.extendedProps['eventNotes']" placeholder="Add notes here..."></textarea>
-      <button (click)="saveEventNotes()" [disabled]="!selectedEvent.extendedProps['eventNotes']">
+      <!-- Dentist Notes Section -->
+      <p><strong>Dentist Notes:</strong></p>
+      <textarea [(ngModel)]="selectedAppointment.dentistNotes" placeholder="Add notes here..."></textarea>
+      <button (click)="saveAppointmentNotes()" [disabled]="!selectedAppointment.dentistNotes">
         Save Notes
       </button>
 
       <!-- Close Details Button -->
       <button (click)="closeEventDetails()">Close</button>
 
-      <!-- Cancel Event Button -->
-      <button (click)="cancelEvent(selectedEvent)">Cancel Event</button>
-
-      <!-- Optional: Leave a Review Button (Can be repurposed) -->
-      <button (click)="leaveReview(selectedEvent)">Leave a Review</button>
+      <!-- Cancel Appointment Button -->
+      <button (click)="cancelAppointment(selectedAppointment)">Cancel Appointment</button>
     </div>
 
-    <!-- Show Events Lists if no event is selected and no date is selected -->
-    <div class="demo-app-sidebar-section" *ngIf="!selectedDate && !selectedEvent">
-      <!-- Upcoming Events -->
-      <h2>Upcoming Events ({{ upcomingEvents().length }})</h2>
+    <!-- Show Appointments Lists if no appointment is selected and no date is selected -->
+    <div class="demo-app-sidebar-section" *ngIf="!selectedDate && !selectedAppointment">
+      <!-- Upcoming Appointments -->
+      <h2>Upcoming Appointments ({{ getUpcomingAppointments().length }})</h2>
       <ul>
-        <li *ngFor="let event of upcomingEvents()" (click)="selectEvent(event)" style="cursor: pointer;">
-          <b>{{ event.startStr | date: 'shortDate' }}</b>
-          <i>{{ event.title }}</i>
+        <li *ngFor="let appt of getUpcomingAppointments()" (click)="handleAppointmentClick(appt)" style="cursor: pointer;">
+          <b>{{ appt.date | date:'shortDate' }}</b>
+          <i>Patient ID: {{ appt.patientId }}</i>
         </li>
       </ul>
     </div>
 
-    <div class="demo-app-sidebar-section" *ngIf="!selectedDate && !selectedEvent">
-      <!-- Past Events -->
-      <h2>Past Events ({{ pastEvents().length }})</h2>
+    <div class="demo-app-sidebar-section" *ngIf="!selectedDate && !selectedAppointment">
+      <!-- Past Appointments -->
+      <h2>Past Appointments ({{ getPastAppointments().length }})</h2>
       <ul>
-        <li *ngFor="let event of pastEvents()" (click)="selectEvent(event)" style="cursor: pointer;">
-          <b>{{ event.startStr | date: 'shortDate' }}</b>
-          <i>{{ event.title }}</i>
+        <li *ngFor="let appt of getPastAppointments()" (click)="handleAppointmentClick(appt)" style="cursor: pointer;">
+          <b>{{ appt.date | date:'shortDate' }}</b>
+          <i>Patient ID: {{ appt.patientId }}</i>
         </li>
       </ul>
     </div>
 
-    <!-- Event and Staff Selection -->
-    <div class="demo-app-sidebar-section" *ngIf="selectedDate && !selectedEvent">
-      <h2>Schedule Event on {{ selectedDate | date: 'fullDate' }}</h2>
-
-      <!-- Select Event Type -->
-      <label for="eventType">Select Event Type:</label>
-      <select id="eventType" [(ngModel)]="selectedEventType">
-        <option value="" disabled>Select an event type</option>
-        <option value="Meeting">Meeting</option>
-        <option value="Training">Training</option>
-        <option value="Presentation">Presentation</option>
-        <option value="Kickoff">Kickoff</option>
-        <!-- Add more event types as needed -->
-      </select>
+    <!-- Appointment Scheduling -->
+    <div class="demo-app-sidebar-section" *ngIf="selectedDate && !selectedAppointment">
+      <h2>Schedule Appointment on {{ selectedDate | date:'fullDate' }}</h2>
 
       <!-- Select Staff Member -->
       <label for="staff">Assign to Staff Member:</label>
       <select id="staff" [(ngModel)]="selectedStaff">
         <option value="" disabled>Select a staff member</option>
-        <option *ngFor="let staff of staffs" [value]="staff.name">
-          {{ staff.name }} ({{ staff.position }})
+        <option *ngFor="let staff of staffs" [value]="staff.staffId">
+          {{ staff.name }}
+<!--          ({{ staff.position}})-->
         </option>
       </select>
 
-      <!-- Select Time Slot -->
-      <label for="time">Select Time Slot:</label>
-      <select id="time" [(ngModel)]="selectedEventTypeTime">
-        <option value="" disabled>Select a time slot</option>
-        <option *ngFor="let slot of getAvailableTimeSlots()" [value]="slot">
-          {{ slot }}
-        </option>
+      <!-- Select Status -->
+      <label for="status">Select Status:</label>
+      <select id="status" [(ngModel)]="selectedStatus">
+        <option value="" disabled>Select a status</option>
+        <option value="Scheduled">Scheduled</option>
+        <option value="Completed">Completed</option>
+        <option value="Cancelled">Cancelled</option>
       </select>
 
       <!-- Schedule and Cancel Buttons -->
-      <button (click)="scheduleEvent()" [disabled]="!selectedEventType || !selectedStaff || !selectedEventTypeTime">
-        Schedule Event
+      <button (click)="scheduleAppointment()" [disabled]="!selectedStaff || !selectedStatus">
+        Schedule Appointment
       </button>
       <button (click)="cancelScheduling()">Cancel</button>
     </div>
