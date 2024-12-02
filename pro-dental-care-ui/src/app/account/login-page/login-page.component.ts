@@ -2,7 +2,6 @@ import {Component, Input} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ApiService} from '../../api.service';
 import {Router} from "@angular/router";
-import {DentalConstants} from "../../dental-constants";
 import {NgIf} from "@angular/common";
 
 @Component({
@@ -33,6 +32,7 @@ export class LoginPageComponent {
   ]);
 
   public invalidCredentials: boolean = false;
+  public accountLocked: boolean = false;
 
   public constructor(private apiService: ApiService,
                      private router: Router,
@@ -45,6 +45,7 @@ export class LoginPageComponent {
 
   public onSubmit(): void {
     this.invalidCredentials = false;
+    this.accountLocked = false;
 
     let body = this.form.value;
 
@@ -57,8 +58,12 @@ export class LoginPageComponent {
         });
       },
       error: err => {
-        this.invalidCredentials = true;
-        console.log("bad credentials");
+        if (err.status == 423) {
+          this.accountLocked = true;
+        } else {
+          this.invalidCredentials = true;
+          console.log("bad credentials");
+        }
       }
     });
   }

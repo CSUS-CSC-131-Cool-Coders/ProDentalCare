@@ -59,6 +59,11 @@ export class SignupPageComponent {
     ]);
 
     @Input()
+    public phoneType = new FormControl("", [
+        Validators.required
+    ]);
+
+    @Input()
     public password = new FormControl("", [
         Validators.required,
         Validators.pattern(ValidationService.passwordPattern)
@@ -72,6 +77,7 @@ export class SignupPageComponent {
     public emailMatch: boolean;
     public passwordMatch: boolean;
 
+
     public constructor(private validationService: ValidationService,
                        private router: Router,
                        private fb: FormBuilder) {
@@ -81,6 +87,7 @@ export class SignupPageComponent {
             email: this.email,
             confirmedEmail: this.confirmedEmail,
             phone: this.phone,
+            phoneType: this.phoneType,
             password: this.password,
             confirmedPassword: this.confirmedPassword
         });
