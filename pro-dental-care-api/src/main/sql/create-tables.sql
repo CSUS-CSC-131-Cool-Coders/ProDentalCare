@@ -80,14 +80,16 @@ create table bills
 
 create table staff_member
 (
-    staff_id        char(9)      not null primary key,
-    email_fk        varchar(128) not null,
-    fname           varchar(40)  not null,
-    lname           varchar(40)  not null,
-    dob             date         not null,
-    sex             varchar(40)  not null,
-    bank_routing_no varchar(100) not null,
-    bank_acc_no     varchar(100) not null,
+    staff_id        char(9)        not null primary key,
+    email_fk        varchar(128)   not null,
+    fname           varchar(40)    not null,
+    lname           varchar(40)    not null,
+    dob             date           not null,
+    sex             varchar(40)    not null,
+    bank_routing_no varchar(100)   not null,
+    bank_acc_no     varchar(100)   not null,
+    hourly_pay      decimal(10, 2) not null,
+    position        varchar(30)    not null,
     foreign key (email_fk) references account (email)
 );
 
