@@ -14,7 +14,7 @@ import {StaffPatientInfoComponent} from './src/app/staff-patient-info/staff-pati
 import {StaffPatientInfoPage2Component} from './src/app/staff-patient-info/staff-patient-info-page2/staff-patient-info-page2.component';
 import {PatientInformationComponent} from './patient/patient-information/patient-information.component';
 import {StaffSignupComponent} from "./account/signup-page/staff-signup/staff-signup.component";
-import {StaffInformationComponent} from "./admin-staff info/staff-information.component";
+import {StaffInformationComponent} from "./staff-staff info/staff-information.component";
 
 export const routes: Routes = [
     {path: "patient-info-staff-view-page-2", component: StaffPatientInfoPage2Component},
@@ -36,5 +36,5 @@ export const routes: Routes = [
     {path: "reset-password/:resetToken", component: ResetPasswordComponent},
     {path: "payments", component: PaymentComponent}, //Add route for payments
     {path: "process-payment", component: PaymentPageComponent}, //Add route for payment process
-    {path: "admin/staff-information", component: StaffInformationComponent}
+    {path: "staff/staff-information", component: StaffInformationComponent}
 ];
