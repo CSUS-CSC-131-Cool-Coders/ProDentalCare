@@ -35,6 +35,6 @@ export const routes: Routes = [
     {path: "patient/treatment", component: PatientTreatmentPlan},
     {path: "patient/patient-information", component: PatientInformationComponent},
     {path: "reset-password/:resetToken", component: ResetPasswordComponent},
-    {path: "payments", component: PaymentComponent}, //Add route for payments
-    {path: "process-payment", component: PaymentPageComponent} //Add route for payment process
+    {path: "patient/payments", component: PaymentComponent}, //Add route for payments
+    {path: "patient/process-payment", component: PaymentPageComponent} //Add route for payment process
 ];

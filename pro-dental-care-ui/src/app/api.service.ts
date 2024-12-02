@@ -126,6 +126,10 @@ export class ApiService {
         }
     }
 
+    public hasRole(role: string) {
+        return this.getUserRoles().includes(role);
+    }
+
     public static isOk(statusCode: number): boolean {
         return statusCode > 199 && statusCode < 300;
     }
