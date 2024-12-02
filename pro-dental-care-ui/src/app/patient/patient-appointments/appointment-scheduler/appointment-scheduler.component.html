@@ -1,7 +1,7 @@
 <div class='demo-app'>
 
   <div class='demo-app-main'>
-    <full-calendar *ngIf='calendarVisible()' [options]='calendarOptions()'>
+    <full-calendar [options]="calendarOptions">
       <ng-template #eventContent let-arg>
         <b>{{ arg.event.start | date:'shortTime' }}</b>
         <i>{{ arg.event.title }}</i>
@@ -11,12 +11,12 @@
 
   <div class='demo-app-sidebar'>
 
-    <!-- Show Appointment Details if an event is selected -->
+    <!-- Show Appointment Details if an appointment is selected -->
     <div class='demo-app-sidebar-section' *ngIf="selectedAppointment">
       <h2>Appointment Details</h2>
       <p><strong>Date:</strong> {{ selectedAppointment.start | date:'fullDate' }}</p>
       <p><strong>Time:</strong> {{ selectedAppointment.extendedProps['time'] }}</p>
-      <p><strong>Dentist:</strong> {{ selectedAppointment.extendedProps['dentist'] }}</p>
+      <p><strong>Dentist:</strong> {{ selectedAppointment.extendedProps['staffMembers'] }}</p>
 
       <!-- Dentist Notes Section -->
       <p><strong>Notes:</strong></p>
@@ -38,36 +38,36 @@
     <!-- Show Appointments Lists if no appointment is selected and no date is selected -->
     <div class='demo-app-sidebar-section' *ngIf="!selectedDate && !selectedAppointment">
       <!-- Upcoming Appointments -->
-      <h2>Upcoming Appointments ({{ upcomingAppointments().length }})</h2>
+      <h2>Upcoming Appointments ({{ upcomingAppointments.length }})</h2>
       <ul>
-        <li *ngFor="let appointment of upcomingAppointments()" (click)="selectAppointment(appointment)" style="cursor: pointer;">
-          <b>{{ appointment.startStr | date:'shortDate' }}</b>
-          <i>{{ appointment.title }}</i>
+        <li *ngFor="let appt of upcomingAppointments" (click)="selectAppointment(appt)" style="cursor: pointer;">
+          <b>{{ appt.start | date:'shortDate' }}</b>
+          <i>Patient ID: {{ appt.title }}</i>
         </li>
       </ul>
     </div>
 
     <div class='demo-app-sidebar-section' *ngIf="!selectedDate && !selectedAppointment">
       <!-- Past Appointments -->
-      <h2>Past Appointments ({{ pastAppointments().length }})</h2>
+      <h2>Past Appointments ({{ pastAppointments.length }})</h2>
       <ul>
-        <li *ngFor="let appointment of pastAppointments()" (click)="selectAppointment(appointment)" style="cursor: pointer;">
-          <b>{{ appointment.startStr | date:'shortDate' }}</b>
-          <i>{{ appointment.title }}</i>
+        <li *ngFor="let appt of pastAppointments" (click)="selectAppointment(appt)" style="cursor: pointer;">
+          <b>{{ appt.start | date:'shortDate' }}</b>
+          <i>Patient ID: {{ appt.title }}</i>
         </li>
       </ul>
     </div>
 
-    <!-- Dentist and Time Slot Selection -->
+    <!-- Appointment Scheduling -->
     <div class='demo-app-sidebar-section' *ngIf="selectedDate && !selectedAppointment">
-      <h2>Book Appointment on {{ selectedDate | date:'fullDate' }}</h2>
+      <h2>Schedule Appointment on {{ selectedDate | date:'fullDate' }}</h2>
 
-      <!-- Select Dentist -->
-      <label for="Staff">Select Dentist:</label>
-      <select id="staff" [(ngModel)]="selectedDentist">
-        <option value="" disabled>Select a dentist</option>
-        <option *ngFor="let staff of staffs" [value]="staff.name">
-          {{ staff.name }}
+      <!-- Select Staff Member -->
+      <label for="staff">Select a Dentist:</label>
+      <select id="staff" [(ngModel)]="selectedStaff">
+        <option value="" disabled>Select a staff member</option>
+        <option *ngFor="let staff of staffs" [value]="staff.staffId">
+          {{ staff.firstName }} {{ staff.lastName }} ({{ staff.position }})
         </option>
       </select>
 
@@ -80,9 +80,9 @@
         </option>
       </select>
 
-      <!-- Book and Cancel Buttons -->
-      <button (click)="bookAppointment()" [disabled]="!selectedDentist || !selectedTime">
-        Book Appointment
+      <!-- Schedule and Cancel Buttons -->
+      <button (click)="scheduleAppointment()" [disabled]="!selectedStaff || !selectedTime">
+        Schedule Appointment
       </button>
       <button (click)="cancelBooking()">Cancel</button>
     </div>

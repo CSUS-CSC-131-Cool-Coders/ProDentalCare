@@ -6,6 +6,7 @@ import org.cc.prodentalcareapi.model.PatientBilling;
 import org.cc.prodentalcareapi.model.PatientTreatmentPlan;
 import org.cc.prodentalcareapi.model.response.PatientDashboardResponse;
 import org.cc.prodentalcareapi.model.response.PaymentPreview;
+import org.cc.prodentalcareapi.model.response.PatientAppointmentsResponse;
 import org.cc.prodentalcareapi.repository.AppointmentsRepository;
 import org.cc.prodentalcareapi.repository.PatientBillingRepository;
 import org.cc.prodentalcareapi.repository.PatientRepository;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import java.util.Date;
 import java.util.List;
@@ -111,6 +113,40 @@ public class PatientImpl {
 		if (candidate != null) {
 			response.nextPayment = new PaymentPreview(candidate.getPaymentAmount().doubleValue(), candidate.getDueDate().toString());
 		}
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	/**
+	 * GET /patient/appointments
+	 * Returns all appointments for the authenticated patient.
+	 */
+	@RequireToken
+	@GetMapping("/appointments")
+	public ResponseEntity<PatientAppointmentsResponse> getPatientAppointments(@RequestHeader(name = "Authorization") String token) {
+		String tokenValue = tokenService.getTokenFromBearerToken(token);
+		Token t = tokenService.getToken(tokenValue);
+
+		if (t == null) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+
+		String email = t.getUsername();
+
+		if (ObjectUtils.isEmpty(email)) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+
+		List<Patient> patientList = patientRepository.findByEmail(email);
+		if (patientList.size() != 1) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		Patient patient = patientList.get(0);
+
+		List<Appointments> appointmentList = appointmentsRepository.findAllAppointmentsByPatientIdOrderByDateAsc(patient.getPatientId());
+
+		PatientAppointmentsResponse response = new PatientAppointmentsResponse(appointmentList);
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

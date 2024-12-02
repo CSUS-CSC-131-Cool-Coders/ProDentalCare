@@ -1,30 +1,32 @@
-import { Component, signal, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import { INITIAL_EVENTS, createEventId } from './event-utils';
-import { Staff } from '../../../admin/staff-information/staff-model';
 import { FormsModule } from '@angular/forms';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; // Import MatSnackBar
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { HttpClient } from '@angular/common/http';
+
+import { StaffInfo } from '../../../models/staff-info'; // Adjust the path as necessary
+import { ApiService } from '../../../api.service'; // Adjust the path as necessary
 
 @Component({
   selector: 'appointment-scheduler',
   standalone: true,
   imports: [CommonModule, FullCalendarModule, FormsModule, MatSnackBarModule],
   templateUrl: './appointment-scheduler.component.html',
-  styleUrl: './appointment-scheduler.component.css'
+  styleUrls: ['./appointment-scheduler.component.css']
 })
-export class AppointmentSchedulerComponent {
-  calendarVisible = signal(true);
-  calendarOptions = signal<CalendarOptions>({
+export class AppointmentSchedulerComponent implements OnInit {
+  calendarVisible = true;
+  calendarOptions: CalendarOptions = {
     plugins: [
       interactionPlugin,
       dayGridPlugin,
     ],
     initialView: 'dayGridMonth',
-    initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
+    events: [], // Will be populated from backend
     weekends: true,
     editable: true,
     selectable: true,
@@ -33,89 +35,191 @@ export class AppointmentSchedulerComponent {
     select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this)
-    /* you can update a remote database when these fire:
-    eventAdd:
-    eventChange:
-    eventRemove:
-    */
-  });
-  currentEvents = signal<EventApi[]>([]);
-  upcomingAppointments = signal<EventApi[]>([]);
-  pastAppointments = signal<EventApi[]>([]);
+  };
+  currentEvents: EventApi[] = [];
+  upcomingAppointments: EventApi[] = [];
+  pastAppointments: EventApi[] = [];
 
-  staffs: Staff[] = [
-    {
-      id: 1,
-      name: 'Jane Doe',
-      position: 'Dentist',
-      pay: '$150,000/year',
-      yearsWorked: 12,
-      email: "123JaneSmith@gmail.com",
-      contactNumber: '1(916)123-4567',
-      qualifications: ['DDS', 'Certified Invisalign Provider'],
-      availability: ['09:00 AM', '10:00 AM', '11:00 AM', '02:00 PM'],
-    },
-    {
-      id: 2,
-      name: 'John Smith',
-      position: 'Hygienist',
-      pay: '$90,000/year', // Corrected pay format
-      yearsWorked: 4,
-      email: "99JohnS@gmail.com",
-      contactNumber: '1(279)987-6543',
-      qualifications: ['RDH', 'CDH'],
-      availability: ['09:30 AM', '10:30 AM', '01:00 PM', '03:00 PM'],
-    },
-  ]
+  staffs: StaffInfo[] = []; // Updated to use StaffInfo
 
-  // Selected dentist and time slot
-  selectedDentist: string = '';
+  // Selected staff and time slot
+  selectedStaff: string = '';
   selectedTime: string = '';
   selectedDate: string | null = '';
-  selected: DateSelectArg;
-  selectedAppointment: EventApi | null = null; // Changed to EventApi
+  selected: DateSelectArg | null = null;
+  selectedAppointment: EventApi | null = null;
 
-  constructor(private changeDetector: ChangeDetectorRef, private snackBar: MatSnackBar) {
+  constructor(
+    private changeDetector: ChangeDetectorRef,
+    private snackBar: MatSnackBar,
+    private apiService: ApiService
+  ) {}
+
+  ngOnInit(): void {
+    this.fetchStaffInformation();
+    this.fetchPatientAppointments();
   }
 
-  handleDateSelect(selectInfo: DateSelectArg) {
-    // Check if selected date is available and not in the past
+  /**
+   * Fetches staff information from the backend API.
+   */
+  fetchStaffInformation(): void {
+    this.apiService.get<any>('/admin/staff-information').subscribe({
+      next: (res) => {
+        if (res.body && res.status === 200) {
+          // Map backend staff data to StaffInfo
+          this.staffs = res.body.staffMembers.map((staff: any) => ({
+            staffId: staff.staffId,
+            email: staff.email,
+            firstName: staff.firstName,
+            lastName: staff.lastName,
+            dateOfBirth: staff.dateOfBirth, // Adjust if necessary
+            position: staff.position,
+            salary: staff.salary,
+            yearsWorked: staff.yearsWorked,
+            qualifications: staff.qualifications,
+          }));
+        } else {
+          console.error('Unexpected staff information structure:', res);
+          this.snackBar.open('Unexpected staff information from server.', 'Close', {
+            duration: 3000,
+            panelClass: ['snackbar-error', 'custom-snackbar'],
+          });
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching staff information:', err);
+        this.snackBar.open('Failed to load staff information.', 'Close', {
+          duration: 3000,
+          panelClass: ['snackbar-error', 'custom-snackbar'],
+        });
+      }
+    });
+  }
+
+  /**
+   * Fetches patient appointments from the backend API.
+   */
+  fetchPatientAppointments(): void {
+    this.apiService.get<any>('/patient/appointments').subscribe({
+      next: (res) => {
+        if (res.body && res.status === 200) {
+          const appointments = res.body.appointments;
+          this.populateCalendarEvents(appointments);
+        } else {
+          console.error('Unexpected response structure:', res);
+          this.snackBar.open('Unexpected response from the server.', 'Close', {
+            duration: 3000,
+            panelClass: ['snackbar-error', 'custom-snackbar'],
+          });
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching appointments:', err);
+        this.snackBar.open('Failed to load appointments.', 'Close', {
+          duration: 3000,
+          panelClass: ['snackbar-error', 'custom-snackbar'],
+        });
+      }
+    });
+  }
+
+  /**
+   * Populates the calendar with fetched appointments.
+   */
+  populateCalendarEvents(appointments: any[]): void {
+    const formattedEvents = appointments.map((appt) => ({
+      id: appt.appointmentId.toString(),
+      title: `Patient ID: ${appt.patientId}`,
+      start: this.formatDateTime(appt.date, appt.time),
+      end: this.formatDateTime(appt.date, appt.time), // Adjust end time as needed
+      extendedProps: {
+        status: appt.status,
+        dentistNotes: appt.dentistNotes,
+        patientId: appt.patientId,
+        staffMembers: appt.staffMembers.map((s: any) => `${s.firstName} ${s.lastName}`).join(', '),
+      },
+    }));
+
+    this.calendarOptions.events = formattedEvents;
+  }
+
+  /**
+   * Formats date and time strings into ISO format.
+   * @param date - The date string.
+   * @param time - The time string.
+   * @returns ISO formatted datetime string.
+   */
+  formatDateTime(date: string, time: string): string {
+    // Assuming 'date' is in 'YYYY-MM-DD' format and 'time' is in 'HH:MM:SS' 24-hour format
+    return `${date}T${time}`;
+  }
+
+  /**
+   * Handles date selection on the calendar.
+   * @param selectInfo - Information about the selected date range.
+   */
+  handleDateSelect(selectInfo: DateSelectArg): void {
     const selectedDate = new Date(selectInfo.startStr);
     const today = new Date();
-    // Set time to 00:00:00 for accurate comparison
+    // Normalize dates
     selectedDate.setHours(0, 0, 0, 0);
     today.setHours(0, 0, 0, 0);
 
     if (selectedDate < today) {
-      this.snackBar.open('Cannot book an appointment on the selected date.', 'Close', {
-        duration: 3000, // Duration in milliseconds
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['snackbar-error', 'custom-snackbar']
+      this.snackBar.open('Cannot schedule an appointment on the selected date.', 'Close', {
+        duration: 3000,
+        panelClass: ['snackbar-error', 'custom-snackbar'],
       });
-      return; // Exit the function early
+      return;
     }
 
     this.selected = selectInfo;
     this.selectedDate = selectInfo.startStr; // Set the selected date
     // Clear existing selections if any
-    this.selectedDentist = '';
+    this.selectedStaff = '';
     this.selectedTime = '';
 
     // Clear any selected appointment details
     this.selectedAppointment = null;
   }
 
-  handleEventClick(clickInfo: EventClickArg) {
-    // Set the selected appointment to display details
+  /**
+   * Handles event click on the calendar.
+   * @param clickInfo - Information about the clicked event.
+   */
+  handleEventClick(clickInfo: EventClickArg): void {
+    const apptId = parseInt(clickInfo.event.id, 10);
+    // Fetch appointment details from the backend if necessary
+    // For now, assuming extendedProps contain necessary details
     this.selectedAppointment = clickInfo.event;
-    if (this.selectedDate) {
-      this.selectedDate = null;
-    }
+    this.selectedDate = null;
   }
 
-  // Select Appointment from Sidebar
-  selectAppointment(appointment: EventApi) {
+  /**
+   * Handles events set on the calendar.
+   * @param events - Array of current events on the calendar.
+   */
+  handleEvents(events: EventApi[]): void {
+    this.currentEvents = events;
+    this.changeDetector.detectChanges(); // workaround for ExpressionChangedAfterItHasBeenCheckedError
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const upcoming = events.filter(event => new Date(event.start!) >= today);
+    const past = events.filter(event => new Date(event.start!) < today);
+
+    this.upcomingAppointments = upcoming;
+    this.pastAppointments = past;
+  }
+
+  /**
+   * Selects an appointment from the list.
+   * @param appointment - The appointment to select.
+   */
+  selectAppointment(appointment: EventApi): void {
+    console.log('Selected Appointment:', appointment);
     this.selectedAppointment = appointment;
     // If a date is selected, clear it to hide appointment lists
     if (this.selectedDate) {
@@ -123,143 +227,174 @@ export class AppointmentSchedulerComponent {
     }
   }
 
-  // Close the appointment details view
-  closeAppointmentDetails() {
-    this.selectedAppointment = null;
-  }
+  /**
+   * Schedules a new appointment by sending it to the backend API and adding it to the calendar.
+   */
+  scheduleAppointment(): void {
+    if (this.selectedDate && this.selectedStaff && this.selectedTime && this.selectedAppointment === null) {
+      const appointmentPayload = {
+        date: this.selectedDate,
+        status: 'Scheduled', // Default status
+        dentistNotes: '',
+        patientId: 'PATIENT123', // Replace with actual patient ID from auth context
+        staffMemberId: this.selectedStaff, // Assuming single staff member for simplicity
+      };
 
-  // Cancel Appointment Method
-  cancelAppointment(appointment: EventApi) {
-    if (confirm('Are you sure you want to cancel this appointment?')) {
-      appointment.remove(); // Removes the event from the calendar
-
-      // Show cancellation snackbar
-      this.snackBar.open('Appointment cancelled successfully.', 'Close', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['snackbar-success', 'custom-snackbar']
-      });
-
-      // Clear selected appointment details
-      this.selectedAppointment = null;
-    }
-  }
-
-  handleEvents(events: EventApi[]) {
-    this.currentEvents.set(events);
-    this.changeDetector.detectChanges(); // workaround for ExpressionChangedAfterItHasBeenCheckedError
-
-    const today = new Date();
-
-    const upcoming = events.filter(event => new Date(event.start!) >= today);
-    const past = events.filter(event => new Date(event.start!) < today);
-
-    this.upcomingAppointments.set(upcoming);
-    this.pastAppointments.set(past);
-  }
-
-  bookAppointment() {
-    const calendarApi = this.selected.view.calendar
-    if (this.selectedDentist && this.selectedTime && this.selectedDate) {
-      calendarApi.addEvent({
-        id: createEventId(),
-        title: `Appointment`,
-        start: this.selectedDate + 'T' + this.convertTimeTo24(this.selectedTime),
-        allDay: false,
-        display: 'block',
-        extendedProps: {
-          dentist: this.selectedDentist,
-          time: this.selectedTime,
-          dentistNotes: null,
+      // Send to backend
+      this.apiService.post<any>('/admin/calendar', appointmentPayload).subscribe({
+        next: (res) => {
+          if (res.body && res.status === 200) {
+            this.snackBar.open('Appointment scheduled successfully!', 'Close', {
+              duration: 3000,
+              panelClass: ['snackbar-success', 'custom-snackbar'],
+            });
+            // Fetch appointments again to update the calendar
+            this.fetchPatientAppointments();
+            this.resetScheduling();
+          } else {
+            console.error('Unexpected response structure:', res);
+            this.snackBar.open('Failed to schedule appointment.', 'Close', {
+              duration: 3000,
+              panelClass: ['snackbar-error', 'custom-snackbar'],
+            });
+          }
         },
+        error: (error) => {
+          console.error('Error scheduling appointment:', error);
+          this.snackBar.open('Failed to schedule appointment.', 'Close', {
+            duration: 3000,
+            panelClass: ['snackbar-error', 'custom-snackbar'],
+          });
+        }
       });
-
-      // Show success snackbar
-      this.snackBar.open('Appointment booked successfully!', 'Close', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['snackbar-success', 'custom-snackbar']
-      });
-
-      // Reset selections
-      calendarApi.unselect(); // clear date selection
-
-      this.selectedDate = null;
-      this.selectedDentist = '';
-      this.selectedTime = '';
     } else {
-      this.snackBar.open('Please select both a dentist and a time slot.', 'Close', {
+      this.snackBar.open('Please select a date, staff member, and time slot.', 'Close', {
         duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['snackbar-error', 'custom-snackbar']
+        panelClass: ['snackbar-error', 'custom-snackbar'],
       });
     }
   }
 
-  // Utility to convert 12-hour time to 24-hour format with seconds
-  convertTimeTo24(time: string): string {
-    const [timeStr, modifier] = time.split(' ');
-    let [hours, minutes] = timeStr.split(':');
-
-    // Convert hours based on AM/PM
-    if (modifier === 'PM' && hours !== '12') {
-      hours = (parseInt(hours, 10) + 12).toString();
-    }
-    if (modifier === 'AM' && hours === '12') {
-      hours = '00';
-    }
-
-    // Ensure hours and minutes are two digits
-    hours = hours.padStart(2, '0');
-    minutes = minutes.padStart(2, '0');
-
-    // Append seconds
-    const seconds = '00';
-
-    return `${hours}:${minutes}:${seconds}`;
-  }
-
-  // Get available slots based on selected dentist
-  getAvailableSlots(): string[] | undefined {
-    const dentist = this.staffs.find(d => d.name === this.selectedDentist);
-    return dentist ? dentist.availability : [];
-  }
-
-  // Cancel booking process
-  cancelBooking() {
+  /**
+   * Resets the scheduling form.
+   */
+  resetScheduling(): void {
     this.selectedDate = null;
-    this.selectedDentist = '';
+    this.selectedAppointment = null;
+    this.selectedStaff = '';
     this.selectedTime = '';
+  }
+
+  /**
+   * Cancels an existing appointment by removing it from the backend and the calendar.
+   * @param appointment - The appointment to cancel.
+   */
+  cancelAppointment(appointment: EventApi): void {
+    // if (confirm('Are you sure you want to cancel this appointment?')) {
+    //   const apptId = parseInt(appointment.id, 10);
+    //   this.apiService.delete<any>(`/admin/calendar/${apptId}`).subscribe({
+    //     next: (res) => {
+    //       if (res.status === 200) {
+    //         this.snackBar.open('Appointment cancelled successfully.', 'Close', {
+    //           duration: 3000,
+    //           panelClass: ['snackbar-success', 'custom-snackbar'],
+    //         });
+    //         // Remove event from calendar
+    //         appointment.remove();
+    //         // Optionally, refresh appointments
+    //         this.fetchPatientAppointments();
+    //         this.selectedAppointment = null;
+    //       } else {
+    //         console.error('Unexpected response structure:', res);
+    //         this.snackBar.open('Failed to cancel appointment.', 'Close', {
+    //           duration: 3000,
+    //           panelClass: ['snackbar-error', 'custom-snackbar'],
+    //         });
+    //       }
+    //     },
+    //     error: (error) => {
+    //       console.error('Error cancelling appointment:', error);
+    //       this.snackBar.open('Failed to cancel appointment.', 'Close', {
+    //         duration: 3000,
+    //         panelClass: ['snackbar-error', 'custom-snackbar'],
+    //       });
+    //     }
+    //   });
+    // }
+  }
+
+  /**
+   * Closes the appointment details view.
+   */
+  closeAppointmentDetails(): void {
     this.selectedAppointment = null;
   }
 
-  // Leave a Review Method
-  leaveReview(appointment: EventApi) {
-    // Placeholder action: Show a snackbar
+  /**
+   * Cancels the scheduling process and resets selections.
+   */
+  cancelBooking(): void {
+    this.resetScheduling();
+  }
+
+  /**
+   * Leaves a review for an appointment.
+   * @param appointment - The appointment to review.
+   */
+  leaveReview(appointment: EventApi): void {
     this.snackBar.open('Redirecting to review form...', 'Close', {
       duration: 3000,
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-      panelClass: ['snackbar-info', 'custom-snackbar']
+      panelClass: ['snackbar-info', 'custom-snackbar'],
     });
 
     // TODO: Implement actual review functionality
     // For example, navigate to a review component or open a dialog
   }
 
-  // Optionally, implement a method to save notes if needed
-  saveDentistNotes() {
+  getAvailableSlots(): string[] {
+    const slots: string[] = [];
+    for (let hour = 9; hour <= 17; hour++) {
+      const formattedHour = hour.toString().padStart(2, '0') + ':00';
+      slots.push(formattedHour);
+    }
+    return slots;
+  }
+
+  /**
+   * Saves dentist notes for an appointment.
+   */
+  saveDentistNotes(): void {
     if (this.selectedAppointment) {
-      // Assuming you have a backend to save these notes
-      // Otherwise, it's already updated in extendedProps
-      this.snackBar.open('Notes saved successfully.', 'Close', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['snackbar-success', 'custom-snackbar']
+      const apptId = parseInt(this.selectedAppointment.id, 10);
+      const notes = this.selectedAppointment.extendedProps['dentistNotes'];
+
+      const updatePayload = { notes };
+
+      // Send update to backend
+      this.apiService.put<any>(`/admin/calendar/${apptId}`, updatePayload).subscribe({
+        next: (res) => {
+          if (res.status === 200) {
+            this.snackBar.open('Notes saved successfully.', 'Close', {
+              duration: 3000,
+              panelClass: ['snackbar-success', 'custom-snackbar'],
+            });
+            // Refresh appointments to get updated notes
+            this.fetchPatientAppointments();
+          } else {
+            console.error('Unexpected response structure:', res);
+            this.snackBar.open('Failed to save notes.', 'Close', {
+              duration: 3000,
+              panelClass: ['snackbar-error', 'custom-snackbar'],
+            });
+          }
+        },
+        error: (error) => {
+          console.error('Error saving notes:', error);
+          this.snackBar.open('Failed to save notes.', 'Close', {
+            duration: 3000,
+            panelClass: ['snackbar-error', 'custom-snackbar'],
+          });
+        }
       });
     }
   }
