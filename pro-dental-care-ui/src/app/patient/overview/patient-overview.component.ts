@@ -27,7 +27,7 @@ export class PatientOverviewComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.apiService.checkAccess("patient", "/dashboard");
+    // this.apiService.checkAccess("patient", "/dashboard");
 
     this.apiService.get("/patient/dashboard").subscribe({
       next: res => {

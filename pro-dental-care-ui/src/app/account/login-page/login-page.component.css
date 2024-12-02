@@ -25,3 +25,7 @@ input {
 button {
     width: 100%;
 }
+
+option {
+    color: black;
+}

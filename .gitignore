@@ -25,5 +25,10 @@ pro-dental-care-ui/*.iml
 pro-dental-care-ui/.idea/
 pro-dental-care-ui/.angular/
 
+# Visual Studio Code ignores
+.vscode/
+pro-dental-care-ui\dist\pro-dental-care-ui
+
 # Angular cache
 pro-dental-care-ui/node_modules/
+

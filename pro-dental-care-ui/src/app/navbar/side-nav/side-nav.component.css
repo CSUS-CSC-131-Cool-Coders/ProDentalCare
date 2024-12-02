@@ -9,7 +9,7 @@ button {
     padding-right: 20px;
 }
 
-.selected {
+.selected-button {
     background-color: yellow;
 }
 
