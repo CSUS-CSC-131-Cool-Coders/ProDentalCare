@@ -2,6 +2,7 @@ package org.cc.prodentalcareapi.impl;
 
 import org.cc.prodentalcareapi.model.*;
 import org.cc.prodentalcareapi.model.request.PatientTreatmentPlanUpdateRequest;
+import org.cc.prodentalcareapi.model.response.AppointmentsWithStaffName;
 import org.cc.prodentalcareapi.model.response.PatientInformationStaffViewResponse;
 import org.cc.prodentalcareapi.model.response.PatientListResponse;
 import org.cc.prodentalcareapi.repository.*;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +31,8 @@ public class StaffInfoImpl {
 	private final MedicationRecordRepository medicationRecordRepository;
 	private final AllergyRecordRepository allergyRecordRepository;
 	private final LabRecordRepository labRecordRepository;
+	private final StaffMemberRepository staffMemberRepository;
+	private final StaffAppointmentsRepository staffAppointmentsRepository;
 
 	@Autowired
 	public StaffInfoImpl(TokenService tokenService,
@@ -38,7 +42,7 @@ public class StaffInfoImpl {
 						 VisitRecordRepository visitRecordRepository,
 						 PatientTreatmentPlanRepository patientTreatmentPlanRepository,
 						 MedicationRecordRepository medicationRecordRepository,
-						 AllergyRecordRepository allergyRecordRepository, LabRecordRepository labRecordRepository) {
+						 AllergyRecordRepository allergyRecordRepository, LabRecordRepository labRecordRepository, StaffMemberRepository staffMemberRepository, StaffAppointmentsRepository staffAppointmentsRepository) {
 		this.tokenService = tokenService;
 		this.patientRepository = patientRepository;
 		this.appointmentsRepository = appointmentsRepository;
@@ -48,6 +52,8 @@ public class StaffInfoImpl {
 		this.medicationRecordRepository = medicationRecordRepository;
 		this.allergyRecordRepository = allergyRecordRepository;
 		this.labRecordRepository = labRecordRepository;
+		this.staffMemberRepository = staffMemberRepository;
+		this.staffAppointmentsRepository = staffAppointmentsRepository;
 	}
 
 	/**
@@ -98,6 +104,31 @@ public class StaffInfoImpl {
 
 		List<Appointments> appointments = appointmentsRepository.findAllAppointmentsByPatientIdOrderByDateAsc(patientId);
 
+		List<AppointmentsWithStaffName> appointmentsWithStaffNames = new ArrayList<>();
+
+		appointments.stream().forEach(appointment -> {
+			AppointmentsWithStaffName appointmentWithStaffName = new AppointmentsWithStaffName(appointment);
+			List<StaffAppointments> sas = staffAppointmentsRepository.findByStaffAppointmentIdAppointmentId(appointmentWithStaffName.getAppointment().getAppointmentId());
+
+			List<String> staffNames = new ArrayList<>();
+			sas.stream().forEach(staffAppointment -> {
+				StaffMember staff = staffMemberRepository.findById(staffAppointment.getStaffAppointmentId().getStaffId()).orElse(null);
+				if (staff != null) {
+					staffNames.add(staff.getFirstName() + " " + staff.getLastName());
+
+				}
+			});
+			StringBuilder sb = new StringBuilder();
+			for(String staff : staffNames) {
+				sb.append(staff);
+				sb.append(" ");
+			}
+			appointmentWithStaffName.setStaffName(sb.toString());
+
+			appointmentsWithStaffNames.add(appointmentWithStaffName);
+		});
+
+
 		List<AllergyRecord> allergyRecords = allergyRecordRepository.findAllByPatientId(patientId);
 
 		List<LabRecord> labRecords = labRecordRepository.findAllByPatientId(patientId);
@@ -108,7 +139,7 @@ public class StaffInfoImpl {
 
 		Optional<PatientTreatmentPlan> patientTreatmentPlan = patientTreatmentPlanRepository.findById(patientId);
 
-		PatientInformationStaffViewResponse response = new PatientInformationStaffViewResponse(patient, patientTreatmentPlan.orElse(null), appointments, allergyRecords, medicationRecords, labRecords, immunizationRecords);
+		PatientInformationStaffViewResponse response = new PatientInformationStaffViewResponse(patient, patientTreatmentPlan.orElse(null), appointmentsWithStaffNames, allergyRecords, medicationRecords, labRecords, immunizationRecords);
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

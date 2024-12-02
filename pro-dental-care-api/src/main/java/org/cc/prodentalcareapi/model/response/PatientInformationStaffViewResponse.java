@@ -10,7 +10,7 @@ public class PatientInformationStaffViewResponse {
 
 	private PatientTreatmentPlan patientTreatmentPlan;
 
-	private List<Appointments> appointments;
+	private List<AppointmentsWithStaffName> appointments;
 	private List<AllergyRecord> allergies;
 	private List<MedicationRecord> medications;
 	private List<LabRecord> labs;
@@ -20,7 +20,7 @@ public class PatientInformationStaffViewResponse {
 
 	public PatientInformationStaffViewResponse(Patient patient,
 											   PatientTreatmentPlan patientTreatmentPlan,
-											   List<Appointments> appointments,
+											   List<AppointmentsWithStaffName> appointments,
 											   List<AllergyRecord> allergies,
 											   List<MedicationRecord> medications,
 											   List<LabRecord> labs,
@@ -50,11 +50,11 @@ public class PatientInformationStaffViewResponse {
 		this.patientTreatmentPlan = patientTreatmentPlan;
 	}
 
-	public List<Appointments> getAppointments() {
+	public List<AppointmentsWithStaffName> getAppointments() {
 		return appointments;
 	}
 
-	public void setAppointments(List<Appointments> appointments) {
+	public void setAppointments(List<AppointmentsWithStaffName> appointments) {
 		this.appointments = appointments;
 	}
 

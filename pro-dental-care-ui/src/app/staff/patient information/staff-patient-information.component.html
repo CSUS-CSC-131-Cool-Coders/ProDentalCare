@@ -12,7 +12,6 @@
                      width="20" height="20"/>
             </header>
             <div class="accordion-content" *ngIf="visitsExpanded">
-                <button class="add-btn" (click)="addVisit()">+ Add Visit</button>
                 <table class="accordion-table">
                     <thead>
                     <tr>
@@ -24,20 +23,12 @@
                     <tbody>
                     <!-- To show existing data (pull from DB)-->
                     <tr *ngFor="let visit of patientInfo.appointments">
-                        <td>{{ visit.date }}</td>
-                        <td>{{ visit.provider }}</td>
-                        <td>{{ visit.dentistNotes }}</td>
-                    </tr>
-
-                    <!-- To add new data (push to DB)-->
-                    <tr *ngFor="let newVisit of newVisits">
-                        <td><input type="date" [(ngModel)]="newVisit.date" placeholder="Enter date"/></td>
-                        <td><input type="text" [(ngModel)]="newVisit.provider" placeholder="Enter provider"/></td>
-                        <td><textarea [(ngModel)]="newVisit.dentistNotes" placeholder="Enter notes"></textarea></td>
+                        <td>{{ visit.appointment.date }}</td>
+                        <td>{{ visit.staffName }}</td>
+                        <td>{{ visit.appointment.dentistNotes }}</td>
                     </tr>
                     </tbody>
                 </table>
-                <button class="save-btn" (click)="saveNewVisits()">Save</button>
             </div>
         </section>
 
