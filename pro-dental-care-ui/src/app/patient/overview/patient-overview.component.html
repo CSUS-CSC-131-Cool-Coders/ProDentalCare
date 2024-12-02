@@ -13,58 +13,13 @@
     </header>
     <!-- Section for Overview Boxes -->
     <section class="flex flex-wrap gap-12 items-center mt-11 w-full min-h-[316px] max-md:mt-10 max-md:max-w-full">
-<<<<<<< HEAD
-
-=======
         <!-- Appointment -->
->>>>>>> 6aa91d1 (Fix patient overview not displaying patient name at the top)
         <article class="overview-box">
             <div class="icon-placeholder" aria-label="Appointment illustration">
                 <img ngSrc="/assets/clock.png" alt="Appointment Icon" width="100" height="100"/>
             </div>
             <div class="text-content">
                 <h2>Next Appointment:</h2>
-<<<<<<< HEAD
-                <p *ngIf="nextAppointmentDate != null; else noAppointments">{{ nextAppointmentDate }}</p>
-                <ng-template #noAppointments>
-                    <p>No upcoming appointments scheduled. You can schedule one <a routerLink="/patient/appointments">here</a>!</p>
-                </ng-template>
-            </div>
-        </article>
-
-        <!-- Treatment Plan -->
-        <a href="/treatment">
-            <article class="overview-box">
-                <div class="icon-placeholder" aria-label="Treatment plan illustration">
-                    <img ngSrc="/assets/treatmentplan.png" alt="Treatment Plan Icon" width="100" height="100"/>
-                </div>
-                <div class="text-content">
-                    <h2>Current Treatment Plan:</h2>
-                    <p *ngIf="treatmentPlan != null; else noTreatment">{{ treatmentPlan }}</p>
-                    <ng-template #noTreatment>
-                        <p>No current treatment plan!</p>
-                    </ng-template>
-                </div>
-            </article>
-        </a>
-
-
-        <!-- Payment Due -->
-        <article class="overview-box">
-            <div class="icon-placeholder" aria-label="Payment due illustration">
-                <img ngSrc="/assets/dollar.png" alt="Payment Due Icon" width="100" height="100"/>
-            </div>
-            <div class="text-content">
-                <h2>Next Payment Due:</h2>
-                <p *ngIf="nextBillAmt != null; else noBills">${{ nextBillAmt }} - {{ nextBillDate }}</p>
-                <ng-template #noBills>
-                    <p>No upcoming payments!</p>
-                </ng-template>
-
-            </div>
-        </article>
-
-=======
                 <p>{{ nextAppointmentDate }}</p>
             </div>
         </article>
@@ -93,7 +48,6 @@
                 <p>${{ nextBillAmt }} - {{ nextBillDate }}</p>
             </div>
         </article>
->>>>>>> 6aa91d1 (Fix patient overview not displaying patient name at the top)
     </section>
 </main>
   
