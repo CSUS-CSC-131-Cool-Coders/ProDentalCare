@@ -1,3 +1,7 @@
 <app-navbar></app-navbar>
-<router-outlet/>
-
+<div class="router-wrapper">
+    <app-side-nav *ngIf="this.apiService.isLoggedIn()"></app-side-nav>
+    <div class="router-content">
+        <router-outlet/>
+    </div>
+</div>

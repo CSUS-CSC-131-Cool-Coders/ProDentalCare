@@ -4,6 +4,7 @@
         <small class="error" *ngIf="!email.untouched && !email.valid">Please enter a valid email</small>
         <small class="error" *ngIf="!confirmedEmail.untouched && !confirmedEmail.valid">Please make sure your email matches</small>
         <small class="error" *ngIf="!phone.untouched && !phone.valid">Please enter a valid phone number</small>
+        <small class="error" *ngIf="!phoneType.untouched && !phoneType.valid">Please enter a phone type</small>
         <small class="error" *ngIf="!password.untouched && !password.valid">Please choose a stronger password</small>
         <small class="error" *ngIf="!confirmedPassword.untouched && !confirmedPassword.valid">Please make sure your password matches</small>
 
@@ -12,6 +13,7 @@
         <input type="text" [formControl]="email" placeholder="Email"/>
         <input type="text" [formControl]="confirmedEmail" placeholder="Confirm Email"/>
         <input type="text" [formControl]="phone" placeholder="Phone Number"/>
+        <input type="text" [formControl]="phoneType" placeholder="Phone Type"/>
         <input type="password" [formControl]="password" placeholder="Password">
         <input type="password" [formControl]="confirmedPassword" placeholder="Confirm Password">
         <button type="submit" [disabled]="email.value != confirmedEmail.value || password.value != confirmedPassword.value || !form.valid" style="margin-top: 40px">Continue</button>

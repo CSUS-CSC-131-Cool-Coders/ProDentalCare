@@ -1,0 +1,36 @@
+<div class="content-wrapper">
+    <form [formGroup]="form" class="login-wrapper" (ngSubmit)="submitSignUp()">
+        <h1>Sign Up</h1>
+        <small class="error" *ngIf="!email.untouched && !email.valid">Please enter a valid email</small>
+        <small class="error" *ngIf="!confirmedEmail.untouched && !confirmedEmail.valid">Please make sure your email matches</small>
+        <small class="error" *ngIf="!phone.untouched && !phone.valid">Please enter a valid phone number</small>
+        <small class="error" *ngIf="!phoneType.untouched && !phoneType.valid">Please enter a phone type</small>
+        <small class="error" *ngIf="!password.untouched && !password.valid">Please choose a stronger password</small>
+        <small class="error" *ngIf="!confirmedPassword.untouched && !confirmedPassword.valid">Please make sure your password matches</small>
+        <small class="error" *ngIf="!dob.untouched && !dob.valid">Please enter your date of birth</small>
+        <small class="error" *ngIf="!sex.untouched && !sex.valid">Please enter your sex</small>
+        <small class="error" *ngIf="!bankRoutingNo.untouched && !bankRoutingNo.valid">Please enter your bank's routing number</small>
+        <small class="error" *ngIf="!bankAccountNumber.untouched && !bankAccountNumber.valid">Please enter your bank account number</small>
+        <small class="error" *ngIf="!ssn.untouched && !ssn.valid">Please enter your SSN</small>
+
+
+        <input type="text" [formControl]="firstName" placeholder="First Name"/>
+        <input type="text" [formControl]="lastName" placeholder="Last Name"/>
+        <input type="text" [formControl]="email" placeholder="Email"/>
+        <input type="text" [formControl]="confirmedEmail" placeholder="Confirm Email"/>
+        <input type="password" [formControl]="password" placeholder="Password">
+        <input type="password" [formControl]="confirmedPassword" placeholder="Confirm Password">
+        <label> Your Information </label>
+        <input type="text" [formControl]="ssn" placeholder="SSN"/>
+        <span style="display: flex; flex-direction: row; align-items: stretch; margin: 0 -15px;">
+            <input type="date" [formControl]="dob" placeholder="Date of Birth"/>
+            <input type="text" [formControl]="sex" placeholder="Sex"/>
+        </span>
+        <input type="text" [formControl]="bankRoutingNo" placeholder="Bank Routing Number"/>
+        <input type="text" [formControl]="bankAccountNumber" placeholder="Bank Account Number"/>
+
+
+        <button type="submit" [disabled]="email.value != confirmedEmail.value || password.value != confirmedPassword.value || !form.valid" style="margin-top: 40px">Continue</button>
+        <p>Have an account? Login <a href="/login" style="text-decoration: underline">here</a></p>
+    </form>
+</div>

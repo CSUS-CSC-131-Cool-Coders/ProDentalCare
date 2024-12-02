@@ -2,6 +2,7 @@ package org.cc.prodentalcareapi.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -34,18 +35,36 @@ public class StaffMember {
 	@Column(name = "bank_acc_no", length = 100)
 	private String bankAccountNumber;
 
-	public StaffMember(String staffId, String email, String firstName, String lastName, Date dateOfBirth, String sex) {
-		setStaffId(staffId);
-		setEmail(email);
-		setFirstName(firstName);
-		setLastName(lastName);
-		setDateOfBirth(dateOfBirth);
-		setSex(sex);
+	@Column(name = "hourly_rate", precision = 10, scale = 2)
+	private BigDecimal hourlyRate;
+
+	@Column(name = "position", length = 30)
+	private String position;
+
+	public StaffMember() {}
+
+	public StaffMember(String staffId,
+					   String email,
+					   String firstName,
+					   String lastName,
+					   Date dateOfBirth,
+					   String sex,
+					   String bankRoutingNumber,
+					   String bankAccountNumber,
+					   BigDecimal hourlyRate,
+					   String position) {
+		this.staffId = staffId;
+		this.email = email;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirth = dateOfBirth;
+		this.sex = sex;
+		this.bankRoutingNumber = bankRoutingNumber;
+		this.bankAccountNumber = bankAccountNumber;
+		this.hourlyRate = hourlyRate;
+		this.position = position;
 	}
 
-	public StaffMember() {
-
-	}
 
 	public String getStaffId() {
 		return staffId;
@@ -109,5 +128,21 @@ public class StaffMember {
 
 	public void setBankAccountNumber(String bankAccountNumber) {
 		this.bankAccountNumber = bankAccountNumber;
+	}
+
+	public BigDecimal getHourlyRate() {
+		return hourlyRate;
+	}
+
+	public void setHourlyRate(BigDecimal hourlyRate) {
+		this.hourlyRate = hourlyRate;
+	}
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
 	}
 }
