@@ -27,14 +27,11 @@ export const routes: Routes = [
     {path: "forgot-password", component: ForgotPasswordComponent},
     {path: "reset-password", component: LoginPageComponent},
     {path: "reset-password/:resetToken", component: ResetPasswordComponent},
-    {path: "patient-information", component: PatientInformationComponent},
-    {path: "reset-password/:resetToken", component: ResetPasswordComponent},
     {path: "dashboard", component: VisitorDashboardComponent},
     {path: "patient/dashboard", component: PatientOverviewComponent}, // Add the route for OverviewComponent
     {path: "patient/records", component: PatientHealthRecords},
     {path: "patient/treatment", component: PatientTreatmentPlan},
-    {path: "patient/patient-information", component: PatientInformationComponent},
-    {path: "reset-password/:resetToken", component: ResetPasswordComponent},
+    {path: "patient/information", component: PatientInformationComponent},
     {path: "patient/payments", component: PaymentComponent}, //Add route for payments
     {path: "patient/process-payment", component: PaymentPageComponent} //Add route for payment process
 ];
