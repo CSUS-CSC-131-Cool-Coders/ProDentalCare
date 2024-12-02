@@ -166,5 +166,80 @@
       </div>
     </section>
 
+<!-- To Do Section -->
+<section class="accordion-item" [class.expanded]="toDoExpanded" [class.closed]="!toDoExpanded">
+  <header class="accordion-header" (click)="toDoExpanded = !toDoExpanded">
+    <h2 class="accordion-title">TO DO</h2>
+    <img [ngSrc]="toDoExpanded ? '/assets/up.png' : '/assets/down.png'" alt="" class="accordion-icon" width="20" height="20" />
+  </header>
+  <div class="accordion-content" *ngIf="toDoExpanded">
+    <button class="add-btn" (click)="addTreatmentPlan()">+ Add New To Do</button>
+    <table class="accordion-table">
+      <thead>
+        <tr>
+          <th>To Do</th>
+          <th>Appointment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let note of toDos">
+          <td>
+            {{ note.note }}
+            <div class="provider-name">Provider: Dr. {{ note.provider }}</div>
+          </td>
+          <td>{{ note.date }}</td>
+        </tr>
+        <tr *ngFor="let newToDo of newToDos">
+          <td><input type="text" [(ngModel)]="newToDo.note" placeholder="Enter To Do" /></td>
+          <td>
+            <input type="text" [(ngModel)]="newToDo.provider" placeholder="Enter Provider" />
+            <input type="date" [(ngModel)]="newToDo.date" placeholder="Enter Date" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="save-btn" (click)="saveNewToDos()">Save</button>
+  </div>
+</section>
+
+<!-- Treatment Plan Section -->
+<section class="accordion-item" [class.expanded]="treatmentPlanExpanded" [class.closed]="!treatmentPlanExpanded">
+  <header class="accordion-header" (click)="treatmentPlanExpanded = !treatmentPlanExpanded">
+    <h2 class="accordion-title">TREATMENT PLAN</h2>
+    <img [ngSrc]="treatmentPlanExpanded ? '/assets/up.png' : '/assets/down.png'" alt="" class="accordion-icon" width="20" height="20" />
+  </header>
+  <div class="accordion-content" *ngIf="treatmentPlanExpanded">
+    <button class="add-btn" (click)="addTreatmentPlan()">+ Add Treatment Plan</button>
+    <table class="accordion-table">
+      <thead>
+        <tr>
+          <th>Plan</th>
+          <th>Provider</th>
+          <th>Timeline</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Display existing treatment plans -->
+        <tr *ngFor="let treatmentPlan of treatmentPlans">
+          <td>{{ treatmentPlan.plan }}</td>
+          <td>{{ treatmentPlan.provider }}</td>
+          <td>{{ treatmentPlan.start }} - {{ treatmentPlan.end }}</td>
+        </tr>
+        <!-- Add new treatment plans -->
+        <tr *ngFor="let newTreatmentPlan of newTreatmentPlans">
+          <td><input type="text" [(ngModel)]="newTreatmentPlan.plan" placeholder="Enter plan name" /></td>
+          <td><input type="text" [(ngModel)]="newTreatmentPlan.provider" placeholder="Enter provider name" /></td>
+          <td>
+            <input type="date" [(ngModel)]="newTreatmentPlan.start" placeholder="Start date" /> -
+            <input type="date" [(ngModel)]="newTreatmentPlan.end" placeholder="End date" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="save-btn" (click)="saveNewTreatmentPlans()">Save</button>
+  </div>
+</section>
+
+
   </section>
 </main>

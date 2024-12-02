@@ -21,8 +21,10 @@ export class StaffPatientInformationComponent implements OnInit {
     medsExpanded = false;
     labsExpanded = false;
     immunizationsExpanded = false;
+    toDoExpanded = false;
+    treatmentPlanExpanded = false;
   
-    // placeholder data !! Suppose to pull from database!!
+    // placeholder data !! Suppose to pull from database!! -- look at tims code lowkey
     visits = [
       { date: '12/12/2024', provider: 'Dr. Emily White', notes: 'Regular cleaning.' },
       { date: '06/15/2024', provider: 'Dr. John Doe', notes: 'Follow-up visit.' },
@@ -43,6 +45,14 @@ export class StaffPatientInformationComponent implements OnInit {
       { date: '10/15/2024', name: 'Flu Vaccine' },
       { date: '08/01/2023', name: 'Tetanus Booster' },
     ];
+    toDos = [
+      { note: 'Complete cleaning', provider: 'John Smith', date: '01/15/2024' },
+      { note: 'Schedule crown procedure', provider: 'Jane Doe', date: '03/20/2024' },
+    ];
+    treatmentPlans = [
+      { plan: 'Orthodontic Alignment', provider: 'John Smith', start: '01/10/2024', end: '12/10/2024' },
+      { plan: 'Cavity Filling', provider: 'Jane Doe', start: '02/01/2024', end: '02/15/2024' },
+    ];
   
     // empty arrays for new data
     newVisits: { date: string; provider: string; notes: string }[] = [];
@@ -50,6 +60,9 @@ export class StaffPatientInformationComponent implements OnInit {
     newMedications: { datePrescribed: string; name: string; directions: string }[] = [];
     newLabs: { date: string; name: string; comments: string }[] = [];
     newImmunizations: { date: string; name: string }[] = [];
+    newToDos: { note: string; provider: string; date: string }[] = [];
+    newTreatmentPlans: { plan: string; provider: string; start: string; end: string }[] = [];
+
   
     constructor(private route: ActivatedRoute) {}
   
@@ -103,5 +116,23 @@ export class StaffPatientInformationComponent implements OnInit {
     saveNewImmunizations(): void {
       this.immunizations.push(...this.newImmunizations);
       this.newImmunizations = [];
+    }
+
+      // To Do Methods
+    addToDo(): void {
+      this.newToDos.push({ note: '', provider: '', date: '' });
+    }
+    saveNewToDos(): void {
+      this.toDos.push(...this.newToDos);
+      this.newToDos = [];
+    }
+
+    // Treatment Plan Methods
+    addTreatmentPlan(): void {
+      this.newTreatmentPlans.push({ plan: '', provider: '', start: '', end: '' });
+    }
+    saveNewTreatmentPlans(): void {
+      this.treatmentPlans.push(...this.newTreatmentPlans);
+      this.newTreatmentPlans = [];
     }
   }

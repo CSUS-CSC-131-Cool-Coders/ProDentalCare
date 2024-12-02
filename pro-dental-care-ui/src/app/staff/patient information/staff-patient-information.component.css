@@ -28,6 +28,10 @@
   cursor: pointer;
 }
 
+.accordion-header:hover {
+  background-color: #eaeaea;
+}
+
 .accordion-content {
   padding: 20px;
   background: #fff;
@@ -44,6 +48,20 @@
   padding: 8px;
 }
 
+.accordion-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+.accordion-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.accordion-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Button Styles */
 .add-btn, .save-btn {
   background: #007BFF;
   color: #fff;
@@ -57,3 +75,51 @@
 .add-btn:hover, .save-btn:hover {
   background: #0056b3;
 }
+
+/* To Do Section */
+.accordion-item .add-btn {
+  background-color: #28a745;
+}
+
+.accordion-item .add-btn:hover {
+  background-color: #218838;
+}
+
+/* Treatment Plan Section */
+.accordion-item .add-btn {
+  background-color: #17a2b8;
+}
+
+.accordion-item .add-btn:hover {
+  background-color: #138496;
+}
+
+/* Input Styles */
+input[type="text"], input[type="date"], textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 50px;
+}
+
+.provider-name {
+  font-style: italic;
+  color: #888;
+}
+
+.save-btn {
+  background-color: #28a745;
+  margin-top: 20px;
+}
+
+.save-btn:hover {
+  background-color: #218838;
+}
+
