@@ -9,6 +9,7 @@ import java.util.Date;
 public class ImmunizationRecord {
 
     @Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "immun_id")
     private int immunID;
 

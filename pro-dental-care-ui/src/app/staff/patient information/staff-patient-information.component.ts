@@ -159,7 +159,25 @@ export class StaffPatientInformationComponent implements OnInit {
       this.newImmunizations.push({ date: '', immunization: '' });
     }
     saveNewImmunizations(): void {
-      this.newImmunizations = [];
+        let body = this.newImmunizations;
+        this.apiService.post("/staff/patient-information/" + this.patientInfo.patient.patientId + "/immunizations", body).subscribe({
+            next: res => {
+                if (ApiService.isOk(res.status)) {
+                    if (this.patientInfo.immunizations == null) {
+                        this.patientInfo.immunizations = [];
+                    }
+                    for (let immunization of this.newImmunizations) {
+                        this.patientInfo.immunizations.push(immunization);
+                    }
+                }
+
+                this.newImmunizations = [];
+            },
+            error: err => {
+                alert("There was an error updating the patient's allergy information.");
+                this.newImmunizations = [];
+            }
+        });
     }
 
       // To Do Methods
