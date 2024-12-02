@@ -25,7 +25,7 @@ create table patient
     height         int          not null check (height > 0),
     country        varchar(40)  not null,
     state          varchar(40)  not null,
-    city           varchar(40) not null,
+    city           varchar(40)  not null,
     address_one    varchar(128) not null,
     address_two    varchar(128) not null,
     zip_code       varchar(5)   not null check (char_length(zip_code) = 5),
@@ -89,6 +89,15 @@ create table staff_member
     bank_routing_no varchar(100) not null,
     bank_acc_no     varchar(100) not null,
     foreign key (email_fk) references account (email)
+);
+
+create table staff_availability
+(
+    availability_id    int primary key auto_increment,
+    staff_id_fk        char(9) not null,
+    availability_start datetime,
+    availability_end   datetime,
+    foreign key (staff_id_fk) references staff_member (staff_id)
 );
 
 create table patient_treatment_plan
