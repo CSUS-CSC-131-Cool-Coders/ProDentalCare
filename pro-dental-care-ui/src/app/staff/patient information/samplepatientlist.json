@@ -1,0 +1,57 @@
+{
+  "patient": {
+    "patientId": "123456789",
+    "email": "heybrentcrosby@gmail.com",
+    "firstName": "brent",
+    "lastName": "crosby",
+    "dateOfBirth": "2000-12-31",
+    "phoneNumber": "1234567890",
+    "race": "",
+    "maritalStatus": "",
+    "phoneType": "",
+    "country": "",
+    "state": "",
+    "city": "",
+    "addressOne": "",
+    "addressTwo": "",
+    "zipCode": "",
+    "sex": "male",
+    "langCode": "en",
+    "weight": 150,
+    "height": 5
+  },
+  "patientTreatmentPlan": {
+    "patientId": "123456789",
+    "planName": "Prevent gingivitus",
+    "staffId": "987654321",
+    "startDate": "2024-11-20",
+    "endDate": "2025-11-20"
+  },
+  "appointments": [
+    {
+      "appointmentId": 1,
+      "date": "2024-12-20",
+      "status": "scheduled",
+      "dentistNotes": "",
+      "patientId": "123456789"
+    },
+    {
+      "appointmentId": 3,
+      "date": "2024-12-23",
+      "status": "scheduled",
+      "dentistNotes": "",
+      "patientId": "123456789"
+    },
+    {
+      "appointmentId": 2,
+      "date": "2024-12-27",
+      "status": "scheduled",
+      "dentistNotes": "",
+      "patientId": "123456789"
+    }
+  ],
+  "allergies": [],
+  "medications": [],
+  "labs": [],
+  "immunizations": []
+}

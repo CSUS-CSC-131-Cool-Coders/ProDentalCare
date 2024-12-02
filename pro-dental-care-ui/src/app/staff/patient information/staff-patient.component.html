@@ -4,11 +4,11 @@
       <section
         class="accordion-item"
         *ngFor="let patient of patients"
-        (click)="goToPatientInformation(patient.id)"
+        (click)="goToPatientInformation(patient.patientId)"
       >
         <header class="accordion-header">
-          <h2>{{ patient.name }}</h2>
-          <p><strong>Date of Birth:</strong> {{ patient.dob }}</p>
+          <h2>{{ patient.firstName }} {{ patient.lastName }}</h2>
+          <p><strong>Date of Birth:</strong> {{ patient.dateOfBirth }}</p>
         </header>
       </section>
     </section>

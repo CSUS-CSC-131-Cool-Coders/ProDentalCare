@@ -1,245 +1,210 @@
 <main class="patient-summary">
-  <h1 class="header">{{ patientName }}</h1>
+    <h1 class="header">Patient {{ patientInfo.patient.firstName }} {{ patientInfo.patient.lastName }}</h1>
 
-  <!-- Accordion Sections -->
-  <section class="medical-records">
+    <!-- Accordion Sections -->
+    <section class="medical-records">
 
-    <!-- Visits Accordion -->
-    <section class="accordion-item" [class.expanded]="visitsExpanded" [class.closed]="!visitsExpanded">
-      <header class="accordion-header" (click)="visitsExpanded = !visitsExpanded">
-        <h2 class="accordion-title">VISITS</h2>
-        <img [ngSrc]="visitsExpanded ? '/assets/up.png' : '/assets/down.png'" alt="" class="accordion-icon" width="20" height="20" />
-      </header>
-      <div class="accordion-content" *ngIf="visitsExpanded">
-        <button class="add-btn" (click)="addVisit()">+ Add Visit</button>
-        <table class="accordion-table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Provider</th>
-              <th>Notes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- To show existing data (pull from DB)-->
-            <tr *ngFor="let visit of visits">
-              <td>{{ visit.date }}</td>
-              <td>{{ visit.provider }}</td>
-              <td>{{ visit.notes }}</td>
-            </tr>
+        <!-- Visits Accordion -->
+        <section class="accordion-item" [class.expanded]="visitsExpanded" [class.closed]="!visitsExpanded">
+            <header class="accordion-header" (click)="visitsExpanded = !visitsExpanded">
+                <h2 class="accordion-title">VISITS</h2>
+                <img [ngSrc]="visitsExpanded ? '/assets/up.png' : '/assets/down.png'" alt="" class="accordion-icon"
+                     width="20" height="20"/>
+            </header>
+            <div class="accordion-content" *ngIf="visitsExpanded">
+                <button class="add-btn" (click)="addVisit()">+ Add Visit</button>
+                <table class="accordion-table">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Provider</th>
+                        <th>Notes</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- To show existing data (pull from DB)-->
+                    <tr *ngFor="let visit of patientInfo.appointments">
+                        <td>{{ visit.date }}</td>
+                        <td>{{ visit.provider }}</td>
+                        <td>{{ visit.dentistNotes }}</td>
+                    </tr>
 
-            <!-- To add new data (push to DB)-->
-            <tr *ngFor="let newVisit of newVisits">
-              <td><input type="date" [(ngModel)]="newVisit.date" placeholder="Enter date" /></td>
-              <td><input type="text" [(ngModel)]="newVisit.provider" placeholder="Enter provider" /></td>
-              <td><textarea [(ngModel)]="newVisit.notes" placeholder="Enter notes"></textarea></td>
-            </tr>
-          </tbody>
-        </table>
-        <button class="save-btn" (click)="saveNewVisits()">Save</button>
-      </div>
+                    <!-- To add new data (push to DB)-->
+                    <tr *ngFor="let newVisit of newVisits">
+                        <td><input type="date" [(ngModel)]="newVisit.date" placeholder="Enter date"/></td>
+                        <td><input type="text" [(ngModel)]="newVisit.provider" placeholder="Enter provider"/></td>
+                        <td><textarea [(ngModel)]="newVisit.dentistNotes" placeholder="Enter notes"></textarea></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button class="save-btn" (click)="saveNewVisits()">Save</button>
+            </div>
+        </section>
+
+        <!-- Allergies Accordion -->
+        <section class="accordion-item" [class.expanded]="allergiesExpanded" [class.closed]="!allergiesExpanded">
+            <header class="accordion-header" (click)="allergiesExpanded = !allergiesExpanded">
+                <h2 class="accordion-title">ALLERGIES</h2>
+                <img [ngSrc]="allergiesExpanded ? '/assets/up.png' : '/assets/down.png'" alt="" class="accordion-icon"
+                     width="20" height="20"/>
+            </header>
+            <div class="accordion-content" *ngIf="allergiesExpanded">
+                <button class="add-btn" (click)="addAllergy()">+ Add Allergy</button>
+                <table class="accordion-table">
+                    <thead>
+                    <tr>
+                        <th>Allergy</th>
+                        <th>Comment</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let allergy of patientInfo.allergies">
+                        <td>{{ allergy.allergy }}</td>
+                        <td>{{ allergy.comment }}</td>
+                    </tr>
+                    <tr *ngFor="let newAllergy of newAllergies">
+                        <td><input type="text" [(ngModel)]="newAllergy.allergy" placeholder="Enter allergy"/></td>
+                        <td><textarea [(ngModel)]="newAllergy.comment" placeholder="Enter comment"></textarea></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button class="save-btn" (click)="saveNewAllergies()">Save</button>
+            </div>
+        </section>
+
+        <!-- Medications Accordion -->
+        <section class="accordion-item" [class.expanded]="medsExpanded" [class.closed]="!medsExpanded">
+            <header class="accordion-header" (click)="medsExpanded = !medsExpanded">
+                <h2 class="accordion-title">MEDICATIONS</h2>
+                <img [ngSrc]="medsExpanded ? '/assets/up.png' : '/assets/down.png'" alt="" class="accordion-icon"
+                     width="20" height="20"/>
+            </header>
+            <div class="accordion-content" *ngIf="medsExpanded">
+                <button class="add-btn" (click)="addMedication()">+ Add Medication</button>
+                <table class="accordion-table">
+                    <thead>
+                    <tr>
+                        <th>Date Prescribed</th>
+                        <th>Medication</th>
+                        <th>Directions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let medication of patientInfo.medications">
+                        <td>{{ medication.date }}</td>
+                        <td>{{ medication.medication }}</td>
+                        <td>{{ medication.directions }}</td>
+                    </tr>
+                    <tr *ngFor="let newMedication of newMedications">
+                        <td><input type="date" [(ngModel)]="newMedication.date" placeholder="Enter date"/></td>
+                        <td><input type="text" [(ngModel)]="newMedication.medication"
+                                   placeholder="Enter medication name"/></td>
+                        <td><textarea [(ngModel)]="newMedication.directions" placeholder="Enter directions"></textarea>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button class="save-btn" (click)="saveNewMedications()">Save</button>
+            </div>
+        </section>
+
+        <!-- Labs Accordion -->
+        <section class="accordion-item" [class.expanded]="labsExpanded" [class.closed]="!labsExpanded">
+            <header class="accordion-header" (click)="labsExpanded = !labsExpanded">
+                <h2 class="accordion-title">LABS & PROCEDURES</h2>
+                <img [ngSrc]="labsExpanded ? '/assets/up.png' : '/assets/down.png'" alt="" class="accordion-icon"
+                     width="20" height="20"/>
+            </header>
+            <div class="accordion-content" *ngIf="labsExpanded">
+                <button class="add-btn" (click)="addLab()">+ Add Lab</button>
+                <table class="accordion-table">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Lab Name</th>
+                        <th>Comments</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let lab of patientInfo.labs">
+                        <td>{{ lab.date }}</td>
+                        <td>{{ lab.lab }}</td>
+                        <td>{{ lab.comment }}</td>
+                    </tr>
+                    <tr *ngFor="let newLab of newLabs">
+                        <td><input type="date" [(ngModel)]="newLab.date" placeholder="Enter date"/></td>
+                        <td><input type="text" [(ngModel)]="newLab.lab" placeholder="Enter lab name"/></td>
+                        <td><textarea [(ngModel)]="newLab.comment" placeholder="Enter comments"></textarea></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button class="save-btn" (click)="saveNewLabs()">Save</button>
+            </div>
+        </section>
+
+        <!-- Immunizations Accordion -->
+        <section class="accordion-item" [class.expanded]="immunizationsExpanded"
+                 [class.closed]="!immunizationsExpanded">
+            <header class="accordion-header" (click)="immunizationsExpanded = !immunizationsExpanded">
+                <h2 class="accordion-title">IMMUNIZATIONS</h2>
+                <img [ngSrc]="immunizationsExpanded ? '/assets/up.png' : '/assets/down.png'" alt=""
+                     class="accordion-icon" width="20" height="20"/>
+            </header>
+            <div class="accordion-content" *ngIf="immunizationsExpanded">
+                <button class="add-btn" (click)="addImmunization()">+ Add Immunization</button>
+                <table class="accordion-table">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Immunization</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let immunization of patientInfo.immunizations">
+                        <td>{{ immunization.date }}</td>
+                        <td>{{ immunization.immunization }}</td>
+                    </tr>
+                    <tr *ngFor="let newImmunization of newImmunizations">
+                        <td><input type="date" [(ngModel)]="newImmunization.date" placeholder="Enter date"/></td>
+                        <td><input type="text" [(ngModel)]="newImmunization.immunization"
+                                   placeholder="Enter immunization name"/></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button class="save-btn" (click)="saveNewImmunizations()">Save</button>
+            </div>
+        </section>
+
+        <!-- Treatment Plan Section -->
+        <section class="accordion-item" [class.expanded]="treatmentPlanExpanded"
+                 [class.closed]="!treatmentPlanExpanded">
+            <header class="accordion-header" (click)="treatmentPlanExpanded = !treatmentPlanExpanded">
+                <h2 class="accordion-title">TREATMENT PLAN</h2>
+                <img [ngSrc]="treatmentPlanExpanded ? '/assets/up.png' : '/assets/down.png'" alt=""
+                     class="accordion-icon" width="20" height="20"/>
+            </header>
+            <div class="accordion-content" *ngIf="treatmentPlanExpanded">
+                <table class="accordion-table">
+                    <thead>
+                    <tr>
+                        <th>Plan</th>
+                        <th>Provider</th>
+                        <th>Timeline</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Display existing treatment plans -->
+                        <td><input type="text" [(ngModel)]="treatmentPlan.planName"/></td>
+                        <td><input type="text" [(ngModel)]="treatmentPlan.staffId"/></td>
+                        <td><input type="date" [(ngModel)]="treatmentPlan.startDate"/>
+                            - <input type="date" [(ngModel)]="treatmentPlan.endDate"/>
+                        </td>
+                    </tbody>
+                </table>
+                <button class="save-btn" (click)="saveNewTreatmentPlan()">Save</button>
+            </div>
+        </section>
+
+
     </section>
-
-    <!-- Allergies Accordion -->
-    <section class="accordion-item" [class.expanded]="allergiesExpanded" [class.closed]="!allergiesExpanded">
-      <header class="accordion-header" (click)="allergiesExpanded = !allergiesExpanded">
-        <h2 class="accordion-title">ALLERGIES</h2>
-        <img [ngSrc]="allergiesExpanded ? '/assets/up.png' : '/assets/down.png'" alt="" class="accordion-icon" width="20" height="20" />
-      </header>
-      <div class="accordion-content" *ngIf="allergiesExpanded">
-        <button class="add-btn" (click)="addAllergy()">+ Add Allergy</button>
-        <table class="accordion-table">
-          <thead>
-            <tr>
-              <th>Allergy</th>
-              <th>Comment</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let allergy of allergies">
-              <td>{{ allergy.name }}</td>
-              <td>{{ allergy.comment }}</td>
-            </tr>
-            <tr *ngFor="let newAllergy of newAllergies">
-              <td><input type="text" [(ngModel)]="newAllergy.name" placeholder="Enter allergy" /></td>
-              <td><textarea [(ngModel)]="newAllergy.comment" placeholder="Enter comment"></textarea></td>
-            </tr>
-          </tbody>
-        </table>
-        <button class="save-btn" (click)="saveNewAllergies()">Save</button>
-      </div>
-    </section>
-
-    <!-- Medications Accordion -->
-    <section class="accordion-item" [class.expanded]="medsExpanded" [class.closed]="!medsExpanded">
-      <header class="accordion-header" (click)="medsExpanded = !medsExpanded">
-        <h2 class="accordion-title">MEDICATIONS</h2>
-        <img [ngSrc]="medsExpanded ? '/assets/up.png' : '/assets/down.png'" alt="" class="accordion-icon" width="20" height="20" />
-      </header>
-      <div class="accordion-content" *ngIf="medsExpanded">
-        <button class="add-btn" (click)="addMedication()">+ Add Medication</button>
-        <table class="accordion-table">
-          <thead>
-            <tr>
-              <th>Date Prescribed</th>
-              <th>Medication</th>
-              <th>Directions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let medication of medications">
-              <td>{{ medication.datePrescribed }}</td>
-              <td>{{ medication.name }}</td>
-              <td>{{ medication.directions }}</td>
-            </tr>
-            <tr *ngFor="let newMedication of newMedications">
-              <td><input type="date" [(ngModel)]="newMedication.datePrescribed" placeholder="Enter date" /></td>
-              <td><input type="text" [(ngModel)]="newMedication.name" placeholder="Enter medication name" /></td>
-              <td><textarea [(ngModel)]="newMedication.directions" placeholder="Enter directions"></textarea></td>
-            </tr>
-          </tbody>
-        </table>
-        <button class="save-btn" (click)="saveNewMedications()">Save</button>
-      </div>
-    </section>
-
-    <!-- Labs Accordion -->
-    <section class="accordion-item" [class.expanded]="labsExpanded" [class.closed]="!labsExpanded">
-      <header class="accordion-header" (click)="labsExpanded = !labsExpanded">
-        <h2 class="accordion-title">LABS & PROCEDURES</h2>
-        <img [ngSrc]="labsExpanded ? '/assets/up.png' : '/assets/down.png'" alt="" class="accordion-icon" width="20" height="20" />
-      </header>
-      <div class="accordion-content" *ngIf="labsExpanded">
-        <button class="add-btn" (click)="addLab()">+ Add Lab</button>
-        <table class="accordion-table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Lab Name</th>
-              <th>Comments</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let lab of labs">
-              <td>{{ lab.date }}</td>
-              <td>{{ lab.name }}</td>
-              <td>{{ lab.comments }}</td>
-            </tr>
-            <tr *ngFor="let newLab of newLabs">
-              <td><input type="date" [(ngModel)]="newLab.date" placeholder="Enter date" /></td>
-              <td><input type="text" [(ngModel)]="newLab.name" placeholder="Enter lab name" /></td>
-              <td><textarea [(ngModel)]="newLab.comments" placeholder="Enter comments"></textarea></td>
-            </tr>
-          </tbody>
-        </table>
-        <button class="save-btn" (click)="saveNewLabs()">Save</button>
-      </div>
-    </section>
-
-    <!-- Immunizations Accordion -->
-    <section class="accordion-item" [class.expanded]="immunizationsExpanded" [class.closed]="!immunizationsExpanded">
-      <header class="accordion-header" (click)="immunizationsExpanded = !immunizationsExpanded">
-        <h2 class="accordion-title">IMMUNIZATIONS</h2>
-        <img [ngSrc]="immunizationsExpanded ? '/assets/up.png' : '/assets/down.png'" alt="" class="accordion-icon" width="20" height="20" />
-      </header>
-      <div class="accordion-content" *ngIf="immunizationsExpanded">
-        <button class="add-btn" (click)="addImmunization()">+ Add Immunization</button>
-        <table class="accordion-table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Immunization</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let immunization of immunizations">
-              <td>{{ immunization.date }}</td>
-              <td>{{ immunization.name }}</td>
-            </tr>
-            <tr *ngFor="let newImmunization of newImmunizations">
-              <td><input type="date" [(ngModel)]="newImmunization.date" placeholder="Enter date" /></td>
-              <td><input type="text" [(ngModel)]="newImmunization.name" placeholder="Enter immunization name" /></td>
-            </tr>
-          </tbody>
-        </table>
-        <button class="save-btn" (click)="saveNewImmunizations()">Save</button>
-      </div>
-    </section>
-
-<!-- To Do Section -->
-<section class="accordion-item" [class.expanded]="toDoExpanded" [class.closed]="!toDoExpanded">
-  <header class="accordion-header" (click)="toDoExpanded = !toDoExpanded">
-    <h2 class="accordion-title">TO DO</h2>
-    <img [ngSrc]="toDoExpanded ? '/assets/up.png' : '/assets/down.png'" alt="" class="accordion-icon" width="20" height="20" />
-  </header>
-  <div class="accordion-content" *ngIf="toDoExpanded">
-    <button class="add-btn" (click)="addTreatmentPlan()">+ Add New To Do</button>
-    <table class="accordion-table">
-      <thead>
-        <tr>
-          <th>To Do</th>
-          <th>Appointment</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let note of toDos">
-          <td>
-            {{ note.note }}
-            <div class="provider-name">Provider: Dr. {{ note.provider }}</div>
-          </td>
-          <td>{{ note.date }}</td>
-        </tr>
-        <tr *ngFor="let newToDo of newToDos">
-          <td><input type="text" [(ngModel)]="newToDo.note" placeholder="Enter To Do" /></td>
-          <td>
-            <input type="text" [(ngModel)]="newToDo.provider" placeholder="Enter Provider" />
-            <input type="date" [(ngModel)]="newToDo.date" placeholder="Enter Date" />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <button class="save-btn" (click)="saveNewToDos()">Save</button>
-  </div>
-</section>
-
-<!-- Treatment Plan Section -->
-<section class="accordion-item" [class.expanded]="treatmentPlanExpanded" [class.closed]="!treatmentPlanExpanded">
-  <header class="accordion-header" (click)="treatmentPlanExpanded = !treatmentPlanExpanded">
-    <h2 class="accordion-title">TREATMENT PLAN</h2>
-    <img [ngSrc]="treatmentPlanExpanded ? '/assets/up.png' : '/assets/down.png'" alt="" class="accordion-icon" width="20" height="20" />
-  </header>
-  <div class="accordion-content" *ngIf="treatmentPlanExpanded">
-    <button class="add-btn" (click)="addTreatmentPlan()">+ Add Treatment Plan</button>
-    <table class="accordion-table">
-      <thead>
-        <tr>
-          <th>Plan</th>
-          <th>Provider</th>
-          <th>Timeline</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Display existing treatment plans -->
-        <tr *ngFor="let treatmentPlan of treatmentPlans">
-          <td>{{ treatmentPlan.plan }}</td>
-          <td>{{ treatmentPlan.provider }}</td>
-          <td>{{ treatmentPlan.start }} - {{ treatmentPlan.end }}</td>
-        </tr>
-        <!-- Add new treatment plans -->
-        <tr *ngFor="let newTreatmentPlan of newTreatmentPlans">
-          <td><input type="text" [(ngModel)]="newTreatmentPlan.plan" placeholder="Enter plan name" /></td>
-          <td><input type="text" [(ngModel)]="newTreatmentPlan.provider" placeholder="Enter provider name" /></td>
-          <td>
-            <input type="date" [(ngModel)]="newTreatmentPlan.start" placeholder="Start date" /> -
-            <input type="date" [(ngModel)]="newTreatmentPlan.end" placeholder="End date" />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <button class="save-btn" (click)="saveNewTreatmentPlans()">Save</button>
-  </div>
-</section>
-
-
-  </section>
 </main>

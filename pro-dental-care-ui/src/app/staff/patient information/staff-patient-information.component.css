@@ -45,7 +45,7 @@
 
 .accordion-table th, .accordion-table td {
   border: 1px solid #ddd;
-  padding: 8px;
+  padding: 8px 20px 8px 8px;
 }
 
 .accordion-table th {
@@ -122,4 +122,3 @@ textarea {
 .save-btn:hover {
   background-color: #218838;
 }
-

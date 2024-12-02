@@ -1,6 +1,7 @@
 package org.cc.prodentalcareapi.impl;
 
 import org.cc.prodentalcareapi.model.*;
+import org.cc.prodentalcareapi.model.request.PatientTreatmentPlanUpdateRequest;
 import org.cc.prodentalcareapi.model.response.PatientInformationStaffViewResponse;
 import org.cc.prodentalcareapi.model.response.PatientListResponse;
 import org.cc.prodentalcareapi.repository.*;
@@ -51,7 +52,7 @@ public class StaffInfoImpl {
 
 	/**
 	 *
-	* */
+	 */
 	private Optional<Token> isValidStaffToken(String token) {
 		String tokenValue = tokenService.getTokenFromBearerToken(token);
 		Token t = tokenService.getToken(tokenValue);
@@ -69,7 +70,7 @@ public class StaffInfoImpl {
 	}
 
 	@RequireToken
-	@GetMapping("/staff/patient-list")
+	@GetMapping("/patient-list")
 	public ResponseEntity<PatientListResponse> getPatientList(@RequestHeader(name = "Authorization") String token) {
 		if (isValidStaffToken(token).isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -83,7 +84,7 @@ public class StaffInfoImpl {
 	}
 
 	@RequireToken
-	@GetMapping("/staff/patient-information/{patientId}")
+	@GetMapping("/patient-information/{patientId}")
 	public ResponseEntity<PatientInformationStaffViewResponse> getPatientInformation(@RequestHeader(name = "Authorization") String token, @PathVariable("patientId") String patientId) {
 		if (isValidStaffToken(token).isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -110,5 +111,27 @@ public class StaffInfoImpl {
 		PatientInformationStaffViewResponse response = new PatientInformationStaffViewResponse(patient, patientTreatmentPlan.orElse(null), appointments, allergyRecords, medicationRecords, labRecords, immunizationRecords);
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@RequireToken
+	@PostMapping("/patient-information/{patientId}/treatment-plan")
+	public ResponseEntity<String> updatePatientTreatmentPlan(@RequestHeader(name = "Authorization") String token, @PathVariable("patientId") String patientId, @RequestBody PatientTreatmentPlanUpdateRequest request) {
+		if (isValidStaffToken(token).isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+
+		try {
+			Optional<PatientTreatmentPlan> planOptional = patientTreatmentPlanRepository.findById(patientId);
+			PatientTreatmentPlan plan = planOptional.orElse(new PatientTreatmentPlan(patientId, request.planName, request.staffId));
+			plan.setPlanName(request.planName);
+			plan.setStaffId(request.staffId);
+			plan.setStartDate(request.startDate);
+			plan.setEndDate(request.endDate);
+			patientTreatmentPlanRepository.saveAndFlush(plan);
+
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 }
