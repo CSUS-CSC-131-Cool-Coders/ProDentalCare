@@ -1,16 +1,30 @@
 package org.cc.prodentalcareapi.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "visit_records")
 public class VisitRecordEntity {
 
     @Id
-    private String date;
+    @Column(name = "visit_id")
+    private int visitId;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "appt_date")
+    private Date date;
+
+    @Column(name = "provider", length = 20)
     private String provider;
+
+    @Column(name = "notes", length = 200)
     private String notes;
 
     // Getters and setters
@@ -18,8 +32,12 @@ public class VisitRecordEntity {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Date getDate() {
+        return date;
     }
 
     public String getProvider() {

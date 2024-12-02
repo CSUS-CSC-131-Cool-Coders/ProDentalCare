@@ -1,23 +1,32 @@
 package org.cc.prodentalcareapi.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.TemporalType;
+
+import java.util.Date;
 
 @Entity
 @Table(name = "immunization_records")
 public class ImmunizationRecord {
 
     @Id
-    private String date;
+    @Column(name = "immun_id")
+    private int immunID;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "immun_date")
+    private Date date;
+
+    @Column(name = "immun", length = 200)
     private String immunization;
 
     // Getters and setters
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(string date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
