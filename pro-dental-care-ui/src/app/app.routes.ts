@@ -11,11 +11,10 @@ import {PatientOverviewComponent} from './patient/overview/patient-overview.comp
 import {PatientHealthRecords} from './patient/records/health records/health-records.component';
 import {PatientTreatmentPlan} from './patient/records/treatment plan/patient-treatment-plan.component';
 import {StaffPatientInfoComponent} from './src/app/staff-patient-info/staff-patient-info.component';
-import {
-    StaffPatientInfoPage2Component
-} from './src/app/staff-patient-info/staff-patient-info-page2/staff-patient-info-page2.component';
+import {StaffPatientInfoPage2Component} from './src/app/staff-patient-info/staff-patient-info-page2/staff-patient-info-page2.component';
 import {PatientInformationComponent} from './patient/patient-information/patient-information.component';
 import {StaffSignupComponent} from "./account/signup-page/staff-signup/staff-signup.component";
+import {StaffInformationComponent} from "./admin-staff info/staff-information.component";
 
 export const routes: Routes = [
     {path: "patient-info-staff-view-page-2", component: StaffPatientInfoPage2Component},
@@ -36,5 +35,6 @@ export const routes: Routes = [
     {path: "patient/patient-information", component: PatientInformationComponent},
     {path: "reset-password/:resetToken", component: ResetPasswordComponent},
     {path: "payments", component: PaymentComponent}, //Add route for payments
-    {path: "process-payment", component: PaymentPageComponent} //Add route for payment process
+    {path: "process-payment", component: PaymentPageComponent}, //Add route for payment process
+    {path: "admin/staff-information", component: StaffInformationComponent}
 ];
