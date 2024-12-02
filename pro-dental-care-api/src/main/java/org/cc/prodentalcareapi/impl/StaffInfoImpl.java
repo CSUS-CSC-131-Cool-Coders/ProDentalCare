@@ -2,6 +2,7 @@ package org.cc.prodentalcareapi.impl;
 
 import org.cc.prodentalcareapi.model.*;
 import org.cc.prodentalcareapi.model.request.AllergyUpdateRequest;
+import org.cc.prodentalcareapi.model.request.MedicationUpdateRequest;
 import org.cc.prodentalcareapi.model.request.PatientTreatmentPlanUpdateRequest;
 import org.cc.prodentalcareapi.model.response.AppointmentsWithStaffName;
 import org.cc.prodentalcareapi.model.response.PatientInformationStaffViewResponse;
@@ -178,6 +179,28 @@ public class StaffInfoImpl {
 			record.setComment(allergy.comment);
 			try {
 				allergyRecordRepository.saveAndFlush(record);
+			} catch (Exception e) {
+				// ignore
+			}
+		}
+
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@RequireToken
+	@PostMapping("/patient-information/{patientId}/medications")
+	public ResponseEntity<String> updatePatientMedications(@RequestHeader(name = "Authorization") String token, @PathVariable("patientId") String patientId, @RequestBody List<MedicationUpdateRequest> request) {
+		if (isValidStaffToken(token).isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+		for (MedicationUpdateRequest medication : request) {
+			MedicationRecord record = new MedicationRecord();
+			record.setPatientId(patientId);
+			record.setMedication(medication.medication);
+			record.setDirections(medication.directions);
+			record.setDate(medication.date);
+			try {
+				medicationRecordRepository.saveAndFlush(record);
 			} catch (Exception e) {
 				// ignore
 			}

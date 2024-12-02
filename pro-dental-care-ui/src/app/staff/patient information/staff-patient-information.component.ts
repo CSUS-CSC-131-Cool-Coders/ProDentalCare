@@ -125,7 +125,25 @@ export class StaffPatientInformationComponent implements OnInit {
       this.newMedications.push({ date: '', medication: '', directions: '' });
     }
     saveNewMedications(): void {
-      this.newMedications = [];
+        let body = this.newMedications;
+        this.apiService.post("/staff/patient-information/" + this.patientInfo.patient.patientId + "/medications", body).subscribe({
+            next: res => {
+                if (ApiService.isOk(res.status)) {
+                    if (this.patientInfo.medications == null) {
+                        this.patientInfo.medications = [];
+                    }
+                    for (let medication of this.newMedications) {
+                        this.patientInfo.medications.push(medication);
+                    }
+                }
+
+                this.newMedications = [];
+            },
+            error: err => {
+                alert("There was an error updating the patient's allergy information.");
+                this.newMedications = [];
+            }
+        });
     }
   
     // Labs Methods

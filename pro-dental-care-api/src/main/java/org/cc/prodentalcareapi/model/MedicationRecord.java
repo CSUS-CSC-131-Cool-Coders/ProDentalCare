@@ -9,6 +9,7 @@ import java.util.Date;
 public class MedicationRecord {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "med_id")
     private int medicationId;
 
