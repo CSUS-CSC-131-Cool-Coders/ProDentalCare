@@ -50,11 +50,13 @@ public class PatientImpl {
 	}
 
 	// getAppointments(token) - for the requesting user
-	// getAppointmentsForUser(token (staff token), patientId) - on behalf of a patient from a staff member / admin
+	// getAppointmentsForUser(token (staff token), patientId) - on behalf of a
+	// patient from a staff member / admin
 
 	@RequireToken
 	@GetMapping("/dashboard")
-	public ResponseEntity<PatientDashboardResponse> getPatientDashboard(@RequestHeader(name = "Authorization") String token) {
+	public ResponseEntity<PatientDashboardResponse> getPatientDashboard(
+			@RequestHeader(name = "Authorization") String token) {
 		String tokenValue = tokenService.getTokenFromBearerToken(token);
 		Token t = tokenService.getToken(tokenValue);
 
@@ -71,10 +73,10 @@ public class PatientImpl {
 		PatientDashboardResponse response = new PatientDashboardResponse();
 
 		/*
-		* 1. Get the associated patient for an email
-		* 2. Use that patient's id to search for appointments
-		* 3. Get the soonest appointment
-		* */
+		 * 1. Get the associated patient for an email
+		 * 2. Use that patient's id to search for appointments
+		 * 3. Get the soonest appointment
+		 */
 
 		List<Patient> patientList = patientRepository.findByEmail(email);
 		if (patientList.size() != 1) {
@@ -83,24 +85,29 @@ public class PatientImpl {
 
 		Patient patient = patientList.get(0);
 
-		List<Appointments> appointmentList = appointmentsRepository.findAllAppointmentsByPatientIdOrderByDateAsc(patient.getPatientId());
+		response.firstName = patient.getFirstName();
+		response.lastName = patient.getLastName();
+
+		List<Appointments> appointmentList = appointmentsRepository
+				.findAllAppointmentsByPatientIdOrderByDateAsc(patient.getPatientId());
 		if (!appointmentList.isEmpty()) {
 			Date date = appointmentList.get(0).getDate();
 			response.nextAppointmentDate = date.toString();
 		}
 
 		// Get treatment plan
-		Optional<PatientTreatmentPlan> treatmentPlanOptional = patientTreatmentPlanRepository.findById(patient.getPatientId());
+		Optional<PatientTreatmentPlan> treatmentPlanOptional = patientTreatmentPlanRepository
+				.findById(patient.getPatientId());
 
 		if (treatmentPlanOptional.isPresent()) {
 			PatientTreatmentPlan treatmentPlan = treatmentPlanOptional.get();
 			response.treatmentPlan = treatmentPlan.getPlanName();
 		}
 
-
 		// Get next bill
 
-		List<PatientBilling> bills = patientBillingRepository.findAllByPatientIdOrderByDueDateAsc(patient.getPatientId());
+		List<PatientBilling> bills = patientBillingRepository
+				.findAllByPatientIdOrderByDueDateAsc(patient.getPatientId());
 		PatientBilling candidate = null;
 		for (PatientBilling bill : bills) {
 			if (!bill.getStatus().equals("paid")) {
@@ -109,11 +116,11 @@ public class PatientImpl {
 			}
 		}
 		if (candidate != null) {
-			response.nextPayment = new PaymentPreview(candidate.getPaymentAmount().doubleValue(), candidate.getDueDate().toString());
+			response.nextPayment = new PaymentPreview(candidate.getPaymentAmount().doubleValue(),
+					candidate.getDueDate().toString());
 		}
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-
 
 }

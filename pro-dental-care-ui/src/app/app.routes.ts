@@ -17,16 +17,12 @@ import {StaffSignupComponent} from "./account/signup-page/staff-signup/staff-sig
 import {StaffInformationComponent} from "./staff-staff info/staff-information.component";
 
 export const routes: Routes = [
-    {path: "patient-info-staff-view-page-2", component: StaffPatientInfoPage2Component},
-    {path: "patient-info-staff-view", component: StaffPatientInfoComponent},
     {path: "login", component: LoginPageComponent},
     {path: "signup", component: SignupPageComponent},
     {path: "signup/page-2", component: Page2Component},
     {path: "staff/signup", component: StaffSignupComponent},
     {path: "forgot-password", component: ForgotPasswordComponent},
     {path: "reset-password", component: LoginPageComponent},
-    {path: "reset-password/:resetToken", component: ResetPasswordComponent},
-    {path: "patient-information", component: PatientInformationComponent},
     {path: "reset-password/:resetToken", component: ResetPasswordComponent},
     {path: "dashboard", component: VisitorDashboardComponent},
     {path: "patient/dashboard", component: PatientOverviewComponent}, // Add the route for OverviewComponent
@@ -37,4 +33,7 @@ export const routes: Routes = [
     {path: "payments", component: PaymentComponent}, //Add route for payments
     {path: "process-payment", component: PaymentPageComponent}, //Add route for payment process
     {path: "staff/staff-information", component: StaffInformationComponent}
+    {path: "patient/information", component: PatientInformationComponent},
+    {path: "patient/payments", component: PaymentComponent}, //Add route for payments
+    {path: "patient/process-payment", component: PaymentPageComponent} //Add route for payment process
 ];

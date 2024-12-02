@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import java.math.BigDecimal;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -153,7 +154,9 @@ public class AccountImpl {
 				body.dob,
 				body.sex,
 				body.bankRoutingNo,
-				body.bankAccNo);
+				body.bankAccNo,
+				new BigDecimal("20.0"),
+				"dentist"); // default the hourly rate to 20
 
 		LOG.info(String.format("Account created %s", account));
 		LOG.info(String.format("Staff record created %s", staffMember));
