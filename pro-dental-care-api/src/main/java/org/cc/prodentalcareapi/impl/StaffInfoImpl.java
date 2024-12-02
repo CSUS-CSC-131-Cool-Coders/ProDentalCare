@@ -89,9 +89,6 @@ public class StaffInfoImpl {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
-
-		PatientInformationStaffViewResponse response = new PatientInformationStaffViewResponse();
-
 		Patient patient = patientRepository.findById(patientId).orElse(null);
 
 		if (patient == null) {
@@ -110,7 +107,7 @@ public class StaffInfoImpl {
 
 		Optional<PatientTreatmentPlan> patientTreatmentPlan = patientTreatmentPlanRepository.findById(patientId);
 
-		response = new PatientInformationStaffViewResponse(patient, patientTreatmentPlan.orElse(null), appointments, allergyRecords, medicationRecords, labRecords, immunizationRecords);
+		PatientInformationStaffViewResponse response = new PatientInformationStaffViewResponse(patient, patientTreatmentPlan.orElse(null), appointments, allergyRecords, medicationRecords, labRecords, immunizationRecords);
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
