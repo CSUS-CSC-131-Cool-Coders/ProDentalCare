@@ -12,8 +12,8 @@ import {PatientHealthRecords} from './patient/records/health records/health-reco
 import {PatientTreatmentPlan} from './patient/records/treatment plan/patient-treatment-plan.component';
 import {PatientInformationComponent} from './patient/patient-information/patient-information.component';
 import {StaffSignupComponent} from "./account/signup-page/staff-signup/staff-signup.component";
-import { StaffPatientComponent } from './staff/patient information/staff-patient.component';
-import { StaffPatientInformationComponent } from './staff/patient information/staff-patient-information.component';
+import {StaffPatientComponent} from './staff/patient information/staff-patient.component';
+import {StaffPatientInformationComponent} from './staff/patient information/staff-patient-information.component';
 
 
 export const routes: Routes = [
@@ -24,16 +24,13 @@ export const routes: Routes = [
     {path: "forgot-password", component: ForgotPasswordComponent},
     {path: "reset-password", component: LoginPageComponent},
     {path: "reset-password/:resetToken", component: ResetPasswordComponent},
-    {path: "patient-information", component: PatientInformationComponent},
-    {path: "reset-password/:resetToken", component: ResetPasswordComponent},
     {path: "dashboard", component: VisitorDashboardComponent},
     {path: "patient/dashboard", component: PatientOverviewComponent}, // Add the route for OverviewComponent
     {path: "patient/records", component: PatientHealthRecords},
     {path: "patient/treatment", component: PatientTreatmentPlan},
-    {path: "patient/patient-information", component: PatientInformationComponent},
-    {path: "reset-password/:resetToken", component: ResetPasswordComponent},
-    {path: "payments", component: PaymentComponent}, //Add route for payments
-    {path: "process-payment", component: PaymentPageComponent}, //Add route for payment process
+    {path: "patient/information", component: PatientInformationComponent},
+    {path: "patient/payments", component: PaymentComponent}, //Add route for payments
+    {path: "patient/process-payment", component: PaymentPageComponent}, //Add route for payment process
     {path: 'staff/patient', component: StaffPatientComponent },
     {path: 'staff/patient-information/:id', component: StaffPatientInformationComponent }
 ];

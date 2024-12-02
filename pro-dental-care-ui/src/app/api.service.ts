@@ -81,7 +81,15 @@ export class ApiService {
     public put<T>(endpoint: string, body: any | null, headers?: HttpHeaders): Observable<HttpResponse<T>> {
         return this.httpClient.put<T>(this.buildEndpoint(endpoint), body, {
             headers: this.populateDefaultHeaders(headers),
-            observe: "response"
+            observe: "response",
+        });
+    }
+
+    public delete<T>(endpoint: string, body: any | null, headers?: HttpHeaders): Observable<HttpResponse<T>> {
+        return this.httpClient.delete<T>(this.buildEndpoint(endpoint), {
+            headers: this.populateDefaultHeaders(headers),
+            observe: "response",
+            body: body
         });
     }
 
@@ -124,6 +132,10 @@ export class ApiService {
         if (!this.getUserRoles().includes(requiredRole)) {
             this.router.navigateByUrl(fallbackUrl);
         }
+    }
+
+    public hasRole(role: string) {
+        return this.getUserRoles().includes(role);
     }
 
     public static isOk(statusCode: number): boolean {
