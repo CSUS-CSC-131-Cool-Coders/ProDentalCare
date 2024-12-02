@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from "@angular/common";
 import {NgIf, NgOptimizedImage} from "@angular/common";
@@ -13,6 +13,7 @@ import {ApiService} from "../../api.service";
   imports: [CommonModule, NgIf, NgOptimizedImage, FormsModule],
 })
 export class StaffPatientInformationComponent implements OnInit {
+
     public patientInfo: any;
 
     @Input()
@@ -96,7 +97,27 @@ export class StaffPatientInformationComponent implements OnInit {
       this.newAllergies.push({ allergy: '', comment: '' });
     }
     saveNewAllergies(): void {
-      this.newAllergies = [];
+        let body = this.newAllergies;
+        this.apiService.post("/staff/patient-information/" + this.patientInfo.patient.patientId + "/allergies", body).subscribe({
+            next: res => {
+                if (ApiService.isOk(res.status)) {
+                    if (this.patientInfo.allergies == null) {
+                        this.patientInfo.allergies = [];
+                    }
+                    for (let allergy of this.newAllergies) {
+                        this.patientInfo.allergies.push(allergy);
+                    }
+                }
+
+                this.newAllergies = [];
+            },
+            error: err => {
+                alert("There was an error updating the patient's allergy information.");
+                this.newAllergies = [];
+            }
+        });
+
+
     }
   
     // Medications Methods

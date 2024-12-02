@@ -1,6 +1,7 @@
 package org.cc.prodentalcareapi.impl;
 
 import org.cc.prodentalcareapi.model.*;
+import org.cc.prodentalcareapi.model.request.AllergyUpdateRequest;
 import org.cc.prodentalcareapi.model.request.PatientTreatmentPlanUpdateRequest;
 import org.cc.prodentalcareapi.model.response.AppointmentsWithStaffName;
 import org.cc.prodentalcareapi.model.response.PatientInformationStaffViewResponse;
@@ -14,9 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/staff")
@@ -164,5 +163,26 @@ public class StaffInfoImpl {
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+	}
+
+	@RequireToken
+	@PostMapping("/patient-information/{patientId}/allergies")
+	public ResponseEntity<String> updatePatientAllergies(@RequestHeader(name = "Authorization") String token, @PathVariable("patientId") String patientId, @RequestBody List<AllergyUpdateRequest> request) {
+		if (isValidStaffToken(token).isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+		for (AllergyUpdateRequest allergy : request) {
+			AllergyRecord record = new AllergyRecord();
+			record.setPatientId(patientId);
+			record.setAllergy(allergy.allergy);
+			record.setComment(allergy.comment);
+			try {
+				allergyRecordRepository.saveAndFlush(record);
+			} catch (Exception e) {
+				// ignore
+			}
+		}
+
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

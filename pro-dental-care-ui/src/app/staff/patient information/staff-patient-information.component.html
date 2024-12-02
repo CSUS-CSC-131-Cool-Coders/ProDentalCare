@@ -40,7 +40,7 @@
                      width="20" height="20"/>
             </header>
             <div class="accordion-content" *ngIf="allergiesExpanded">
-                <button class="add-btn" (click)="addAllergy()">+ Add Allergy</button>
+                <button class="add-btn" (click)="addAllergy()" [disabled]="newAllergies.length != 0">+ Add Allergy</button>
                 <table class="accordion-table">
                     <thead>
                     <tr>
