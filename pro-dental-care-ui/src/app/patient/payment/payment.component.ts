@@ -43,7 +43,7 @@ export class PaymentComponent {
 
 
   submitPayment() {
-    this.router.navigateByUrl("/process-payment");
+    this.router.navigateByUrl("/patient/process-payment");
   }
 
 }

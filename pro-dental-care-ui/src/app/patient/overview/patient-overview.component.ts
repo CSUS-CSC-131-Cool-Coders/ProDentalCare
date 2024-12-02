@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from "@angular/core";
 import { CommonModule } from "@angular/common";
 import {NgIf, NgOptimizedImage} from "@angular/common";
 import {ApiService} from "../../api.service";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {timeout} from "rxjs";
 
 @Component({
@@ -10,7 +10,7 @@ import {timeout} from "rxjs";
   templateUrl: "./patient-overview.component.html",
   styleUrls: ["./patient-overview.component.css"],
   standalone: true,
-  imports: [CommonModule, NgOptimizedImage],
+  imports: [CommonModule, NgOptimizedImage, RouterLink],
 })
 export class PatientOverviewComponent implements OnInit {
 
@@ -40,8 +40,10 @@ export class PatientOverviewComponent implements OnInit {
         this.lastName = body.lastName;
         this.nextAppointmentDate = body.nextAppointmentDate;
         this.treatmentPlan = body.treatmentPlan;
-        this.nextBillDate = body.nextPayment.date;
-        this.nextBillAmt = body.nextPayment.amount;
+        if (body.nextPayment != null) {
+          this.nextBillDate = body.nextPayment.date;
+          this.nextBillAmt = body.nextPayment.amount;
+        }
       },
       error: err => {
         console.log(err);

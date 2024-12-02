@@ -24,6 +24,27 @@ export class ApiService {
         }
     }
 
+    public getVisitRecords(): Observable<any> {
+        return this.get('/patient/records/visit');
+    }
+    
+    public getAllergyRecords(): Observable<any> {
+        return this.get('/patient/records/allergy');
+    }
+    
+    public getMedicationRecords(): Observable<any> {
+        return this.get('/patient/records/medication');
+    }
+    
+    public getLabRecords(): Observable<any> {
+        return this.get('/patient/records/lab');
+    }
+    
+    public getImmunizationRecords(): Observable<any> {
+        return this.get('/patient/records/immunization');
+    }
+    
+
     private getUserToken(): string|null {
         return localStorage.getItem(DentalConstants.TOKEN_STORAGE_ID);
     }
@@ -81,7 +102,15 @@ export class ApiService {
     public put<T>(endpoint: string, body: any | null, headers?: HttpHeaders): Observable<HttpResponse<T>> {
         return this.httpClient.put<T>(this.buildEndpoint(endpoint), body, {
             headers: this.populateDefaultHeaders(headers),
-            observe: "response"
+            observe: "response",
+        });
+    }
+
+    public delete<T>(endpoint: string, body: any | null, headers?: HttpHeaders): Observable<HttpResponse<T>> {
+        return this.httpClient.delete<T>(this.buildEndpoint(endpoint), {
+            headers: this.populateDefaultHeaders(headers),
+            observe: "response",
+            body: body
         });
     }
 
@@ -124,6 +153,10 @@ export class ApiService {
         if (!this.getUserRoles().includes(requiredRole)) {
             this.router.navigateByUrl(fallbackUrl);
         }
+    }
+
+    public hasRole(role: string) {
+        return this.getUserRoles().includes(role);
     }
 
     public static isOk(statusCode: number): boolean {

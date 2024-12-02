@@ -1,7 +1,7 @@
 <main class="flex flex-col p-14 bg-white max-w-[940px] max-md:px-5">
     <header class="flex flex-col max-w-full leading-tight w-[568px]">
         <h1 class="tracking-tight font-[number:var(--sds-typography-heading-font-weight)] text-[color:var(--sds-color-text-default-default)] text-[length:var(--sds-typography-heading-size-base)] max-md:max-w-full">
-            Hello, {{ firstName }} {{ lastName }}
+
         </h1>
         <p class="mt-2 font-[number:var(--sds-typography-subheading-font-weight)] text-[color:var(--sds-color-text-default-secondary)] text-[length:var(--sds-typography-subheading-size-medium)] max-md:max-w-full">
             This is your overview. Use the sidebar for more specific information.
@@ -9,41 +9,15 @@
     </header>
     <!-- Section for Overview Boxes -->
     <section class="flex flex-wrap gap-12 items-center mt-11 w-full min-h-[316px] max-md:mt-10 max-md:max-w-full">
-        <!-- Appointment -->
+
         <article class="overview-box">
             <div class="icon-placeholder" aria-label="Appointment illustration">
                 <img ngSrc="/assets/clock.png" alt="Appointment Icon" width="100" height="100"/>
             </div>
             <div class="text-content">
                 <h2>Next Appointment:</h2>
-                <p>{{ nextAppointmentDate }}</p>
-            </div>
-        </article>
 
-        <!-- Treatment Plan -->
-        <a href="/treatment">
-            <article class="overview-box">
-                <div class="icon-placeholder" aria-label="Treatment plan illustration">
-                    <img ngSrc="/assets/treatmentplan.png" alt="Treatment Plan Icon" width="100" height="100"/>
-                </div>
-                <div class="text-content">
-                    <h2>Current Treatment Plan:</h2>
-                    <p>{{ treatmentPlan }}</p>
-                </div>
-            </article>
-        </a>
-
-
-        <!-- Payment Due -->
-        <article class="overview-box">
-            <div class="icon-placeholder" aria-label="Payment due illustration">
-                <img ngSrc="/assets/dollar.png" alt="Payment Due Icon" width="100" height="100"/>
-            </div>
-            <div class="text-content">
-                <h2>Next Payment Due:</h2>
-                <p>${{ nextBillAmt }} - {{ nextBillDate }}</p>
-            </div>
-        </article>
     </section>
+          
 </main>
   
