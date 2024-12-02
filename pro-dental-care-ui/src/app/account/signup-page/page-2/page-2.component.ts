@@ -57,6 +57,44 @@ export class Page2Component {
     Validators.min(0)
   ]);
 
+  public addressTwo: FormControl= new FormControl("", [
+  ]);
+
+  public addressOne: FormControl= new FormControl("", [
+    Validators.required,
+    Validators.min(2)
+  ]);
+
+  public city: FormControl= new FormControl("", [
+    Validators.required,
+    Validators.min(2)
+  ]);
+
+  public state: FormControl= new FormControl("", [
+    Validators.required,
+      Validators.min(2)
+  ]);
+
+  public country: FormControl= new FormControl("", [
+    Validators.required,
+      Validators.min(4)
+  ]);
+
+  public zip: FormControl= new FormControl("", [
+    Validators.required,
+    Validators.minLength(5),
+      Validators.maxLength(5)
+  ]);
+
+  public maritalStatus: FormControl= new FormControl("", [
+    Validators.required,
+      Validators.min(5)
+  ]);
+
+  public race: FormControl= new FormControl("", [
+    Validators.required
+  ]);
+
   public constructor(private router: Router,
                      private apiService: ApiService,
                      private fb: FormBuilder) {
@@ -66,7 +104,15 @@ export class Page2Component {
       sex: this.sex,
       lang: this.selectedLang,
       height: this.height,
-      weight: this.weight
+      weight: this.weight,
+      addressOne: this.addressOne,
+      addressTwo: this.addressTwo,
+      city: this.city,
+      state: this.state,
+      country: this.country,
+      zipCode: this.zip,
+      race: this.race,
+      maritalStatus: this.maritalStatus
     });
   }
 

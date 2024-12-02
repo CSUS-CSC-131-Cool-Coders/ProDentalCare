@@ -34,6 +34,26 @@ public class StaffMember {
 	@Column(name = "bank_acc_no", length = 100)
 	private String bankAccountNumber;
 
+	public StaffMember() {}
+
+	public StaffMember(String staffId,
+					   String email,
+					   String firstName,
+					   String lastName,
+					   Date dateOfBirth,
+					   String sex,
+					   String bankRoutingNumber,
+					   String bankAccountNumber) {
+		this.staffId = staffId;
+		this.email = email;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirth = dateOfBirth;
+		this.sex = sex;
+		this.bankRoutingNumber = bankRoutingNumber;
+		this.bankAccountNumber = bankAccountNumber;
+	}
+
 
 	public String getStaffId() {
 		return staffId;

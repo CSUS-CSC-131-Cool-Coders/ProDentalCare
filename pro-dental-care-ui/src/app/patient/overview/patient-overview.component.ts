@@ -2,6 +2,8 @@ import {Component, Input, OnInit} from "@angular/core";
 import { CommonModule } from "@angular/common";
 import {NgIf, NgOptimizedImage} from "@angular/common";
 import {ApiService} from "../../api.service";
+import {Router} from "@angular/router";
+import {timeout} from "rxjs";
 
 @Component({
   selector: "app-patient-overview",
@@ -21,10 +23,12 @@ export class PatientOverviewComponent implements OnInit {
   @Input()
   public nextBillAmt: string;
 
-  public constructor(private apiService: ApiService) {
+  public constructor(private apiService: ApiService, private router: Router) {
   }
 
   public ngOnInit(): void {
+    this.apiService.checkAccess("patient", "/dashboard");
+
     this.apiService.get("/patient/dashboard").subscribe({
       next: res => {
         let body: any = res.body;
