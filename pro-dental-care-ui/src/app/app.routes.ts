@@ -14,6 +14,7 @@ import {PatientInformationComponent} from './patient/patient-information/patient
 import {StaffSignupComponent} from "./account/signup-page/staff-signup/staff-signup.component";
 
 export const routes: Routes = [
+    {path: "", redirectTo: "dashboard", pathMatch: "full" },
     {path: "login", component: LoginPageComponent},
     {path: "signup", component: SignupPageComponent},
     {path: "signup/page-2", component: Page2Component},
