@@ -15,6 +15,8 @@ export class StaffInformationComponent implements OnInit {
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
+    this.apiService.checkAccessList(["dentist", "admin"], "/");
+
     // Initialize staff information
     this.apiService.get("/staff/information").subscribe({
       next: res => {
