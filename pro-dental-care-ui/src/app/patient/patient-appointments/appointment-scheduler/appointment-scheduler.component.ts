@@ -1,13 +1,14 @@
-import { Component, signal, ChangeDetectorRef } from '@angular/core';
+import { Component, signal, ChangeDetectorRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { INITIAL_EVENTS, createEventId } from './event-utils';
-import { Staff } from '../../../admin/staff-information/staff-model';
 import { FormsModule } from '@angular/forms';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; // Import MatSnackBar
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+
+
 
 @Component({
   selector: 'appointment-scheduler',

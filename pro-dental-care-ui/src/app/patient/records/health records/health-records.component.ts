@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { NgIf, NgOptimizedImage } from "@angular/common";
-import { ApiService } from "../../api.service";
+import { ApiService } from "../../../api.service";
 
 @Component({
   selector: "health-records",
