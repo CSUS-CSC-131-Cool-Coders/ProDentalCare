@@ -1,5 +1,6 @@
 package org.cc.prodentalcareapi.impl;
 
+import jakarta.websocket.server.PathParam;
 import org.cc.prodentalcareapi.model.*;
 import org.cc.prodentalcareapi.model.request.*;
 import org.cc.prodentalcareapi.model.response.AppointmentsWithStaffName;
@@ -247,6 +248,24 @@ public class StaffInfoImpl {
 			}
 		}
 
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@RequireToken
+	@DeleteMapping("/patient-information/{patientId}/allergies/{allergyId}")
+	public ResponseEntity<String> deletePatientAllergy(@RequestHeader(name = "Authorization") String token, @PathVariable("patientId") String patientId, @PathVariable("allergyId") int allergyId) {
+		if (isValidStaffToken(token).isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+
+		try {
+
+			allergyRecordRepository.deleteById(allergyId);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		allergyRecordRepository.flush();
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

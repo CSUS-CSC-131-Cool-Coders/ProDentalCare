@@ -57,4 +57,12 @@ public class MedicationRecord {
 	public void setPatientId(String patientId) {
 		this.patientId = patientId;
 	}
+
+    public int getMedicationId() {
+        return medicationId;
+    }
+
+    public void setMedicationId(int medicationId) {
+        this.medicationId = medicationId;
+    }
 }

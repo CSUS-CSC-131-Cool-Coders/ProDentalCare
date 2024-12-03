@@ -24,34 +24,189 @@
     "patientId": "123456789",
     "planName": "Prevent gingivitus",
     "staffId": "987654321",
-    "startDate": "2024-11-20",
-    "endDate": "2025-11-20"
+    "startDate": "2024-11-11",
+    "endDate": "2025-11-11"
   },
   "appointments": [
     {
-      "appointmentId": 1,
-      "date": "2024-12-20",
-      "status": "scheduled",
-      "dentistNotes": "",
-      "patientId": "123456789"
+      "staffName": "",
+      "appointment": {
+        "appointmentId": 1,
+        "date": "2024-12-20",
+        "status": "scheduled",
+        "dentistNotes": "",
+        "patientId": "123456789"
+      }
     },
     {
-      "appointmentId": 3,
-      "date": "2024-12-23",
-      "status": "scheduled",
-      "dentistNotes": "",
-      "patientId": "123456789"
+      "staffName": "",
+      "appointment": {
+        "appointmentId": 3,
+        "date": "2024-12-23",
+        "status": "scheduled",
+        "dentistNotes": "",
+        "patientId": "123456789"
+      }
     },
     {
-      "appointmentId": 2,
-      "date": "2024-12-27",
-      "status": "scheduled",
-      "dentistNotes": "",
-      "patientId": "123456789"
+      "staffName": "",
+      "appointment": {
+        "appointmentId": 2,
+        "date": "2024-12-27",
+        "status": "scheduled",
+        "dentistNotes": "",
+        "patientId": "123456789"
+      }
     }
   ],
-  "allergies": [],
-  "medications": [],
-  "labs": [],
-  "immunizations": []
+  "allergies": [
+    {
+      "allergyId": 1,
+      "patientId": "123456789",
+      "allergy": "peanuts",
+      "comment": "mad allergic"
+    },
+    {
+      "allergyId": 2,
+      "patientId": "123456789",
+      "allergy": "cats",
+      "comment": ""
+    },
+    {
+      "allergyId": 3,
+      "patientId": "123456789",
+      "allergy": "dogs",
+      "comment": "mad allergic to dogs"
+    },
+    {
+      "allergyId": 4,
+      "patientId": "123456789",
+      "allergy": "fun",
+      "comment": ":("
+    },
+    {
+      "allergyId": 5,
+      "patientId": "123456789",
+      "allergy": "allergy",
+      "comment": "test"
+    },
+    {
+      "allergyId": 6,
+      "patientId": "123456789",
+      "allergy": "another",
+      "comment": "test"
+    },
+    {
+      "allergyId": 7,
+      "patientId": "123456789",
+      "allergy": "hes allergic af",
+      "comment": ""
+    },
+    {
+      "allergyId": 8,
+      "patientId": "123456789",
+      "allergy": "smth",
+      "comment": ""
+    },
+    {
+      "allergyId": 9,
+      "patientId": "123456789",
+      "allergy": "smth",
+      "comment": ""
+    },
+    {
+      "allergyId": 10,
+      "patientId": "123456789",
+      "allergy": "smthffasdf",
+      "comment": ""
+    },
+    {
+      "allergyId": 11,
+      "patientId": "123456789",
+      "allergy": "smthffasdf",
+      "comment": ""
+    },
+    {
+      "allergyId": 12,
+      "patientId": "123456789",
+      "allergy": "smthffasdf",
+      "comment": ""
+    },
+    {
+      "allergyId": 13,
+      "patientId": "123456789",
+      "allergy": "smthffasdf",
+      "comment": ""
+    },
+    {
+      "allergyId": 14,
+      "patientId": "123456789",
+      "allergy": "smthffasdf",
+      "comment": ""
+    },
+    {
+      "allergyId": 15,
+      "patientId": "123456789",
+      "allergy": "smthffasdf",
+      "comment": ""
+    },
+    {
+      "allergyId": 16,
+      "patientId": "123456789",
+      "allergy": "smthffasdf",
+      "comment": ""
+    },
+    {
+      "allergyId": 17,
+      "patientId": "123456789",
+      "allergy": "poiasgdf",
+      "comment": "asgd"
+    }
+  ],
+  "medications": [
+    {
+      "medicationId": 1,
+      "patientId": "123456789",
+      "date": "2017-12-31",
+      "medication": "Some allergy medicine",
+      "directions": "idk"
+    },
+    {
+      "medicationId": 2,
+      "patientId": "123456789",
+      "date": "2019-02-01",
+      "medication": "Allergy medicine refill",
+      "directions": ""
+    },
+    {
+      "medicationId": 3,
+      "patientId": "123456789",
+      "date": "2020-02-01",
+      "medication": "Allergy Medicine refill",
+      "directions": ""
+    }
+  ],
+  "labs": [
+    {
+      "labId": 1,
+      "patientId": "123456789",
+      "date": "2024-12-01",
+      "lab": "Dental x-rays",
+      "comment": "Teeth look great"
+    }
+  ],
+  "immunizations": [
+    {
+      "immunizationId": 1,
+      "patientId": "123456789",
+      "date": "2019-12-31",
+      "immunization": "Covid"
+    },
+    {
+      "immunizationId": 2,
+      "patientId": "123456789",
+      "date": "2021-02-01",
+      "immunization": "Covid booster"
+    }
+  ]
 }

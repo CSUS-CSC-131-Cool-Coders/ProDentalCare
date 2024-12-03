@@ -9,8 +9,9 @@ import java.util.Date;
 public class LabRecord {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "lab_id")
-	private int laId;
+	private int labId;
 
 	@Column(name = "patient_id_fk", length = 9, columnDefinition = "char(9)")
 	private String patientId;
@@ -56,5 +57,13 @@ public class LabRecord {
 
 	public void setPatientId(String patientId) {
 		this.patientId = patientId;
+	}
+
+	public int getLabId() {
+		return labId;
+	}
+
+	public void setLabId(int labId) {
+		this.labId = labId;
 	}
 }

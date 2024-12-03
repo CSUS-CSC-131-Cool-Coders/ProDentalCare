@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface AllergyRecordRepository extends JpaRepository<AllergyRecord, String> {
+public interface AllergyRecordRepository extends JpaRepository<AllergyRecord, Integer> {
     // Custom query methods can be added here if needed
 	List<AllergyRecord> findAllByPatientId(String patientId);
 }

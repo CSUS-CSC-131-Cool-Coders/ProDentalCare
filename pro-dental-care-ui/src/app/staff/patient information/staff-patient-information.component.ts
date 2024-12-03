@@ -38,21 +38,18 @@ export class StaffPatientInformationComponent implements OnInit {
     medsExpanded = false;
     labsExpanded = false;
     immunizationsExpanded = false;
-    toDoExpanded = false;
     treatmentPlanExpanded = false;
-  
+
     // empty arrays for new data
     newVisits: { date: string; provider: string; dentistNotes: string }[] = [];
     newAllergies: { allergy: string; comment: string }[] = [];
     newMedications: { date: string; medication: string; directions: string }[] = [];
     newLabs: { date: string; lab: string; comment: string }[] = [];
     newImmunizations: { date: string; immunization: string }[] = [];
-    newToDos: { note: string; provider: string; date: string }[] = [];
-    newTreatmentPlans: { plan: string; provider: string; start: string; end: string }[] = [];
 
-  
+
     constructor(private route: ActivatedRoute, private apiService: ApiService) {}
-  
+
     ngOnInit(): void {
       let patientId = this.route.snapshot.paramMap.get('id');
       this.apiService.get("/staff/patient-information/" + patientId).subscribe({
@@ -81,7 +78,7 @@ export class StaffPatientInformationComponent implements OnInit {
           }
       });
     }
-  
+
     // These are methods to push into database, not sure how u gonna do that -- ask caleb
 
     // Visits methods
@@ -91,7 +88,7 @@ export class StaffPatientInformationComponent implements OnInit {
     saveNewVisits(): void {
       this.newVisits = [];
     }
-  
+
     // Allergies Methods
     addAllergy(): void {
       this.newAllergies.push({ allergy: '', comment: '' });
@@ -119,7 +116,7 @@ export class StaffPatientInformationComponent implements OnInit {
 
 
     }
-  
+
     // Medications Methods
     addMedication(): void {
       this.newMedications.push({ date: '', medication: '', directions: '' });
@@ -145,7 +142,7 @@ export class StaffPatientInformationComponent implements OnInit {
             }
         });
     }
-  
+
     // Labs Methods
     addLab(): void {
       this.newLabs.push({ date: '', lab: '', comment: '' });
@@ -171,7 +168,7 @@ export class StaffPatientInformationComponent implements OnInit {
             }
         });
     }
-  
+
     // Immunizations Methods
     addImmunization(): void {
       this.newImmunizations.push({ date: '', immunization: '' });
@@ -204,4 +201,16 @@ export class StaffPatientInformationComponent implements OnInit {
           next: res => {}
       })
     }
+
+  deleteAllergy(allergy: any, allergyId: string) {
+      console.log("Deleting allergy" + allergyId);
+      this.apiService.delete("/staff/patient-information/" + this.patientInfo.patient.patientId + "/allergies/" + allergyId, null).subscribe({
+        next: res => {
+          this.patientInfo.allergies.remove(allergy);
+        },
+        error: err => {
+          alert("There was an error deleting your allergy!")
+        }
+      });
   }
+}

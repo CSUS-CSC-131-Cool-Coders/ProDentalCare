@@ -52,6 +52,7 @@
                     <tr *ngFor="let allergy of patientInfo.allergies">
                         <td>{{ allergy.allergy }}</td>
                         <td>{{ allergy.comment }}</td>
+                        <td><button (click)="deleteAllergy(allergy, allergy.allergyId)">Delete</button></td>
                     </tr>
                     <tr *ngFor="let newAllergy of newAllergies">
                         <td><input type="text" [(ngModel)]="newAllergy.allergy" placeholder="Enter allergy"/></td>

@@ -44,4 +44,12 @@ public class AllergyRecord {
 	public void setPatientId(String patientId) {
 		this.patientId = patientId;
 	}
+
+	public int getAllergyId() {
+		return allergyId;
+	}
+
+	public void setAllergyId(int allergyId) {
+		this.allergyId = allergyId;
+	}
 }
