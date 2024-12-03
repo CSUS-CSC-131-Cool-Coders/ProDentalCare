@@ -1,9 +1,5 @@
 package org.cc.prodentalcareapi.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -12,43 +8,62 @@ import java.util.Date;
 @Table(name = "lab_records")
 public class LabRecord {
 
-    @Id
-    @Column(name = "lab_id")
-    private int laId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "lab_id")
+	private int labId;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "lab_date")
-    private Date date;
+	@Column(name = "patient_id_fk", length = 9, columnDefinition = "char(9)")
+	private String patientId;
 
-    @Column(name = "lab", length = 200)
-    private String lab;
+	@Temporal(TemporalType.DATE)
+	@Column(name = "lab_date")
+	private Date date;
 
-    @Column(name = "comment", length = 200)
-    private String comment;
+	@Column(name = "lab", length = 200)
+	private String lab;
 
-    // Getters and setters
-    public Date getDate() {
-        return date;
-    }
+	@Column(name = "comment", length = 200)
+	private String comment;
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
+	// Getters and setters
+	public Date getDate() {
+		return date;
+	}
 
-    public String getLab() {
-        return lab;
-    }
+	public void setDate(Date date) {
+		this.date = date;
+	}
 
-    public void setLab(String lab) {
-        this.lab = lab;
-    }
+	public String getLab() {
+		return lab;
+	}
 
-    public String getComment() {
-        return comment;
-    }
+	public void setLab(String lab) {
+		this.lab = lab;
+	}
 
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
+	public String getComment() {
+		return comment;
+	}
 
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public String getPatientId() {
+		return patientId;
+	}
+
+	public void setPatientId(String patientId) {
+		this.patientId = patientId;
+	}
+
+	public int getLabId() {
+		return labId;
+	}
+
+	public void setLabId(int labId) {
+		this.labId = labId;
+	}
 }

@@ -7,7 +7,6 @@ import org.cc.prodentalcareapi.model.StaffAppointments;
 import org.cc.prodentalcareapi.model.response.AdminAppointmentsResponse;
 import org.cc.prodentalcareapi.model.response.AdminAppointmentsResponse.AppointmentInfo;
 import org.cc.prodentalcareapi.model.response.AdminStaffInfoResponse;
-import org.cc.prodentalcareapi.model.response.AdminStaffInfoResponse.StaffInfo;
 import org.cc.prodentalcareapi.repository.AppointmentsRepository;
 import org.cc.prodentalcareapi.repository.StaffAppointmentsRepository;
 import org.cc.prodentalcareapi.repository.StaffMemberRepository;
@@ -119,20 +118,14 @@ public class AdminImpl {
 
             // Fetch assigned staff members
             List<StaffAppointments> staffAppts = staffAppointmentsRepository.findByStaffAppointmentIdAppointmentId(appt.getAppointmentId());
-            List<StaffInfo> staffInfos = new ArrayList<>();
+            List<StaffMember> staffMembers = new ArrayList<>();
             for (StaffAppointments staffAppt : staffAppts) {
                 StaffMember staff = staffMemberRepository.findById(staffAppt.getStaffAppointmentId().getStaffId()).orElse(null);
                 if (staff != null) {
-                    StaffInfo staffInfo = new StaffInfo();
-                    staffInfo.setStaffId(staff.getStaffId());
-                    staffInfo.setEmail(staff.getEmail());
-                    staffInfo.setFirstName(staff.getFirstName());
-                    staffInfo.setLastName(staff.getLastName());
-                    staffInfo.setDateOfBirth(staff.getDateOfBirth());
-                    staffInfos.add(staffInfo);
+                    staffMembers.add(staff);
                 }
             }
-            info.setStaffMembers(staffInfos);
+            info.setStaffMembers(staffMembers);
             appointmentInfos.add(info);
         }
 

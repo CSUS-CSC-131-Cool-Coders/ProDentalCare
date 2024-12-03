@@ -28,6 +28,11 @@ public class PatientImpl {
 	private final PatientRepository patientRepository;
 	private final StaffMemberRepository staffMemberRepository;
 	private final StaffAppointmentsRepository staffAppointmentsRepository;
+	private final AccountRepository accountRepository;
+	private final AllergyRecordRepository allergyRecordRepository;
+	private final LabRecordRepository labRecordRepository;
+	private final ImmunizationRecordRepository immunizationRecordRepository;
+	private final MedicationRecordRepository medicationRecordRepository;
 
 
 	@Autowired
@@ -38,8 +43,8 @@ public class PatientImpl {
 			PatientTreatmentPlanRepository patientTreatmentPlanRepository,
 			PatientRepository patientRepository,
 			StaffAppointmentsRepository staffAppointmentsRepository,
-			StaffMemberRepository staffMemberRepository
-	) {
+			StaffMemberRepository staffMemberRepository,
+			AccountRepository accountRepository, AllergyRecordRepository allergyRecordRepository, LabRecordRepository labRecordRepository, ImmunizationRecordRepository immunizationRecordRepository, MedicationRecordRepository medicationRecordRepository) {
 		this.tokenService = tokenService;
 		this.appointmentsRepository = appointmentsRepository;
 		this.patientBillingRepository = patientBillingRepository;
@@ -47,6 +52,11 @@ public class PatientImpl {
 		this.patientRepository = patientRepository;
 		this.staffMemberRepository = staffMemberRepository;
 		this.staffAppointmentsRepository = staffAppointmentsRepository;
+		this.accountRepository = accountRepository;
+		this.allergyRecordRepository = allergyRecordRepository;
+		this.labRecordRepository = labRecordRepository;
+		this.immunizationRecordRepository = immunizationRecordRepository;
+		this.medicationRecordRepository = medicationRecordRepository;
 	}
 
 	// getAppointments(token) - for the requesting user
@@ -185,6 +195,67 @@ public class PatientImpl {
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 
+	}
+
+	@RequireToken
+	@GetMapping("/information")
+	public ResponseEntity<PatientInformationStaffViewResponse> getPatientInformation(@RequestHeader(name = "Authorization") String token) {
+		String tokenValue = tokenService.getTokenFromBearerToken(token);
+		Token t = tokenService.getToken(tokenValue);
+		if (!t.getRoles().contains("patient")) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+
+		List<Patient> patientList = patientRepository.findByEmail(t.getUsername());
+
+		if (patientList.size() != 1) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+
+		Patient patient = patientList.get(0);
+		String patientId = patient.getPatientId();
+
+		List<Appointments> appointments = appointmentsRepository.findAllAppointmentsByPatientIdOrderByDateAsc(patientId);
+
+		List<AppointmentsWithStaffName> appointmentsWithStaffNames = new ArrayList<>();
+
+		appointments.stream().forEach(appointment -> {
+			AppointmentsWithStaffName appointmentWithStaffName = new AppointmentsWithStaffName(appointment);
+			List<StaffAppointments> sas = staffAppointmentsRepository.findByStaffAppointmentIdAppointmentId(appointmentWithStaffName.getAppointment().getAppointmentId());
+
+			List<String> staffNames = new ArrayList<>();
+			sas.stream().forEach(staffAppointment -> {
+				StaffMember staff = staffMemberRepository.findById(staffAppointment.getStaffAppointmentId().getStaffId()).orElse(null);
+				if (staff != null) {
+					staffNames.add(staff.getFirstName() + " " + staff.getLastName());
+
+				}
+			});
+			StringBuilder sb = new StringBuilder();
+			for(String staff : staffNames) {
+				sb.append(staff);
+				sb.append(" ");
+			}
+			appointmentWithStaffName.setStaffName(sb.toString());
+
+			appointmentsWithStaffNames.add(appointmentWithStaffName);
+		});
+
+
+		List<AllergyRecord> allergyRecords = allergyRecordRepository.findAllByPatientId(patientId);
+
+		List<LabRecord> labRecords = labRecordRepository.findAllByPatientId(patientId);
+
+		List<ImmunizationRecord> immunizationRecords = immunizationRecordRepository.findAllByPatientId(patientId);
+
+		List<MedicationRecord> medicationRecords = medicationRecordRepository.findAllByPatientId(patientId);
+
+		Optional<PatientTreatmentPlan> patientTreatmentPlan = patientTreatmentPlanRepository.findById(patientId);
+
+		PatientInformationStaffViewResponse response = new PatientInformationStaffViewResponse(patient, patientTreatmentPlan.orElse(null), appointmentsWithStaffNames, allergyRecords, medicationRecords, labRecords, immunizationRecords);
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 

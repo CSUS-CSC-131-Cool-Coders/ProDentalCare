@@ -1,5 +1,7 @@
 package org.cc.prodentalcareapi.model.response;
 
+import org.cc.prodentalcareapi.model.StaffMember;
+
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class AdminAppointmentsResponse {
         private String status;
         private String dentistNotes;
         private String patientId;
-        private List<AdminStaffInfoResponse.StaffInfo> staffMembers;
+        private List<StaffMember> staffMembers;
 
         // Getters and Setters
 
@@ -66,11 +68,11 @@ public class AdminAppointmentsResponse {
             this.patientId = patientId;
         }
 
-        public List<AdminStaffInfoResponse.StaffInfo> getStaffMembers() {
+        public List<StaffMember> getStaffMembers() {
             return staffMembers;
         }
 
-        public void setStaffMembers(List<AdminStaffInfoResponse.StaffInfo> staffMembers) {
+        public void setStaffMembers(List<StaffMember> staffMembers) {
             this.staffMembers = staffMembers;
         }
     }
