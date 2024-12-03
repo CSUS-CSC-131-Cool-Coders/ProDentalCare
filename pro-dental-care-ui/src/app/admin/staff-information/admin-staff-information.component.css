@@ -1,0 +1,82 @@
+/* Container Styling */
+.staff-information-container {
+  max-width: 800px; /* Ensures the container doesn't span too wide */
+  margin: 10px auto; /* Centers the container */
+  padding: 20px; /* Adds padding around the container */
+}
+
+/* Header Styling */
+.header {
+  text-align: center; /* Centers the text */
+  margin-bottom: 30px; /* Adds space below the header */
+}
+
+.header h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.header p {
+  font-size: 1rem;
+  color: #666;
+}
+
+/* Loading Indicator Styling */
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Error Message Styling */
+.error-message {
+  color: red;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Staff List Styling */
+.staff-list {
+  margin-top: 20px;
+}
+
+/* Custom Mat Expansion Panel Styling */
+.mat-expansion-panel-custom {
+  margin-bottom: 15px; /* Space between panels */
+  border: 1px solid #ddd; /* Adds a light border */
+  border-radius: 5px; /* Rounds the corners */
+}
+
+.mat-expansion-panel-custom .mat-expansion-panel-header {
+  background-color: #f9f9f9; /* Light grey background for headers */
+  padding: 20px;
+}
+
+.mat-expansion-panel-custom .mat-expansion-panel-content {
+  padding: 20px; /* Adds padding inside the panel content */
+}
+
+/* Staff Details Styling */
+.staff-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Space between columns */
+  padding: 10px;
+}
+
+.column {
+  flex: 1; /* Each column takes up equal space */
+  min-width: 200px; /* Ensures columns don't get too narrow on small screens */
+}
+
+.column p {
+  margin: 5px 0; /* Spacing between paragraphs */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+  .staff-details {
+    flex-direction: column; /* Stacks columns vertically on small screens */
+  }
+}

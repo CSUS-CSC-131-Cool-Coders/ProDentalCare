@@ -1,0 +1,17 @@
+<div class="content-wrapper">
+  <!-- Staff Name Header -->
+  <h2 class="staff-name">{{ staffInfo.fullName }}</h2>
+
+    <!-- Staff Information Section -->
+    <div class="section">
+        <div class="section-content">
+            <h2>{{staffInfo.staffMember.lastName}}, {{staffInfo.staffMember.firstName}}</h2>
+            <p><strong>Title:</strong> {{ staffInfo.staffMember.position }}</p>
+            <p><strong>Staff ID:</strong> {{ staffInfo.staffMember.staffId }}</p>
+            <p><strong>Pay Rate:</strong> ${{ staffInfo.staffMember.hourlyRate }} / hour</p>
+            <h3>Banking Information</h3>
+            <p><strong>Routing Number:</strong> {{ staffInfo.staffMember.bankRoutingNumber }} </p>
+            <p><strong>Account Number:</strong> {{ staffInfo.staffMember.bankAccountNumber }} </p>
+        </div>
+    </div>
+</div>

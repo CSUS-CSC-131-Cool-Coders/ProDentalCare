@@ -2,6 +2,7 @@
     <form class="login-wrapper" [formGroup]="form"  (ngSubmit)="onSubmit()">
         <h1>Login</h1>
         <small class="error" [hidden]="!invalidCredentials">Invalid email or password!</small>
+        <small class="error" [hidden]="!accountLocked">Your account is locked, please consult a site admin!</small>
         <small class="error" *ngIf="!email.untouched && !email.valid">Please enter a valid email</small>
         <input name="email" type="text" [formControl]="email" placeholder="Email"/>
         <input name="password" type="password" [formControl]="password" placeholder="Password">
