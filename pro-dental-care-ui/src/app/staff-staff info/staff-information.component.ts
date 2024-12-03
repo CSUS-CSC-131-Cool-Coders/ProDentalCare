@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import {ApiService} from "../api.service";
 
 @Component({
   selector: 'app-staff-information',
@@ -9,28 +10,16 @@ import { Component, OnInit } from '@angular/core';
   imports: [CommonModule],
 })
 export class StaffInformationComponent implements OnInit {
-  staffInfo: any = {
-    name: '',
-    title: '',
-    supervisor: '',
-    staffId: '',
-    employmentType: '',
-    payRate: '',
-    yearsOfService: 0,
-  };
+  staffInfo: any;
 
-  constructor() {}
+  constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
     // Initialize staff information
-    this.staffInfo = {
-      name: 'Jane Doe',
-      title: 'Nurse',
-      supervisor: 'Dr. Smith',
-      staffId: 'ST12345',
-      employmentType: 'Full-Time',
-      payRate: '40',
-      yearsOfService: 5,
-    };
+    this.apiService.get("/staff/information").subscribe({
+      next: res => {
+        this.staffInfo = res.body;
+      }
+    })
   }
 }
