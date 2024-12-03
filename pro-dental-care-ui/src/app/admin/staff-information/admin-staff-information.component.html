@@ -1,29 +1,42 @@
-<div class="staff-information-container">
+<main class="staff-information-container bg-white">
+  <header class="header">
+    <h1>Staff Information</h1>
+    <p>View and manage all staff members.</p>
+  </header>
 
-  <mat-accordion>
-    <mat-expansion-panel *ngFor="let staff of staffs">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <mat-icon svgIcon="person" class="profile-icon"></mat-icon>
-          {{ staff.name }} - {{ staff.position }}
-        </mat-panel-title>
-      </mat-expansion-panel-header>
+  <!-- Loading Indicator -->
+  <div *ngIf="isLoading" class="loading-indicator">
+    <mat-spinner></mat-spinner>
+  </div>
 
-      <mat-card>
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Section for Staff List -->
+  <section class="staff-list" *ngIf="!isLoading && !errorMessage">
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let staff of staffs" class="mat-expansion-panel-custom">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ staff.firstName }} {{ staff.lastName }} - {{ staff.position }}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{ staff.email }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
         <div class="staff-details">
           <div class="column">
-            <p><strong>Name:</strong> {{ staff.name }}</p>
-            <p><strong>Position:</strong> {{ staff.position }}</p>
-            <p><strong>Pay:</strong> {{ staff.pay }}</p>
-            <p><strong>Years Worked:</strong> {{ staff.yearsWorked }}</p>
+            <p><strong>Staff ID:</strong> {{ staff.staffId }}</p>
+            <p><strong>Date of Birth:</strong> {{ staff.dateOfBirth | date: 'longDate' }}</p>
           </div>
           <div class="column">
-            <p><strong>Email:</strong> {{ staff.email }}</p>
-            <p><strong>Contact Number:</strong> {{ staff.contactNumber }}</p>
-            <p><strong>Qualifications:</strong> {{ staff.qualifications }}</p>
+            <p><strong>Position:</strong> {{ staff.position || 'N/A' }}</p>
+            <p><strong>Hourly Rate:</strong> ${{ staff.hourlyRate || 'N/A' }}</p>
           </div>
         </div>
-      </mat-card>
-    </mat-expansion-panel>
-  </mat-accordion>
-</div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </section>
+</main>

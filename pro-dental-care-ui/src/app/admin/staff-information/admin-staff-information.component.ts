@@ -1,50 +1,56 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatExpansionModule } from '@angular/material/expansion'; // Import Expansion Module
-import { MatCardModule } from '@angular/material/card'; // Optional: For card layouts
-import { MatIconModule } from '@angular/material/icon'; // Optional: For icons
-import { Staff } from './staff-model';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatCardModule} from '@angular/material/card';
+import {MatIconModule} from '@angular/material/icon';
+import {ApiService} from '../../api.service';
+import {StaffInfo} from '../../models/staff-info';
+import {AdminStaffInfoResponse} from '../../models/admin-staff-info-response';
+import {MatProgressSpinner} from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-staff-information',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatExpansionModule,
-    MatCardModule,
-    MatIconModule,
-  ],
-  templateUrl: './admin-staff-information.component.html',
-  styleUrl: './admin-staff-information.component.css'
+    selector: 'app-staff-information',
+    standalone: true,
+    imports: [
+        CommonModule,
+        MatExpansionModule,
+        MatCardModule,
+        MatIconModule,
+        MatProgressSpinner,
+    ],
+    templateUrl: './admin-staff-information.component.html',
+    styleUrl: './admin-staff-information.component.css'
 })
-export class AdminStaffInformationComponent implements OnInit{
-  constructor() {
+export class AdminStaffInformationComponent implements OnInit {
+    constructor(private apiService: ApiService) {
+    }
 
-  }
 
-  staffs: Staff[] = [
-    {
-      id: 1,
-      name: 'Jane Doe',
-      position: 'Dentist',
-      pay: '$150,000/year',
-      yearsWorked: 12,
-      email: "123JaneSmith@gmail.com",
-      contactNumber: '1(916)123-4567',
-      qualifications: ['DDS', 'Certified Invisalign Provider'],
-    },
-    {
-      id: 2,
-      name: 'John Smith',
-      position: 'Hygienist',
-      pay: '$90,0000/year',
-      yearsWorked: 4,
-      email: "99JohnS@gmail.com",
-      contactNumber: '1(279)987-6543',
-      qualifications: ['RDH', 'CDH'],
-    },
-  ]
+    staffs: StaffInfo[] = []; // Initialize as empty array
+    isLoading: boolean = false;
+    errorMessage: string = '';
 
-  ngOnInit(): void {
-  }
+    ngOnInit(): void {
+        this.fetchStaffInformation();
+    }
+
+    fetchStaffInformation(): void {
+        this.isLoading = true;
+        this.apiService.get<AdminStaffInfoResponse>('/admin/staff-information').subscribe({
+            next: res => {
+                this.isLoading = false;
+                if (res.status === 200 && res.body) {
+                    this.staffs = res.body.staffMembers;
+                } else {
+                    console.error('Unexpected response structure:', res);
+                    this.errorMessage = 'Unexpected response from the server.';
+                }
+            },
+            error: err => {
+                this.isLoading = false;
+                console.error('Error fetching staff information:', err);
+                this.errorMessage = 'Failed to load staff information. Please try again later.';
+            }
+        });
+    }
 }
