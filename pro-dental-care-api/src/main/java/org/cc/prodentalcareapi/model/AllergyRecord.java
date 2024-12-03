@@ -1,22 +1,18 @@
 package org.cc.prodentalcareapi.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import jakarta.persistence.Column;
-import jakarta.persistence.TemporalType;
-
 import jakarta.persistence.*;
-
-import java.util.Date;
 
 @Entity
 @Table(name = "allergy_records")
-public class VisitRecordEntity {
+public class AllergyRecord {
 
     @Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "allergy_id")
     private int allergyId;
+
+    @Column(name = "patient_id_fk", length = 9, columnDefinition = "char(9)")
+    private String patientId;
 
     @Column(name = "allergy", length = 200)
     private String allergy;
@@ -29,7 +25,7 @@ public class VisitRecordEntity {
         return allergy;
     }
 
-    public void setAllergy(string allergy) {
+    public void setAllergy(String allergy) {
         this.allergy = allergy;
     }
 
@@ -40,4 +36,20 @@ public class VisitRecordEntity {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+	public String getPatientId() {
+		return patientId;
+	}
+
+	public void setPatientId(String patientId) {
+		this.patientId = patientId;
+	}
+
+	public int getAllergyId() {
+		return allergyId;
+	}
+
+	public void setAllergyId(int allergyId) {
+		this.allergyId = allergyId;
+	}
 }

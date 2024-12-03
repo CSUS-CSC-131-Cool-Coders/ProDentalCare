@@ -29,6 +29,13 @@ public class PatientTreatmentPlan {
     @Column(name = "end_date")
     private Date endDate;
 
+    public PatientTreatmentPlan() {}
+    public PatientTreatmentPlan(String patientId, String planName, String staffId) {
+        this.patientId = patientId;
+        this.planName = planName;
+        this.staffId = staffId;
+    }
+
     public String getPatientId() {
         return patientId;
     }
