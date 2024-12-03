@@ -77,23 +77,10 @@ public class AdminImpl {
         // Retrieve all staff members
         List<StaffMember> staffMembers = staffMemberRepository.findAll();
 
-        // Map StaffMember entities to StaffInfo objects
-        List<StaffInfo> staffInfos = new ArrayList<>();
-        for (StaffMember staff : staffMembers) {
-            StaffInfo info = new StaffInfo();
-            info.setStaffId(staff.getStaffId());
-            info.setEmail(staff.getEmail());
-            info.setFirstName(staff.getFirstName());
-            info.setLastName(staff.getLastName());
-            info.setDateOfBirth(staff.getDateOfBirth());
-            info.setHourlyRate(staff.getHourlyRate());
-            info.setPosition(staff.getPosition());
-            staffInfos.add(info);
-        }
 
         // Construct the response
         AdminStaffInfoResponse response = new AdminStaffInfoResponse();
-        response.setStaffMembers(staffInfos);
+        response.setStaffMembers(staffMembers);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -116,11 +103,6 @@ public class AdminImpl {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        // (Optional) Verify if the user has admin privileges
-        // Example:
-        // if (!t.getRoles().contains("ADMIN")) {
-        //     return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        // }
 
         // Retrieve all appointments
         List<Appointments> appointments = appointmentsRepository.findAll();
