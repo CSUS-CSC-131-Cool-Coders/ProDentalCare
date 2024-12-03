@@ -120,13 +120,13 @@ public class PatientImpl {
 				.findAllByPatientIdOrderByDueDateAsc(patient.getPatientId());
 		PatientBilling candidate = null;
 		for (PatientBilling bill : bills) {
-			if (!bill.getStatus().equals("paid")) {
+			if (!bill.getPayStatus().equals("paid")) {
 				candidate = bill;
 				break;
 			}
 		}
 		if (candidate != null) {
-			response.nextPayment = new PaymentPreview(candidate.getPaymentAmount().doubleValue(),
+			response.nextPayment = new PaymentPreview(candidate.getPayAmount().doubleValue(),
 					candidate.getDueDate().toString());
 		}
 

@@ -36,8 +36,8 @@ export const routes: Routes = [
     {path: "patient/records", component: PatientHealthRecords},
     {path: "patient/treatment", component: PatientTreatmentPlan},
     {path: "patient/information", component: PatientInformationComponent},
-    {path: "patient/payments", component: PaymentComponent}, //Add route for payments
-    {path: "patient/process-payment", component: PaymentPageComponent}, //Add route for payment process
+    {path: "patient/payments/payment", component: PaymentComponent}, //Add route for payments
+    {path: "patient/payments/process-payment", component: PaymentPageComponent}, //Add route for payment process
     {path: 'staff/patient', component: StaffPatientComponent},
     {path: 'staff/patient-information/:id', component: StaffPatientInformationComponent},
     {path: "admin/information", component: AdminStaffInformationComponent},
