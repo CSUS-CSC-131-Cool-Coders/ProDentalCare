@@ -103,13 +103,13 @@ public class PatientImpl {
 		List<PatientBilling> bills = patientBillingRepository.findAllByPatientIdOrderByDueDateAsc(patient.getPatientId());
 		PatientBilling candidate = null;
 		for (PatientBilling bill : bills) {
-			if (!bill.getStatus().equals("paid")) {
+			if (!bill.getPayStatus().equals("paid")) {
 				candidate = bill;
 				break;
 			}
 		}
 		if (candidate != null) {
-			response.nextPayment = new PaymentPreview(candidate.getPaymentAmount().doubleValue(), candidate.getDueDate().toString());
+			response.nextPayment = new PaymentPreview(candidate.getPayAmount().doubleValue(), candidate.getDueDate().toString());
 		}
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
