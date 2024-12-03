@@ -3,7 +3,6 @@ import {LoginPageComponent} from "./account/login-page/login-page.component";
 import {ForgotPasswordComponent} from "./account/forgot-password/forgot-password.component";
 import {SignupPageComponent} from "./account/signup-page/signup-page.component";
 import {ResetPasswordComponent} from "./account/reset-password/reset-password.component";
-import {StaffInformationComponent} from './admin/staff-information/staff-information.component';
 // import {AppointmentSchedulerComponent} from './patient/patient-appointments/appointment-scheduler/appointment-scheduler.component';
 import {AdminCalendarComponent} from './admin/admin-calendar/admin-calendar.component';
 import {PaymentComponent} from "./patient/payment/payment.component";
@@ -15,8 +14,13 @@ import {PatientHealthRecords} from './patient/records/health records/health-reco
 import {PatientTreatmentPlan} from './patient/records/treatment plan/patient-treatment-plan.component';
 import {PatientInformationComponent} from './patient/patient-information/patient-information.component';
 import {StaffSignupComponent} from "./account/signup-page/staff-signup/staff-signup.component";
+import {StaffPatientComponent} from './staff/patient information/staff-patient.component';
+import {StaffPatientInformationComponent} from './staff/patient information/staff-patient-information.component';
+import {AdminStaffInformationComponent} from './admin/staff-information/admin-staff-information.component';
+import {StaffInformationComponent} from "./staff-staff info/staff-information.component";
 
 export const routes: Routes = [
+    {path: "", redirectTo: "dashboard", pathMatch: "full"},
     {path: "login", component: LoginPageComponent},
     {path: "signup", component: SignupPageComponent},
     {path: "signup/page-2", component: Page2Component},
@@ -25,7 +29,6 @@ export const routes: Routes = [
     {path: "reset-password", component: LoginPageComponent},
     {path: "reset-password/:resetToken", component: ResetPasswordComponent},
     {path: "admin/staff-information", component: StaffInformationComponent},
-    // {path: "patient/appointments", component: AppointmentSchedulerComponent},
     {path: "admin/calendar", component: AdminCalendarComponent},
     {path: "reset-password/:resetToken", component: ResetPasswordComponent},
     {path: "dashboard", component: VisitorDashboardComponent},
@@ -34,5 +37,11 @@ export const routes: Routes = [
     {path: "patient/treatment", component: PatientTreatmentPlan},
     {path: "patient/information", component: PatientInformationComponent},
     {path: "patient/payments", component: PaymentComponent}, //Add route for payments
-    {path: "patient/process-payment", component: PaymentPageComponent} //Add route for payment process
+    {path: "patient/process-payment", component: PaymentPageComponent}, //Add route for payment process
+    {path: 'staff/patient', component: StaffPatientComponent},
+    {path: 'staff/patient-information/:id', component: StaffPatientInformationComponent},
+    {path: "admin/information", component: AdminStaffInformationComponent},
+    {path: "staff/information", component: StaffInformationComponent},
+    // {path: "patient/appointments", component: AppointmentSchedulerComponent},
+    {path: "staff/calendar", component: AdminCalendarComponent}
 ];

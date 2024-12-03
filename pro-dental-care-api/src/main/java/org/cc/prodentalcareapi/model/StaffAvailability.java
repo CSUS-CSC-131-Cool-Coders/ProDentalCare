@@ -15,7 +15,7 @@ public class StaffAvailability {
 	@Column(name = "availability_id")
 	private int availabilityId;
 
-	@Column(name = "staff_id_fk", columnDefinition = "char(9)")
+	@Column(name = "staff_id_fk", length = 9, columnDefinition = "char(9)")
 	private String staffId;
 
 	@Column(name = "availability_start")

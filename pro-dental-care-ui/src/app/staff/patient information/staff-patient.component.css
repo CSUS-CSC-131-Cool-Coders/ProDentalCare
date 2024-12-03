@@ -1,0 +1,51 @@
+/* General Layout */
+.patient-list {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  
+  .header {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 30px;
+  }
+  
+  /* Accordion Container */
+  .accordion-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  /* Accordion Item */
+  .accordion-item {
+    width: 80%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    padding: 15px;
+    text-align: left;
+  }
+  
+  .accordion-item:hover {
+    background-color: #e9ecef;
+    transform: scale(1.02);
+  }
+  
+  .accordion-header h2 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  .accordion-header p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+  }
+  
