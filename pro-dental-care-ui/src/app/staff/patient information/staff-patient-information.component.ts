@@ -52,6 +52,8 @@ export class StaffPatientInformationComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.apiService.checkAccessList(["dentist", "admin"], "/");
+
         this.populateFields();
     }
 
