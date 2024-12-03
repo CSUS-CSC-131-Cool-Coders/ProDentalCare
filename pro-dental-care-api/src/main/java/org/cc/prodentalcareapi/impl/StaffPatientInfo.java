@@ -18,7 +18,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/staff")
-public class StaffInfoImpl {
+public class StaffPatientInfo {
 
 	private final TokenService tokenService;
 	private final PatientRepository patientRepository;
@@ -33,14 +33,14 @@ public class StaffInfoImpl {
 	private final StaffAppointmentsRepository staffAppointmentsRepository;
 
 	@Autowired
-	public StaffInfoImpl(TokenService tokenService,
-						 PatientRepository patientRepository,
-						 AppointmentsRepository appointmentsRepository,
-						 ImmunizationRecordRepository immunizationRecordRepository,
-						 VisitRecordRepository visitRecordRepository,
-						 PatientTreatmentPlanRepository patientTreatmentPlanRepository,
-						 MedicationRecordRepository medicationRecordRepository,
-						 AllergyRecordRepository allergyRecordRepository, LabRecordRepository labRecordRepository, StaffMemberRepository staffMemberRepository, StaffAppointmentsRepository staffAppointmentsRepository) {
+	public StaffPatientInfo(TokenService tokenService,
+							PatientRepository patientRepository,
+							AppointmentsRepository appointmentsRepository,
+							ImmunizationRecordRepository immunizationRecordRepository,
+							VisitRecordRepository visitRecordRepository,
+							PatientTreatmentPlanRepository patientTreatmentPlanRepository,
+							MedicationRecordRepository medicationRecordRepository,
+							AllergyRecordRepository allergyRecordRepository, LabRecordRepository labRecordRepository, StaffMemberRepository staffMemberRepository, StaffAppointmentsRepository staffAppointmentsRepository) {
 		this.tokenService = tokenService;
 		this.patientRepository = patientRepository;
 		this.appointmentsRepository = appointmentsRepository;
@@ -54,29 +54,10 @@ public class StaffInfoImpl {
 		this.staffAppointmentsRepository = staffAppointmentsRepository;
 	}
 
-	/**
-	 *
-	 */
-	private Optional<Token> isValidStaffToken(String token) {
-		String tokenValue = tokenService.getTokenFromBearerToken(token);
-		Token t = tokenService.getToken(tokenValue);
-
-		if (t == null) {
-			return Optional.empty();
-		}
-
-		if (!t.hasRole("admin") && !t.hasRole("dentist")) {
-			return Optional.empty();
-		}
-
-		Optional<Token> tokenOpt = Optional.of(t);
-		return tokenOpt;
-	}
-
 	@RequireToken
 	@GetMapping("/patient-list")
 	public ResponseEntity<PatientListResponse> getPatientList(@RequestHeader(name = "Authorization") String token) {
-		if (isValidStaffToken(token).isEmpty()) {
+		if (tokenService.isValidStaffToken(token).isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
@@ -90,7 +71,7 @@ public class StaffInfoImpl {
 	@RequireToken
 	@GetMapping("/patient-information/{patientId}")
 	public ResponseEntity<PatientInformationStaffViewResponse> getPatientInformation(@RequestHeader(name = "Authorization") String token, @PathVariable("patientId") String patientId) {
-		if (isValidStaffToken(token).isEmpty()) {
+		if (tokenService.isValidStaffToken(token).isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
@@ -145,7 +126,7 @@ public class StaffInfoImpl {
 	@RequireToken
 	@PostMapping("/patient-information/{patientId}/treatment-plan")
 	public ResponseEntity<String> updatePatientTreatmentPlan(@RequestHeader(name = "Authorization") String token, @PathVariable("patientId") String patientId, @RequestBody PatientTreatmentPlanUpdateRequest request) {
-		if (isValidStaffToken(token).isEmpty()) {
+		if (tokenService.isValidStaffToken(token).isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
@@ -167,7 +148,7 @@ public class StaffInfoImpl {
 	@RequireToken
 	@PostMapping("/patient-information/{patientId}/allergies")
 	public ResponseEntity<String> updatePatientAllergies(@RequestHeader(name = "Authorization") String token, @PathVariable("patientId") String patientId, @RequestBody List<AllergyUpdateRequest> request) {
-		if (isValidStaffToken(token).isEmpty()) {
+		if (tokenService.isValidStaffToken(token).isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 		for (AllergyUpdateRequest allergy : request) {
@@ -188,7 +169,7 @@ public class StaffInfoImpl {
 	@RequireToken
 	@PostMapping("/patient-information/{patientId}/medications")
 	public ResponseEntity<String> updatePatientMedications(@RequestHeader(name = "Authorization") String token, @PathVariable("patientId") String patientId, @RequestBody List<MedicationUpdateRequest> request) {
-		if (isValidStaffToken(token).isEmpty()) {
+		if (tokenService.isValidStaffToken(token).isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 		for (MedicationUpdateRequest medication : request) {
@@ -210,7 +191,7 @@ public class StaffInfoImpl {
 	@RequireToken
 	@PostMapping("/patient-information/{patientId}/immunizations")
 	public ResponseEntity<String> updatePatientImmunizations(@RequestHeader(name = "Authorization") String token, @PathVariable("patientId") String patientId, @RequestBody List<ImmunizationUpdateRequest> request) {
-		if (isValidStaffToken(token).isEmpty()) {
+		if (tokenService.isValidStaffToken(token).isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 		for (ImmunizationUpdateRequest immunization : request) {
@@ -231,7 +212,7 @@ public class StaffInfoImpl {
 	@RequireToken
 	@PostMapping("/patient-information/{patientId}/labs")
 	public ResponseEntity<String> updatePatientLabs(@RequestHeader(name = "Authorization") String token, @PathVariable("patientId") String patientId, @RequestBody List<LabUpdateRequest> request) {
-		if (isValidStaffToken(token).isEmpty()) {
+		if (tokenService.isValidStaffToken(token).isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 		for (LabUpdateRequest lab : request) {
@@ -253,7 +234,7 @@ public class StaffInfoImpl {
 	@RequireToken
 	@DeleteMapping("/patient-information/{patientId}/allergies/{allergyId}")
 	public ResponseEntity<String> deletePatientAllergy(@RequestHeader(name = "Authorization") String token, @PathVariable("patientId") String patientId, @PathVariable("allergyId") int allergyId) {
-		if (isValidStaffToken(token).isEmpty()) {
+		if (tokenService.isValidStaffToken(token).isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
@@ -271,7 +252,7 @@ public class StaffInfoImpl {
 	@RequireToken
 	@DeleteMapping("/patient-information/{patientId}/medications/{medicationId}")
 	public ResponseEntity<String> deletePatientMedication(@RequestHeader(name = "Authorization") String token, @PathVariable("patientId") String patientId, @PathVariable("medicationId") int medicationId) {
-		if (isValidStaffToken(token).isEmpty()) {
+		if (tokenService.isValidStaffToken(token).isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
@@ -288,7 +269,7 @@ public class StaffInfoImpl {
 	@RequireToken
 	@DeleteMapping("/patient-information/{patientId}/labs/{labId}")
 	public ResponseEntity<String> deletePatientLab(@RequestHeader(name = "Authorization") String token, @PathVariable("patientId") String patientId, @PathVariable("labId") int labId) {
-		if (isValidStaffToken(token).isEmpty()) {
+		if (tokenService.isValidStaffToken(token).isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
@@ -305,7 +286,7 @@ public class StaffInfoImpl {
 	@RequireToken
 	@DeleteMapping("/patient-information/{patientId}/immunizations/{immunizationId}")
 	public ResponseEntity<String> deletePatientImmunization(@RequestHeader(name = "Authorization") String token, @PathVariable("patientId") String patientId, @PathVariable("immunizationId") int immunizationId) {
-		if (isValidStaffToken(token).isEmpty()) {
+		if (tokenService.isValidStaffToken(token).isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
