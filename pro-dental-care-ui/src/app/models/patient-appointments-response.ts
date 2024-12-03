@@ -1,5 +1,5 @@
 import { AppointmentInfo } from './appointment-info';
 
-export interface AdminAppointmentsResponse {
+export interface PatientAppointmentsResponse {
   appointments: AppointmentInfo[];
 }

@@ -9,9 +9,8 @@ export interface AppointmentInfo {
 
 export interface StaffInfo {
   staffId: string;
-  email: string;
   firstName: string;
   lastName: string;
-  dateOfBirth: string; // ISO date string
-  name?: string; // Optional: Combine first and last name for frontend use
+  position: string;
+  name?: string;
 }

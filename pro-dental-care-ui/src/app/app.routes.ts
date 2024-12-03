@@ -4,7 +4,7 @@ import {ForgotPasswordComponent} from "./account/forgot-password/forgot-password
 import {SignupPageComponent} from "./account/signup-page/signup-page.component";
 import {ResetPasswordComponent} from "./account/reset-password/reset-password.component";
 import {StaffInformationComponent} from './admin/staff-information/staff-information.component';
-// import {AppointmentSchedulerComponent} from './patient/patient-appointments/appointment-scheduler/appointment-scheduler.component';
+import {AppointmentSchedulerComponent} from './patient/patient-appointments/appointment-scheduler.component';
 import {AdminCalendarComponent} from './admin/admin-calendar/admin-calendar.component';
 import {PaymentComponent} from "./patient/payment/payment.component";
 import {PaymentPageComponent} from "./patient/payment-processing/payment-processing.component";
@@ -25,7 +25,7 @@ export const routes: Routes = [
     {path: "reset-password", component: LoginPageComponent},
     {path: "reset-password/:resetToken", component: ResetPasswordComponent},
     {path: "admin/staff-information", component: StaffInformationComponent},
-    // {path: "patient/appointments", component: AppointmentSchedulerComponent},
+    {path: "patient/appointments", component: AppointmentSchedulerComponent},
     {path: "admin/calendar", component: AdminCalendarComponent},
     {path: "reset-password/:resetToken", component: ResetPasswordComponent},
     {path: "dashboard", component: VisitorDashboardComponent},

@@ -1,7 +1,7 @@
 <div class='demo-app'>
 
   <div class='demo-app-main'>
-    <full-calendar *ngIf='calendarVisible()' [options]='calendarOptions()'>
+    <full-calendar [options]='calendarOptions'>
       <ng-template #eventContent let-arg>
         <b>{{ arg.event.start | date:'shortTime' }}</b>
         <i>{{ arg.event.title }}</i>
@@ -75,9 +75,12 @@
       <label for="time">Select Time Slot:</label>
       <select id="time" [(ngModel)]="selectedTime">
         <option value="" disabled>Select a time slot</option>
-        <option *ngFor="let slot of getAvailableSlots()" [value]="slot">
-          {{ slot }}
+        <option>
+          9:00
         </option>
+<!--        <option *ngFor="let slot of getAvailableSlots()" [value]="slot">-->
+<!--          {{ slot }}-->
+<!--        </option>-->
       </select>
 
       <!-- Book and Cancel Buttons -->
