@@ -1,6 +1,5 @@
 package org.cc.prodentalcareapi.impl;
 
-import jakarta.websocket.server.PathParam;
 import org.cc.prodentalcareapi.model.*;
 import org.cc.prodentalcareapi.model.request.*;
 import org.cc.prodentalcareapi.model.response.AppointmentsWithStaffName;
@@ -266,6 +265,57 @@ public class StaffInfoImpl {
 		}
 
 		allergyRecordRepository.flush();
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@RequireToken
+	@DeleteMapping("/patient-information/{patientId}/medications/{medicationId}")
+	public ResponseEntity<String> deletePatientMedication(@RequestHeader(name = "Authorization") String token, @PathVariable("patientId") String patientId, @PathVariable("medicationId") int medicationId) {
+		if (isValidStaffToken(token).isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+
+		try {
+			medicationRecordRepository.deleteById(medicationId);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		medicationRecordRepository.flush();
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@RequireToken
+	@DeleteMapping("/patient-information/{patientId}/labs/{labId}")
+	public ResponseEntity<String> deletePatientLab(@RequestHeader(name = "Authorization") String token, @PathVariable("patientId") String patientId, @PathVariable("labId") int labId) {
+		if (isValidStaffToken(token).isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+
+		try {
+			labRecordRepository.deleteById(labId);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		labRecordRepository.flush();
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@RequireToken
+	@DeleteMapping("/patient-information/{patientId}/immunizations/{immunizationId}")
+	public ResponseEntity<String> deletePatientImmunization(@RequestHeader(name = "Authorization") String token, @PathVariable("patientId") String patientId, @PathVariable("immunizationId") int immunizationId) {
+		if (isValidStaffToken(token).isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+
+		try {
+			immunizationRecordRepository.deleteById(immunizationId);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		immunizationRecordRepository.flush();
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

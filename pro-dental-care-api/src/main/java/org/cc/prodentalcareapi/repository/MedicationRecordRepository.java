@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MedicationRecordRepository extends JpaRepository<MedicationRecord, String> {
+public interface MedicationRecordRepository extends JpaRepository<MedicationRecord, Integer> {
 	List<MedicationRecord> findAllByPatientId(String patientId);
 	// Custom query methods can be added here if needed
 }

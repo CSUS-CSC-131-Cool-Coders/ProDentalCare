@@ -49,10 +49,10 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let allergy of patientInfo.allergies">
+                    <tr *ngFor="let allergy of patientInfo.allergies; index as i">
                         <td>{{ allergy.allergy }}</td>
                         <td>{{ allergy.comment }}</td>
-                        <td><button (click)="deleteAllergy(allergy, allergy.allergyId)">Delete</button></td>
+                        <td><button (click)="deleteAllergy(allergy.allergyId, $event)">Delete</button></td>
                     </tr>
                     <tr *ngFor="let newAllergy of newAllergies">
                         <td><input type="text" [(ngModel)]="newAllergy.allergy" placeholder="Enter allergy"/></td>
@@ -86,6 +86,7 @@
                         <td>{{ medication.date }}</td>
                         <td>{{ medication.medication }}</td>
                         <td>{{ medication.directions }}</td>
+                        <td><button (click)="deleteMedication(medication.medicationId, $event)">Delete</button></td>
                     </tr>
                     <tr *ngFor="let newMedication of newMedications">
                         <td><input type="date" [(ngModel)]="newMedication.date" placeholder="Enter date"/></td>
@@ -122,6 +123,7 @@
                         <td>{{ lab.date }}</td>
                         <td>{{ lab.lab }}</td>
                         <td>{{ lab.comment }}</td>
+                        <td><button (click)="deleteLab(lab.labId, $event)">Delete</button></td>
                     </tr>
                     <tr *ngFor="let newLab of newLabs">
                         <td><input type="date" [(ngModel)]="newLab.date" placeholder="Enter date"/></td>
@@ -155,6 +157,7 @@
                     <tr *ngFor="let immunization of patientInfo.immunizations">
                         <td>{{ immunization.date }}</td>
                         <td>{{ immunization.immunization }}</td>
+                        <td><button (click)="deleteImmunization(immunization.immunizationId, $event)">Delete</button></td>
                     </tr>
                     <tr *ngFor="let newImmunization of newImmunizations">
                         <td><input type="date" [(ngModel)]="newImmunization.date" placeholder="Enter date"/></td>
@@ -185,7 +188,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <!-- Display existing treatment plans -->
+                    <!-- Display existing treatment plan -->
                         <td><input type="text" [(ngModel)]="treatmentPlan.planName"/></td>
                         <td><input type="text" [(ngModel)]="treatmentPlan.staffId"/></td>
                         <td><input type="date" [(ngModel)]="treatmentPlan.startDate"/>

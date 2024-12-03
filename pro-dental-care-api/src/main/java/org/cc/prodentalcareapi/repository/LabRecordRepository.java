@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface LabRecordRepository extends JpaRepository<LabRecord, String> {
+public interface LabRecordRepository extends JpaRepository<LabRecord, Integer> {
 	List<LabRecord> findAllByPatientId(String patientId);
 	// Custom query methods can be added here if needed
 }
