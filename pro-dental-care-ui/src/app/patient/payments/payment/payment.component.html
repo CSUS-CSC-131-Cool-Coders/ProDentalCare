@@ -1,0 +1,59 @@
+<div class="payment-wrapper">
+  <div class="box-with-shadow">
+    <div class="balances-container">
+      <img class="balances-line" ngSrc="assets/line12181-i3l.svg" alt="Line12181"
+           width="32" height="32" style="padding-right: 20px"
+      />
+      <span class="balances">Balances</span>
+
+      <div class="account-balance-container">
+        <span class="account-balance">Account Balance</span>
+        <span class="account-text">${{accountBalance}}</span>
+      </div>
+      <div class="amount-due-container">
+        <span class="amount-due">Amount Due</span>
+        <span class="amount-text">${{amountDue}}</span>
+      </div>
+      <div class="due-date-container">
+        <span class="due-date">Due Date</span>
+        <span class="date-text">{{nextDueDate}}</span>
+      </div>
+      <button (click)="makePayment()" id="buttonPayment" style="margin-top: 40px">Pay Balance</button>
+    </div>
+
+  </div>
+
+  <div class="invoice-history-container">
+    <div class="invoice-history-header">
+      <img class="invoice-line" ngSrc="assets/line12181-k9vq.svg" alt="Line12181"
+           width="32" height="32" style="padding-right: 20px"
+      />
+      <span class="invoice-text">Invoice History</span>
+    </div>
+    <div class="invoice-history-body">
+      <table class="invoice-history-table">
+        <tbody>
+          <tr *ngFor="let paidDate of previousPaidDates | slice:0:3; let i = index">
+            <td>
+              <div style="display: flex; align-items: center;">
+                <img
+                  class="info-icon"
+                  ngSrc="assets/infoi218-z4xn.svg"
+                  alt="InfoI218"
+                  width="32"
+                  height="32"
+                  style="padding-right: 20px;"
+                />
+                <div>
+                  <div class="paidDateInvoice"><strong>{{paidDate}}</strong></div>
+                  <div class="cardInfo">Paid by Credit Card</div>
+                </div>
+              </div>
+            </td>
+            <td class="invoiceAmount">${{previousPayments[i]}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

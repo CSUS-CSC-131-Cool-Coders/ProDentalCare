@@ -27,12 +27,17 @@ public class PatientBilling{
     @Column(name = "status", length = 16)
     private String payStatus;
 
-    public PatientBilling(String patientId, BigDecimal payAmount, Date dueDate, String payStatus, int billId) {
+    @Temporal(TemporalType.DATE)
+    @Column(name = "paid_date")
+    private Date paidDate;
+
+    public PatientBilling(String patientId, BigDecimal payAmount, Date dueDate, String payStatus, int billId, Date paidDate) {
         this.patientId = patientId;
         this.payAmount = payAmount;
         this.dueDate = dueDate;
         this.payStatus = payStatus;
         this.billId = billId;
+        this.paidDate = paidDate;
     }
     public PatientBilling() {}
 
@@ -44,11 +49,11 @@ public class PatientBilling{
         this.patientId = patientId;
     }
 
-    public BigDecimal getPaymentAmount() {
+    public BigDecimal getPayAmount() {
         return payAmount;
     }
 
-    public void setPaymentAmount(BigDecimal payAmount) {
+    public void setPayAmount(BigDecimal payAmount) {
         this.payAmount = payAmount;
     }
 
@@ -60,11 +65,11 @@ public class PatientBilling{
         this.dueDate = dueDate;
     }
 
-    public String getStatus() {
+    public String getPayStatus() {
         return payStatus;
     }
 
-    public void setStatus(String payStatus) {
+    public void setPayStatus(String payStatus) {
         this.payStatus = payStatus;
     }
 
@@ -75,4 +80,8 @@ public class PatientBilling{
     public void setBillId(int billId) {
         this.billId = billId;
     }
+
+    public Date getPaidDate() { return paidDate; }
+
+    public void setPaidDate(Date paidDate) { this.paidDate = paidDate; }
 }
