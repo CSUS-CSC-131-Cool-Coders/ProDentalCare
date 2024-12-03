@@ -1,26 +1,27 @@
-<section class="introduction" id="introduction">
-  <div class="hero-section">
-    <div class="hero-text">
-      <h1 class="hero-title">
-        We put the <span class="highlight">Care</span> in Dental Care
-      </h1>
-    </div>
-    <div class="hero-image-container">
-      <img src="/assets/picture1.png" alt="Picture" class="hero-image" />
-    </div>
-  </div>
-</section>
+<div class="component-wrapper">
+    <section class="introduction" id="introduction">
+        <div class="hero-section">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    We put the <span class="highlight">Care</span> in Dental Care
+                </h1>
+            </div>
+            <div class="hero-image-container">
+                <img src="/assets/picture1.png" alt="Picture" class="hero-image"/>
+            </div>
+        </div>
+    </section>
 
-<section class="patient-review" id="review">
-  <h2 class="reviews-title">
-    What Patients have to say about our Dentists
-  </h2>
-  <div class="reviews-container">
-    <button class="prev-btn" (click)="showPreviousImage()"> < </button>
-    <img src="/assets/review1.png" class="review-image" style="display: block;" />
-    <img src="/assets/review2.png" class="review-image" style="display: none;" />
-    <img src="/assets/review3.png" class="review-image" style="display: none;" />
-    <button class="next-btn" (click)="showNextImage()"> > </button>
-  </div>
-</section>
-
+    <section class="patient-review" id="review">
+        <h2 class="reviews-title">
+            What Patients have to say about our Dentists
+        </h2>
+        <div class="reviews-container">
+            <button class="prev-btn" (click)="showPreviousImage()"> <</button>
+            <img src="/assets/review1.png" class="review-image" style="display: block;"/>
+            <img src="/assets/review2.png" class="review-image" style="display: none;"/>
+            <img src="/assets/review3.png" class="review-image" style="display: none;"/>
+            <button class="next-btn" (click)="showNextImage()"> ></button>
+        </div>
+    </section>
+</div>

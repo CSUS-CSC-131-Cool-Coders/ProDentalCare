@@ -2,6 +2,7 @@ package org.cc.prodentalcareapi.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -34,6 +35,12 @@ public class StaffMember {
 	@Column(name = "bank_acc_no", length = 100)
 	private String bankAccountNumber;
 
+	@Column(name = "hourly_rate", precision = 10, scale = 2)
+	private BigDecimal hourlyRate;
+
+	@Column(name = "position", length = 30)
+	private String position;
+
 	public StaffMember() {}
 
 	public StaffMember(String staffId,
@@ -43,7 +50,9 @@ public class StaffMember {
 					   Date dateOfBirth,
 					   String sex,
 					   String bankRoutingNumber,
-					   String bankAccountNumber) {
+					   String bankAccountNumber,
+					   BigDecimal hourlyRate,
+					   String position) {
 		this.staffId = staffId;
 		this.email = email;
 		this.firstName = firstName;
@@ -52,6 +61,8 @@ public class StaffMember {
 		this.sex = sex;
 		this.bankRoutingNumber = bankRoutingNumber;
 		this.bankAccountNumber = bankAccountNumber;
+		this.hourlyRate = hourlyRate;
+		this.position = position;
 	}
 
 
@@ -117,5 +128,21 @@ public class StaffMember {
 
 	public void setBankAccountNumber(String bankAccountNumber) {
 		this.bankAccountNumber = bankAccountNumber;
+	}
+
+	public BigDecimal getHourlyRate() {
+		return hourlyRate;
+	}
+
+	public void setHourlyRate(BigDecimal hourlyRate) {
+		this.hourlyRate = hourlyRate;
+	}
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
 	}
 }
