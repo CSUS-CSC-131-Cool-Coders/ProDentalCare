@@ -12,6 +12,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
+import java.util.Optional;
 
 /**
  * The purpose of this class is to send tokens to be used on the client that aren't easily decryptable without knowing
@@ -82,5 +83,21 @@ public class TokenService {
 
 	public String getTokenFromBearerToken(String bearerToken) {
 		return bearerToken.substring("Bearer ".length());
+	}
+
+	public Optional<Token> isValidStaffToken(String token) {
+		String tokenValue = getTokenFromBearerToken(token);
+		Token t = getToken(tokenValue);
+
+		if (t == null) {
+			return Optional.empty();
+		}
+
+		if (!t.hasRole("admin") && !t.hasRole("dentist")) {
+			return Optional.empty();
+		}
+
+		Optional<Token> tokenOpt = Optional.of(t);
+		return tokenOpt;
 	}
 }

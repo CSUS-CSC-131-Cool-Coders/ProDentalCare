@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/staff")
@@ -31,14 +32,13 @@ public class StaffInfoImpl {
     }
 
     @RequireToken
-    @GetMapping("/staff-information")
+    @GetMapping("/information")
     public ResponseEntity<StaffInfoResponse> getStaffInfo(@RequestHeader(name = "Authorization") String token) {
-        String tokenValue = tokenService.getTokenFromBearerToken(token);
-        Token t = tokenService.getToken(tokenValue);
-
-        if (t == null) {
+        Optional<Token> tokenOptional;
+        if ((tokenOptional = tokenService.isValidStaffToken(token)).isEmpty()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+        Token t = tokenOptional.get();
 
         String email = t.getUsername();
         if (ObjectUtils.isEmpty(email)) {
@@ -59,19 +59,6 @@ public class StaffInfoImpl {
     }
 
     private StaffInfoResponse buildStaffInfoResponse(StaffMember staff) {
-        StaffInfoResponse response = new StaffInfoResponse();
-
-        StaffInfoResponse.StaffInfo staffInfo = new StaffInfoResponse.StaffInfo();
-        staffInfo.setFullName(staff.getFirstName() + " " + staff.getLastName());
-        staffInfo.setPosition(staff.getPosition());
-        staffInfo.setStaffId(staff.getStaffId());
-        staffInfo.setDateOfBirth(staff.getDateOfBirth().toString());
-        staffInfo.setSex(staff.getSex());
-        staffInfo.setPayRate(staff.getHourlyRate().toString());
-        // Set other fields as needed
-
-        response.setStaffInfo(staffInfo);
-
-        return response;
+		return new StaffInfoResponse(staff.getFirstName() + " " + staff.getLastName(), staff);
     }
 }

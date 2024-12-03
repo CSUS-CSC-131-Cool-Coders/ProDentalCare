@@ -155,6 +155,17 @@ export class ApiService {
         }
     }
 
+    public checkAccessList(requiredRoles: string[], fallbackUrl: string) {
+        for (let requiredRole of requiredRoles) {
+            if (this.getUserRoles().includes(requiredRole)) {
+                return;
+            }
+        }
+
+        this.router.navigateByUrl(fallbackUrl);
+
+    }
+
     public hasRole(role: string) {
         return this.getUserRoles().includes(role);
     }
