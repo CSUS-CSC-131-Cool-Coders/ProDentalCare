@@ -14,11 +14,12 @@ import {PatientInformationComponent} from './patient/patient-information/patient
 import {StaffSignupComponent} from "./account/signup-page/staff-signup/staff-signup.component";
 import {StaffPatientComponent} from './staff/patient information/staff-patient.component';
 import {StaffPatientInformationComponent} from './staff/patient information/staff-patient-information.component';
-import {StaffInformationComponent} from './admin/staff-information/staff-information.component';
+import {AdminStaffInformationComponent} from './admin/staff-information/admin-staff-information.component';
 import {
     AppointmentSchedulerComponent
 } from './patient/patient-appointments/appointment-scheduler/appointment-scheduler.component';
 import {AdminCalendarComponent} from './admin/admin-calendar/admin-calendar.component';
+import {StaffInformationComponent} from "./staff-staff info/staff-information.component";
 
 export const routes: Routes = [
     {path: "", redirectTo: "dashboard", pathMatch: "full"},
@@ -38,6 +39,7 @@ export const routes: Routes = [
     {path: "patient/process-payment", component: PaymentPageComponent}, //Add route for payment process
     {path: 'staff/patient', component: StaffPatientComponent},
     {path: 'staff/patient-information/:id', component: StaffPatientInformationComponent},
+    {path: "admin/information", component: AdminStaffInformationComponent},
     {path: "staff/information", component: StaffInformationComponent},
     {path: "patient/appointments", component: AppointmentSchedulerComponent},
     {path: "staff/calendar", component: AdminCalendarComponent}

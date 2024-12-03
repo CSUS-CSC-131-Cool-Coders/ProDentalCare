@@ -14,10 +14,10 @@ import { Staff } from './staff-model';
     MatCardModule,
     MatIconModule,
   ],
-  templateUrl: './staff-information.component.html',
-  styleUrl: './staff-information.component.css'
+  templateUrl: './admin-staff-information.component.html',
+  styleUrl: './admin-staff-information.component.css'
 })
-export class StaffInformationComponent implements OnInit{
+export class AdminStaffInformationComponent implements OnInit{
   constructor() {
 
   }
