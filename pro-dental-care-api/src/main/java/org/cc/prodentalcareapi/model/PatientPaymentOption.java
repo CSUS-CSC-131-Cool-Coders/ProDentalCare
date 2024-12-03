@@ -17,6 +17,9 @@ public class PatientPaymentOption {
     @Column(name = "patient_id_fk", length = 9, columnDefinition = "char(9)")
     private String patientId;
 
+    @Column(name = "card_holder", length = 100)
+    private String cardHolder;
+
     @Column(name = "card_no", length = 16)
     private String cardNumber;
 
@@ -42,6 +45,21 @@ public class PatientPaymentOption {
     @Column(name = "zip", length = 5, columnDefinition = "char(5)")
     private String zipCode;
 
+    public PatientPaymentOption(String patientId, String cardHolder, String cardNumber, Date expDate, String cvc, String address, String address2, String city, String state, String zipCode) {
+        setPatientId(patientId);
+        setCardHolder(cardHolder);
+        setCardNo(cardNumber);
+        setExpDate(expDate);
+        setCVC(cvc);
+        setAddress(address);
+        setAddress2(address2);
+        setCity(city);
+        setState(state);
+        setZip(zipCode);
+    }
+
+    public PatientPaymentOption() {}
+
     public String getPatientId() {
         return patientId;
     }
@@ -49,6 +67,10 @@ public class PatientPaymentOption {
     public void setPatientId(String patientId) {
         this.patientId = patientId;
     }
+
+    public String getCardHolder() {return cardHolder;}
+
+    public void setCardHolder(String cardHolder) {this.cardHolder = cardHolder;}
 
     public String getCardNo() {
         return cardNumber;

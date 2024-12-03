@@ -1,0 +1,75 @@
+<div class="content-wrapper">
+  <form [formGroup]="form" (ngSubmit)="submitPayment()" class="payment-wrapper">
+    <h1>Payment Information</h1>
+
+    <div class="row">
+      <div class="form-group">
+        <label for="cardHolder">Name on Card<span class="asterisk">*</span></label>
+        <input id="cardHolder" type="text" formControlName="cardHolder" placeholder="John Doe" />
+        <small *ngIf="cardHolder.invalid && !cardHolder.untouched" class="error">Name is required.</small>
+      </div>
+      <div class="form-group">
+        <label for="cardNumber">Card Number<span class="asterisk">*</span></label>
+        <input id="cardNumber" type="text" formControlName="cardNumber" placeholder="1234 1234 1234 1234" />
+        <small *ngIf="cardNumber.invalid && !cardNumber.untouched" class="error">Invalid card number.</small>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group">
+        <label for="expiry">Expiration Date<span class="asterisk">*</span></label>
+        <input id="expiry" type="text" formControlName="expDate" placeholder="MM / YY" />
+        <small *ngIf="expDate.invalid && !expDate.untouched" class="error">Invalid expiration date.</small>
+      </div>
+      <div class="form-group">
+        <label for="cvc">CVC<span class="asterisk">*</span></label>
+        <input id="cvc" type="text" formControlName="cvc" placeholder="123" />
+        <small *ngIf="cvc.invalid && !cvc.untouched" class="error">Invalid CVC.</small>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group">
+        <label for="address">Address<span class="asterisk">*</span></label>
+        <input id="address" type="text" formControlName="address" placeholder="1234 Washington Drive" />
+        <small *ngIf="address.invalid && !address.untouched" class="error">Address is required.</small>
+      </div>
+      <div class="form-group">
+        <label for="address2">Second Address</label>
+        <input id="address2" type="text" formControlName="address2" placeholder="Optional" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group">
+        <label for="city">City<span class="asterisk">*</span></label>
+        <input id="city" type="text" formControlName="city" placeholder="Sacramento" />
+        <small *ngIf="city.invalid && !city.untouched" class="error">City is required.</small>
+      </div>
+      <div class="form-group">
+        <label for="state">State<span class="asterisk">*</span></label>
+        <input id="state" type="text" formControlName="state" placeholder="California" />
+        <small *ngIf="state.invalid && !state.untouched" class="error">State is required.</small>
+      </div>
+      <div class="form-group">
+        <label for="zip">ZIP Code<span class="asterisk">*</span></label>
+        <input id="zip" type="text" formControlName="zip" placeholder="00000" />
+        <small *ngIf="zip.invalid && !zip.untouched" class="error">Invalid ZIP code.</small>
+      </div>
+    </div>
+
+    <div class="payment-choice">
+      <label for="payAmount">Choose payment amount:</label>
+      <select id="payAmount" formControlName="payAmount">
+        <option value="" disabled>Select an option</option>
+        <option value="accountBalance">Account Balance: ${{ accountBalance }}</option>
+        <option value="amountDue">Amount Due: ${{ amountDue }}</option>
+      </select>
+      <small *ngIf="form.get('payAmount')?.invalid && form.get('payAmount')?.touched" class="error">
+        Payment amount is required.
+      </small>
+    </div>
+
+    <button type="submit" [disabled]="!form.valid" class="submit-button">Pay Now</button>
+  </form>
+</div>
