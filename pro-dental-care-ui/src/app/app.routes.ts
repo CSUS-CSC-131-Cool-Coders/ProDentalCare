@@ -43,5 +43,7 @@ export const routes: Routes = [
     {path: "admin/information", component: AdminStaffInformationComponent},
     {path: "staff/information", component: StaffInformationComponent},
     // {path: "patient/appointments", component: AppointmentSchedulerComponent},
-    {path: "staff/calendar", component: AdminCalendarComponent}
+    {path: "staff/calendar", component: AdminCalendarComponent},
+    {path: "staff/dashboard", component: VisitorDashboardComponent},
+    {path: "admin/dashboard", component: VisitorDashboardComponent}
 ];
