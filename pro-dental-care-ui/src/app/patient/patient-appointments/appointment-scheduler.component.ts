@@ -138,7 +138,7 @@ export class AppointmentSchedulerComponent implements OnInit{
   populateCalendarEvents(): void {
     const formattedEvents = this.appointments.map((appt) => ({
       id: appt.appointmentId.toString(),
-      title: `Patient ID: ${appt.patientId}`,
+      title: `Appointment`,
       start: appt.date, // Ensure 'date' includes time if necessary
       end: appt.date, // Adjust end time if necessary
       extendedProps: {
@@ -152,15 +152,9 @@ export class AppointmentSchedulerComponent implements OnInit{
     this.calendarOptions.events = formattedEvents;
   }
 
-  /**
-   * Retrieves concatenated staff member names for an appointment.
-   * @param appt - The appointment information.
-   * @returns A comma-separated string of staff member names.
-   */
   getStaffNames(appt: AppointmentInfo): string {
-    return appt.staffMembers.map(s => s.name).join(', ');
+    return appt.staffMembers.map(s => `${s.firstName} ${s.lastName}`).join(', ');
   }
-
 
   handleDateSelect(selectInfo: DateSelectArg) {
     // Check if selected date is available and not in the past
@@ -210,27 +204,37 @@ export class AppointmentSchedulerComponent implements OnInit{
     this.selectedAppointment = null;
   }
 
-  deleteAppointment() {
-    this.apiService.delete('patient/appointments', )
-  }
 
   // Cancel Appointment Method
   cancelAppointment(appointment: EventApi) {
     if (confirm('Are you sure you want to cancel this appointment?')) {
-      appointment.remove(); // Removes the event from the calendar
+      const appointmentId = appointment.id; // assuming id is the appointmentId as string
+      this.apiService.delete(`/patient/appointments/${appointmentId}`, null).subscribe({
+        next: () => {
+          // Remove the event from the calendar
+          appointment.remove();
 
-      // Need Delete api here
+          // Show cancellation snackbar
+          this.snackBar.open('Appointment cancelled successfully.', 'Close', {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: ['snackbar-success', 'custom-snackbar']
+          });
 
-      // Show cancellation snackbar
-      this.snackBar.open('Appointment cancelled successfully.', 'Close', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['snackbar-success', 'custom-snackbar']
+          // Clear selected appointment details
+          this.selectedAppointment = null;
+        },
+        error: (error) => {
+          console.error('Error cancelling appointment:', error);
+          this.snackBar.open('Failed to cancel appointment.', 'Close', {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: ['snackbar-error', 'custom-snackbar']
+          });
+        }
       });
-
-      // Clear selected appointment details
-      this.selectedAppointment = null;
     }
   }
 
@@ -249,21 +253,21 @@ export class AppointmentSchedulerComponent implements OnInit{
 
   postAppointment() {
     let body = {
-      date: Date,
+      date: this.selectedDate,
       status: 'scheduled',
       dentistNotes: '',
       patientId: String,
     }
-    this.apiService.post("patients/appointment", body);
+    this.apiService.post("/patients/appointment", body).subscribe();
 
   }
 
   bookAppointment() {
 
-    this.postAppointment();
-
     const calendarApi = this.selected.view.calendar
     if (this.selectedDentist && this.selectedTime && this.selectedDate) {
+      this.postAppointment();
+
       calendarApi.addEvent({
         id: createEventId(),
         title: `Appointment`,
@@ -348,15 +352,10 @@ export class AppointmentSchedulerComponent implements OnInit{
       panelClass: ['snackbar-info', 'custom-snackbar']
     });
 
-    // TODO: Implement actual review functionality
-    // For example, navigate to a review component or open a dialog
   }
 
-  // Optionally, implement a method to save notes if needed
   saveDentistNotes() {
     if (this.selectedAppointment) {
-      // Assuming you have a backend to save these notes
-      // Otherwise, it's already updated in extendedProps
       this.snackBar.open('Notes saved successfully.', 'Close', {
         duration: 3000,
         horizontalPosition: 'center',

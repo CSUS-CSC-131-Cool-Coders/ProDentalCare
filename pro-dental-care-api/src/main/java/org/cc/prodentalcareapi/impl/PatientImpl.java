@@ -1,6 +1,7 @@
 package org.cc.prodentalcareapi.impl;
 
 import org.cc.prodentalcareapi.model.*;
+import org.cc.prodentalcareapi.model.request.ScheduleAppointmentRequest;
 import org.cc.prodentalcareapi.model.response.*;
 import org.cc.prodentalcareapi.repository.*;
 import org.cc.prodentalcareapi.security.RequireToken;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -256,6 +258,103 @@ public class PatientImpl {
 		PatientInformationStaffViewResponse response = new PatientInformationStaffViewResponse(patient, patientTreatmentPlan.orElse(null), appointmentsWithStaffNames, allergyRecords, medicationRecords, labRecords, immunizationRecords);
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@RequireToken
+	@DeleteMapping("/appointments/{appointmentId}")
+	public ResponseEntity<Void> cancelAppointment(
+			@RequestHeader(name = "Authorization") String token,
+			@PathVariable int appointmentId) {
+
+		// Extract token from Bearer token
+		String tokenValue = tokenService.getTokenFromBearerToken(token);
+		Token t = tokenService.getToken(tokenValue);
+
+		// Validate token
+		if (t == null) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+
+		String email = t.getUsername();
+
+		if (ObjectUtils.isEmpty(email)) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+
+		// Retrieve patient
+		List<Patient> patientList = patientRepository.findByEmail(email);
+		if (patientList.size() != 1) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		Patient patient = patientList.get(0);
+
+		// Retrieve the appointment
+		Optional<Appointments> appointmentOpt = appointmentsRepository.findById(appointmentId);
+		if (!appointmentOpt.isPresent()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		Appointments appointment = appointmentOpt.get();
+
+		// Ensure the appointment belongs to the patient
+		if (!appointment.getPatientId().equals(patient.getPatientId())) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
+
+		// Delete staff appointments associated with the appointment
+		staffAppointmentsRepository.deleteByStaffAppointmentId(appointmentId);
+
+		// Delete the appointment
+		appointmentsRepository.delete(appointment);
+
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+	@RequireToken
+	@PostMapping("/appointments")
+	public ResponseEntity<ScheduleAppointmentResponse> scheduleAppointment(
+			@RequestHeader(name = "Authorization") String token,
+			@RequestBody ScheduleAppointmentRequest request) {
+
+		// Extract token from Bearer token
+		String tokenValue = tokenService.getTokenFromBearerToken(token);
+		Token t = tokenService.getToken(tokenValue);
+
+		// Validate token
+		if (t == null) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+
+		String email = t.getUsername();
+
+		if (ObjectUtils.isEmpty(email)) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+
+		// Retrieve patient
+		List<Patient> patientList = patientRepository.findByEmail(email);
+		if (patientList.size() != 1) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		Patient patient = patientList.get(0);
+
+
+		// Create new appointment
+		Appointments newAppointment = new Appointments();
+		newAppointment.setDate(request.getDate());
+		newAppointment.setStatus("Scheduled");
+		newAppointment.setDentistNotes("");
+		newAppointment.setPatientId(patient.getPatientId());
+
+		// Save the appointment to generate an ID
+		appointmentsRepository.save(newAppointment);
+
+		// Construct response
+		ScheduleAppointmentResponse response = new ScheduleAppointmentResponse("Appointment scheduled successfully.", newAppointment.getAppointmentId());
+
+		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
 

@@ -12,4 +12,6 @@ public interface StaffAppointmentsRepository extends JpaRepository<StaffAppointm
     List<StaffAppointments> findByStaffAppointmentIdStaffId(String staffId);
 
     List<StaffAppointments> findByStaffAppointmentIdAppointmentId(int appointmentId);
+
+    void deleteByStaffAppointmentId(int appointmentId);
 }

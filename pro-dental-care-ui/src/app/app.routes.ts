@@ -3,7 +3,7 @@ import {LoginPageComponent} from "./account/login-page/login-page.component";
 import {ForgotPasswordComponent} from "./account/forgot-password/forgot-password.component";
 import {SignupPageComponent} from "./account/signup-page/signup-page.component";
 import {ResetPasswordComponent} from "./account/reset-password/reset-password.component";
-import {StaffInformationComponent} from './admin/staff-information/staff-information.component';
+// import {StaffInformationComponent} from './admin/staff-information/staff-information.component';
 import {AppointmentSchedulerComponent} from './patient/patient-appointments/appointment-scheduler.component';
 import {AdminCalendarComponent} from './admin/admin-calendar/admin-calendar.component';
 import {PaymentComponent} from "./patient/payment/payment.component";
@@ -43,7 +43,7 @@ export const routes: Routes = [
     {path: 'staff/patient', component: StaffPatientComponent},
     {path: 'staff/patient-information/:id', component: StaffPatientInformationComponent},
     {path: "admin/information", component: AdminStaffInformationComponent},
-    {path: "staff/information", component: StaffInformationComponent},
+    // {path: "staff/information", component: StaffInformationComponent},
     // {path: "patient/appointments", component: AppointmentSchedulerComponent},
     {path: "staff/calendar", component: AdminCalendarComponent}
 ];
