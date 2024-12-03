@@ -86,6 +86,8 @@ public class AdminImpl {
             info.setFirstName(staff.getFirstName());
             info.setLastName(staff.getLastName());
             info.setDateOfBirth(staff.getDateOfBirth());
+            info.setHourlyRate(staff.getHourlyRate());
+            info.setPosition(staff.getPosition());
             staffInfos.add(info);
         }
 

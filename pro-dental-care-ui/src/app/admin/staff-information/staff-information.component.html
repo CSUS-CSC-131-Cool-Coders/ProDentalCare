@@ -30,12 +30,10 @@
           <div class="column">
             <p><strong>Staff ID:</strong> {{ staff.staffId }}</p>
             <p><strong>Date of Birth:</strong> {{ staff.dateOfBirth | date: 'longDate' }}</p>
-            <p><strong>Qualifications:</strong> {{ staff.qualifications?.join(', ') || 'N/A'}}</p>
           </div>
           <div class="column">
             <p><strong>Position:</strong> {{ staff.position || 'N/A' }}</p>
-            <p><strong>Pay:</strong> {{ staff.salary || 'N/A' }}</p>
-            <p><strong>Years Worked:</strong> {{ staff.yearsWorked || 'N/A' }}</p>
+            <p><strong>Hourly Rate:</strong> ${{ staff.hourlyRate || 'N/A' }}</p>
           </div>
         </div>
       </mat-expansion-panel>

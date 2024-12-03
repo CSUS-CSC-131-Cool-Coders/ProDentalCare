@@ -1,5 +1,6 @@
 package org.cc.prodentalcareapi.model.response;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -31,17 +32,22 @@ public class AdminStaffInfoResponse {
         private String firstName;
         private String lastName;
         private Date dateOfBirth;
+        private BigDecimal hourlyRate;
+        private String position;
+
 
         // Default Constructor
         public StaffInfo() {}
 
         // Parameterized Constructor
-        public StaffInfo(String staffId, String email, String firstName, String lastName, Date dateOfBirth) {
+        public StaffInfo(String staffId, String email, String firstName, String lastName, Date dateOfBirth, BigDecimal hourlyRate, String position) {
             this.staffId = staffId;
             this.email = email;
             this.firstName = firstName;
             this.lastName = lastName;
             this.dateOfBirth = dateOfBirth;
+            this.hourlyRate = hourlyRate;
+            this.position = position;
         }
 
         // Getters and Setters
@@ -83,6 +89,22 @@ public class AdminStaffInfoResponse {
 
         public void setDateOfBirth(Date dateOfBirth) {
             this.dateOfBirth = dateOfBirth;
+        }
+
+        public BigDecimal getHourlyRate() {
+            return hourlyRate;
+        }
+
+        public void setHourlyRate(BigDecimal hourlyRate) {
+            this.hourlyRate = hourlyRate;
+        }
+
+        public String getPosition() {
+            return position;
+        }
+
+        public void setPosition(String position) {
+            this.position = position;
         }
     }
 }

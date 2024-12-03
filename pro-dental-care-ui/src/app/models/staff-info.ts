@@ -7,7 +7,5 @@ export interface StaffInfo {
   lastName: string;
   dateOfBirth: string; // Alternatively, use Date
   position: string;
-  salary: string;
-  yearsWorked: number;
-  qualifications: string[];
+  hourlyRate: number;
 }
