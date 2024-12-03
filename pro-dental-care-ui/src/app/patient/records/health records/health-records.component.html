@@ -25,10 +25,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let visit of visitRecords">
-              <td>{{ visit.date }}</td>
-              <td>{{ visit.provider }}</td>
-              <td>{{ visit.notes }}</td>
+            <tr *ngFor="let visit of patientInfo.appointments">
+              <td>{{ visit.appointment.date }}</td>
+              <td>{{ visit.staffName }}</td>
+              <td>{{ visit.appointment.dentistNotes }}</td>
             </tr>
           </tbody>
         </table>
@@ -55,7 +55,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let allergy of allergyRecords">
+            <tr *ngFor="let allergy of patientInfo.allergies">
               <td>{{ allergy.allergy }}</td>
               <td>{{ allergy.comment }}</td>
             </tr>
@@ -85,9 +85,9 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let medication of medicationRecords">
-              <td>{{ medication.datePrescribed }}</td>
-              <td>{{ medication.name }}</td>
+            <tr *ngFor="let medication of patientInfo.medications">
+              <td>{{ medication.date }}</td>
+              <td>{{ medication.medication }}</td>
               <td>{{ medication.directions }}</td>
             </tr>
           </tbody>
@@ -116,10 +116,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let lab of labRecords">
+            <tr *ngFor="let lab of patientInfo.labs">
               <td>{{ lab.date }}</td>
-              <td>{{ lab.labName }}</td>
-              <td>{{ lab.comments }}</td>
+              <td>{{ lab.lab }}</td>
+              <td>{{ lab.comment }}</td>
             </tr>
           </tbody>
         </table>
@@ -146,9 +146,9 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let immunization of immunizationRecords">
+            <tr *ngFor="let immunization of patientInfo.immunizations">
               <td>{{ immunization.date }}</td>
-              <td>{{ immunization.name }}</td>
+              <td>{{ immunization.immunization }}</td>
             </tr>
           </tbody>
         </table>

@@ -16,6 +16,9 @@ export class PatientHealthRecords implements OnInit {
     labsExpanded = false;
     immunizationsExpanded = false;
 
+    public patientInfo: any;
+    public treatmentPlan: any;
+
     visitRecords: any[] = [];
     allergyRecords: any[] = [];
     medicationRecords: any[] = [];
@@ -26,6 +29,30 @@ export class PatientHealthRecords implements OnInit {
     }
 
     ngOnInit(): void {
+        this.apiService.get("/patient/information").subscribe({
+            next: res => {
+                if (!ApiService.isOk(res.status)) {
+                    // fail silently
+                    return;
+                }
 
+                this.patientInfo = res.body;
+                if (this.patientInfo.patientTreatmentPlan != null) {
+                    this.treatmentPlan = {
+                        planName: this.patientInfo.patientTreatmentPlan.planName,
+                        staffId: this.patientInfo.patientTreatmentPlan.staffId,
+                        startDate: this.patientInfo.patientTreatmentPlan.startDate,
+                        endDate: this.patientInfo.patientTreatmentPlan.endDate
+                    };
+                } else {
+                    this.treatmentPlan = {
+                        planName: '',
+                        staffId: '',
+                        startDate: '',
+                        endDate: ''
+                    };
+                }
+            }
+        });
     }
 }
