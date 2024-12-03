@@ -23,7 +23,7 @@
             <img ngSrc="/assets/treatment-plan.png" height="30" width="24" style="padding-right: 6px"/>
             <h2>Treatment Plan</h2>
         </button>
-        <button class="button-wrapper" id="patientInformation">
+        <button class="button-wrapper" id="patientInformation"  (click)="navigate('patient/information')">
             <img ngSrc="/assets/user.png" height="30" width="30"/>
             <h2>My Information</h2>
         </button>
@@ -70,7 +70,7 @@
             <img ngSrc="/assets/calendar.png" height="30" width="30"/>
             <h2>Calendar</h2>
         </button>
-        <button class="button-wrapper" id="adminStaffInformation" (click)="navigate('admin/staff-information')">
+        <button class="button-wrapper" id="adminStaffInformation" (click)="navigate('admin/information')">
             <img ngSrc="/assets/user.png" height="30" width="30"/>
             <h2>Staff Information</h2>
         </button>

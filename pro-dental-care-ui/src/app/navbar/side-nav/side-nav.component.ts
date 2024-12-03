@@ -39,7 +39,7 @@ export class SideNavComponent implements OnInit {
             {route: 'staff/patient', component: 'dentistPatientInformation'},
             {route: 'admin/dashboard', component: 'adminOverview'},
             {route: 'admin/calendar', component: 'adminCalendar'},
-            {route: 'admin/staff-information', component: 'adminStaffInformation'},
+            {route: 'admin/information', component: 'adminStaffInformation'},
         ];
 
 
