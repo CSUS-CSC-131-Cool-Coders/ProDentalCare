@@ -9,12 +9,12 @@ public class Token {
 	private final Set<String> roles;
 
 	public Token(String username) {
-		setUsername(username);
+		this.username = username;
 		this.roles = new HashSet<>();
 	}
 
 	public Token(String username, Set<String> roles) {
-		setUsername(username);
+		this.username = username;
 		this.roles = roles;
 	}
 

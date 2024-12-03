@@ -17,6 +17,7 @@ import {StaffPatientInformationComponent} from './staff/patient information/staf
 
 
 export const routes: Routes = [
+    {path: "", redirectTo: "dashboard", pathMatch: "full" },
     {path: "login", component: LoginPageComponent},
     {path: "signup", component: SignupPageComponent},
     {path: "signup/page-2", component: Page2Component},
