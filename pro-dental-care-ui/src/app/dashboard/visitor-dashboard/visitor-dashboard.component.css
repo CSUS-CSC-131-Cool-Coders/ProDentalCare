@@ -1,0 +1,79 @@
+/* General styles for sections */
+section {
+  padding: 50px;
+}
+
+.hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.hero-text {
+  flex: 1;
+}
+
+.hero-title {
+  color: #000;
+  letter-spacing: -2.16px;
+  font: 700 72px/86px Inter, sans-serif;
+}
+
+.highlight {
+  color: #d71746;
+}
+
+.hero-image-container {
+  flex: 1;
+  text-align: right;
+}
+
+.hero-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 25px;
+}
+
+.patient-review {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #d71746;
+  padding: 70px;
+}
+
+.reviews-title {
+  color: #fff;
+  text-align: center;
+  letter-spacing: -2.16px;
+  font: 500 62px/76px Inter, sans-serif;
+  padding: 10px;
+}
+
+.reviews-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.review-image {
+  max-width: 100%;
+  border-radius: 25px;
+}
+
+.prev-btn {
+  font-size: 30px;
+  color: #000000;
+  background-color: #ffffff;
+  margin: 10px;
+}
+
+.next-btn {
+  font-size: 30px;
+  color: #000000;
+  background-color: #ffffff;
+  margin: 10px;
+}

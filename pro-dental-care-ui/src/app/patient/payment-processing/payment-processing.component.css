@@ -1,0 +1,94 @@
+.payment-container {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+h1{
+  text-align: center;
+}
+
+form {
+  gap: 20px;
+}
+
+.row{
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 0px;
+}
+.form-group {
+  flex: 1;
+  margin-bottom: 15px;
+  display: flex;
+  font-family:Inter;
+  flex-direction: column;
+}
+
+.form-state{
+  margin-bottom: 15px;
+  display: flex;
+  font-family:Inter;
+  flex-direction: column;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.asterisk{
+  color: red;
+  font-size: 0.8em;
+  vertical-align: super;
+  margin-left: 2px;
+}
+
+.asterisk-empty{
+  font-size: 0.8em;
+  vertical-align: super;
+  margin-left: 2px;
+}
+
+#state{
+  flex-grow: 1;
+  width: 80px;
+}
+
+#zipCode{
+  flex-grow: 1;
+  max-width: 165px;
+}
+
+input {
+  max-width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.required-label{
+  display: block;
+  text-align: right;
+  font-family: Inter;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.payment-amount{
+  font-family: Inter;
+}
+
+
+button {
+  width: 100%;
+  margin-top: 10px;
+  transition: background-color 0.25s;
+}
+
+#buttonPaySubmit:hover {
+  background-color: indianred;
+}

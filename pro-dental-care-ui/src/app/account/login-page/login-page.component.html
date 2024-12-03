@@ -1,11 +1,13 @@
 <div class="content-wrapper">
-    <div class="login-wrapper">
+    <form class="login-wrapper" [formGroup]="form"  (ngSubmit)="onSubmit()">
         <h1>Login</h1>
-        <p class="error" [hidden]="emailValid">Please enter a valid email</p>
-        <input type="text" [(ngModel)]="email" (ngModelChange)="validateEmail()" placeholder="Email"/>
-        <input type="password" [(ngModel)]="password" placeholder="Password">
+        <small class="error" [hidden]="!invalidCredentials">Invalid email or password!</small>
+        <small class="error" [hidden]="!accountLocked">Your account is locked, please consult a site admin!</small>
+        <small class="error" *ngIf="!email.untouched && !email.valid">Please enter a valid email</small>
+        <input name="email" type="text" [formControl]="email" placeholder="Email"/>
+        <input name="password" type="password" [formControl]="password" placeholder="Password">
         <a href="/forgot-password">Forgot password?</a>
-        <button (click)="submitLogin()" style="margin-top: 40px">Login</button>
+        <button type="submit" [disabled]="!form.valid" style="margin-top: 40px">Login</button>
         <p>New patient? Get started <a href="/signup" style="text-decoration: underline">here</a></p>
-    </div>
+    </form>
 </div>

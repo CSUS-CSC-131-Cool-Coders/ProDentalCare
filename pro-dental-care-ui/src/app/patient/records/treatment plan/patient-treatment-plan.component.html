@@ -1,0 +1,77 @@
+<main class="treatment-plan">
+
+  <!-- To Do Accordion -->
+  <section
+    class="accordion-item"
+    [class.expanded]="toDoExpanded"
+    [class.closed]="!toDoExpanded"
+  >
+    <header class="accordion-header" (click)="toDoExpanded = !toDoExpanded">
+      <h2 class="accordion-title">To Do</h2>
+      <img
+        [ngSrc]="toDoExpanded ? '/assets/up.png' : '/assets/down.png'"
+        alt=""
+        class="accordion-icon"
+        width="20"
+        height="20"
+      />
+    </header>
+    <div
+      class="accordion-content"
+      [ngClass]="{ 'show-content': toDoExpanded }"
+    >
+      <table class="accordion-table">
+        <thead>
+        <tr>
+          <th>To Do</th>
+          <th>Appointment</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let note of dentistNotes; let i = index">
+          <td>
+            {{note}}
+            <div class="provider-name">Provider: Dr. {{provider}}</div>
+          </td>
+          <td>{{apptDate[i]}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Treatment Plan Accordion -->
+  <section class="accordion-item" [class.expanded]="treatmentPlanExpanded" [class.closed]="!treatmentPlanExpanded">
+    <header class="accordion-header" (click)="treatmentPlanExpanded = !treatmentPlanExpanded">
+      <h2 class="accordion-title">Treatment Plan</h2>
+      <img [ngSrc]="treatmentPlanExpanded ? '/assets/up.png' : '/assets/down.png'"
+           alt=""
+           class="accordion-icon"
+           width="20"
+           height="20"
+      />
+    </header>
+    <div class="accordion-content" [ngClass]="{ 'show-content': treatmentPlanExpanded }">
+      <table class="accordion-table">
+        <thead>
+        <tr>
+          <th>Treatment Plan</th>
+          <th>Timeline</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>
+            {{planName}}
+            <div *ngIf="provider" class="provider-name">Provider: Dr. {{ provider }}</div>
+          </td>
+          <td>
+            <div *ngIf="startTimeline" >{{startTimeline}} - {{endTimeline}}</div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
